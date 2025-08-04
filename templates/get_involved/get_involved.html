@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Get Involved" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4 text-center">{% trans "Get Involved with One Cup One Tree" %}</h1>
+            <p class="lead text-center">
+                {% trans "Join our mission to restore nature, empower communities, and create lasting impact. There are many ways you can get involved!" %}
+            </p>
+            <hr>
+            <h3 class="mt-4">{% trans "Ways to Participate" %}</h3>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item">
+                    <strong>{% trans "Volunteer" %}:</strong>
+                    {% trans "Help us organize tree planting events, community outreach, and educational workshops." %}
+                </li>
+                <li class="list-group-item">
+                    <strong>{% trans "Sponsor a Tree" %}:</strong>
+                    {% trans "Support our reforestation efforts by sponsoring trees for yourself or as a gift." %}
+                </li>
+                <li class="list-group-item">
+                    <strong>{% trans "Partner with Us" %}:</strong>
+                    {% trans "Businesses and organizations can collaborate on sustainability projects and campaigns." %}
+                </li>
+                <li class="list-group-item">
+                    <strong>{% trans "Spread the Word" %}:</strong>
+                    {% trans "Share our story on social media and encourage others to join the initiative." %}
+                </li>
+            </ul>
+            <h3 class="mt-4">{% trans "Become a Volunteer" %}</h3>
+            <p>
+                {% trans "Sign up to volunteer and make a direct impact in your community. No experience required—just passion for the environment!" %}
+            </p>
+            <a href="{% url 'accounts:signup' %}" class="btn btn-success mb-3">{% trans "Volunteer Signup" %}</a>
+            <h3 class="mt-4">{% trans "Contact Us" %}</h3>
+            <p>
+                {% trans "Have questions or want to discuss partnership opportunities? Reach out via our" %}
+                <a href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
+                {% trans "page." %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

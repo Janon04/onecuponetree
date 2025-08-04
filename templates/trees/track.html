@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">{% trans "Track Your Tree" %}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_tree_id">{% trans "Enter your Tree ID or scan QR code:" %}</label>
+                            <input type="text" class="form-control form-control-lg" id="id_tree_id" name="tree_id" placeholder="e.g. OCT-12345" required>
+                            <small class="form-text text-muted">{% trans "You can find the Tree ID on your certificate or reusable cup." %}</small>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-search mr-2"></i> {% trans "Track Tree" %}
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p class="mb-2">{% trans "Don't have a Tree ID yet?" %}</p>
+                        <a href="{% url 'trees:plant' %}" class="btn btn-outline-primary">
+                            {% trans "Plant a Tree Now" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

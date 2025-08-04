@@ -1,0 +1,41 @@
+<!-- filepath: c:\Users\HP\Desktop\onecuponetree to Patty\onecuponetree\templates\core\about.html -->
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "About Us" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4 text-center">{% trans "About One Cup One Tree Initiative" %}</h1>
+            <p>
+                {% trans "One Cup One Tree is a community-driven initiative dedicated to environmental sustainability and social impact. Our mission is to empower individuals and organizations to contribute to reforestation efforts, support local farmers, and promote eco-friendly practices through simple, everyday actions." %}
+            </p>
+            <h3 class="mt-5">{% trans "Our Vision" %}</h3>
+            <p>
+                {% trans "We envision a greener, healthier planet where every cup of coffee enjoyed leads to a tree planted, fostering a cycle of giving back to nature and supporting communities." %}
+            </p>
+            <h3 class="mt-5">{% trans "What We Do" %}</h3>
+            <ul>
+                <li>{% trans "Organize tree planting campaigns in partnership with local farmers and volunteers." %}</li>
+                <li>{% trans "Educate communities about the importance of environmental conservation." %}</li>
+                <li>{% trans "Promote sustainable agriculture and eco-friendly products." %}</li>
+                <li>{% trans "Facilitate opportunities for individuals to get involved and make a difference." %}</li>
+            </ul>
+            <h3 class="mt-5">{% trans "Get Involved" %}</h3>
+            <p>
+                {% trans "Whether you are an individual, a business, or an organization, there are many ways to join our mission. Visit our" %}
+                <a href="{% url 'get_involved:get_involved' %}">{% trans "Get Involved" %}</a>
+                {% trans "page to learn more." %}
+            </p>
+            <h3 class="mt-5">{% trans "Contact Us" %}</h3>
+            <p>
+                {% trans "Have questions or want to partner with us? Reach out via our" %}
+                <a href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
+                {% trans "page." %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

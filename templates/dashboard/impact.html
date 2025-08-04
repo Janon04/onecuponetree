@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static i18n leaflet_tags %}
+
+{% block extra_css %}
+{% leaflet_css %}
+<style>
+    #impact-map {
+        height: 500px;
+        width: 100%;
+    }
+    .stat-card {
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">{% trans "Impact Dashboard" %}</h1>
+    
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="stat-card bg-success text-white">
+                <div class="stat-value">{{ stats.trees_planted }}</div>
+                <div class="stat-label">{% trans "Trees Planted" %}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-primary text-white">
+                <div class="stat-value">{{ stats.farmers_supported }}</div>
+                <div class="stat-label">{% trans "Farmers Supported" %}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-warning text-white">
+                <div class="stat-value">{{ stats.youth_trained }}</div>
+                <div class="stat-label">{% trans "Youth Trained" %}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-info text-white">
+                <div class="stat-value">{{ stats.reusable_cups }}</div>
+                <div class="stat-label">{% trans "Reusable Cups" %}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    {% trans "CO₂ Offset" %}
+                </div>
+                <div class="card-body">
+                    <h2 class="display-4 text-center">{{ stats.co2_offset|floatformat:2 }} kg</h2>
+                    <p class="text-center text-muted">{% trans "Total carbon dioxide offset by planted trees" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    {% trans "Recent Trees Planted" %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for tree in recent_trees %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ tree.species }} ({{ tree.tree_id }})
+                            <span class="badge badge-primary badge-pill">{{ tree.planted_date }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-5">
+        <div class="card-header bg-secondary text-white">
+            {% trans "Tree Planting Locations" %}
+        </div>
+        <div class="card-body p-0">
+            {% leaflet_map "impact-map" callback="window.map_init" %}
+        </div>
+    </div>
+    
+    <h2 class="text-center mb-4">{% trans "Success Stories" %}</h2>
+    <div class="row">
+        {% for testimonial in testimonials %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if testimonial.photo %}
+                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="{{ testimonial.author }}">
+                {% endif %}
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ testimonial.content }}</p>
+                        <footer class="blockquote-footer">{{ testimonial.author }} <cite>{{ testimonial.role }}</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% leaflet_js %}
+<script>
+    function map_init(map, options) {
+        // Add base layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add trees to the map (this would be replaced with actual data from your backend)
+        {% for tree in recent_trees %}
+        L.marker([{{ tree.location.y }}, {{ tree.location.x }}]).addTo(map)
+            .bindPopup("<b>Tree {{ tree.tree_id }}</b><br>{{ tree.species }}<br>Planted on {{ tree.planted_date }}");
+        {% endfor %}
+        
+        // Fit map to bounds of all markers
+        map.fitBounds([
+            {% for tree in recent_trees %}
+            [{{ tree.location.y }}, {{ tree.location.x }}]{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]);
+    }
+</script>
+{% endblock %}

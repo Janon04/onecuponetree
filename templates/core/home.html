@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold mb-3">
+          {% trans "Welcome to One Cup One Tree Initiative" %}
+        </h1>
+        <p class="lead text-muted mb-4">
+          {% trans "Empowering communities, restoring nature, and building a sustainable future — One Cup at a Time." %}
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+          <a href="{% url 'trees:plant' %}" class="btn btn-success btn-lg">
+            🌱 {% trans "Plant Your Tree" %}
+          </a>
+          <a href="{% url 'get_involved:get_involved' %}" class="btn btn-danger btn-lg">
+            {% trans "Join the Initiative" %}
+          </a>
+          <a href="{% url 'trees:track' %}" class="btn btn-primary btn-lg">
+            🔍 {% trans "Track My Tree" %}
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block">
+        <img src="{% static 'images/ikawa.jpg' %}" alt="{% trans 'Tree Planting Activity' %}" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Metrics -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3 mb-4">
+        <h2 class="fw-bold text-success">50,000+</h2>
+        <p class="mb-0">{% trans "Trees Planted" %}</p>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h2 class="fw-bold text-primary">2,000+</h2>
+        <p class="mb-0">{% trans "Farmers Empowered" %}</p>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h2 class="fw-bold text-warning">1,500+</h2>
+        <p class="mb-0">{% trans "Youth Trained" %}</p>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h2 class="fw-bold text-danger">100+</h2>
+        <p class="mb-0">{% trans "Communities Impacted" %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission and Vision -->
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <h3 class="fw-bold">{% trans "Our Mission" %}</h3>
+        <p class="text-muted">
+          {% trans "To inspire and mobilize individuals and organizations to restore our planet through tree planting, sustainable agriculture, and community empowerment." %}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h3 class="fw-bold">{% trans "Our Vision" %}</h3>
+        <p class="text-muted">
+          {% trans "A world where every cup enjoyed leads to a tree planted, creating a legacy of environmental stewardship and social impact." %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partner Logos -->
+<section class="py-5">
+  <div class="container text-center">
+    <h3 class="fw-bold mb-4">{% trans "Our Partners" %}</h3>
+    <div class="row justify-content-center align-items-center">
+      {% for i in "123" %}
+      <div class="col-4 col-md-2 mb-3">
+        <img src="{% static 'images/partner'|add:i|add:'.png' %}" alt="{% trans 'Partner' %} {{ i }}" class="img-fluid grayscale-hover">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="bg-light py-5">
+  <div class="container text-center">
+    <h3 class="fw-bold mb-4">{% trans "How It Works" %}</h3>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="display-6 mb-2">☕</div>
+        <h5>{% trans "Enjoy Your Cup" %}</h5>
+        <p class="text-muted">{% trans "Every cup of coffee or tea you enjoy supports our tree planting efforts." %}</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="display-6 mb-2">🌱</div>
+        <h5>{% trans "Plant a Tree" %}</h5>
+        <p class="text-muted">{% trans "Your contribution helps us plant trees in partnership with local farmers and volunteers." %}</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="display-6 mb-2">🌍</div>
+        <h5>{% trans "Track Your Impact" %}</h5>
+        <p class="text-muted">{% trans "Follow the journey of your tree and see the positive change you’re making." %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 text-center">
+  <div class="container">
+    <h3 class="fw-bold mb-4">{% trans "Ready to Make a Difference?" %}</h3>
+    <div class="d-flex justify-content-center flex-wrap gap-3">
+      <a href="{% url 'get_involved:get_involved' %}" class="btn btn-lg btn-success">
+        {% trans "Get Involved" %}
+      </a>
+      <a href="{% url 'core:about' %}" class="btn btn-lg btn-outline-primary">
+        {% trans "Learn More About Us" %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
