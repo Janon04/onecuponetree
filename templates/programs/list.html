@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Programs List</title>
+</head>
+<body>
+    <h1>Available Programs</h1>
+    <ul>
+        {% for program in programs %}
+            <li>
+                <strong>{{ program.name }}</strong>: {{ program.description }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,41 +1,268 @@
-<!-- filepath: c:\Users\HP\Desktop\onecuponetree to Patty\onecuponetree\templates\core\about.html -->
-{% extends "base.html" %}
-{% load i18n %}
+{% extends 'base.html' %}
 
-{% block title %}{% trans "About Us" %}{% endblock %}
+{% block title %}About Us - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <h1 class="mb-4 text-center">{% trans "About One Cup One Tree Initiative" %}</h1>
-            <p>
-                {% trans "One Cup One Tree is a community-driven initiative dedicated to environmental sustainability and social impact. Our mission is to empower individuals and organizations to contribute to reforestation efforts, support local farmers, and promote eco-friendly practices through simple, everyday actions." %}
-            </p>
-            <h3 class="mt-5">{% trans "Our Vision" %}</h3>
-            <p>
-                {% trans "We envision a greener, healthier planet where every cup of coffee enjoyed leads to a tree planted, fostering a cycle of giving back to nature and supporting communities." %}
-            </p>
-            <h3 class="mt-5">{% trans "What We Do" %}</h3>
-            <ul>
-                <li>{% trans "Organize tree planting campaigns in partnership with local farmers and volunteers." %}</li>
-                <li>{% trans "Educate communities about the importance of environmental conservation." %}</li>
-                <li>{% trans "Promote sustainable agriculture and eco-friendly products." %}</li>
-                <li>{% trans "Facilitate opportunities for individuals to get involved and make a difference." %}</li>
-            </ul>
-            <h3 class="mt-5">{% trans "Get Involved" %}</h3>
-            <p>
-                {% trans "Whether you are an individual, a business, or an organization, there are many ways to join our mission. Visit our" %}
-                <a href="{% url 'get_involved:get_involved' %}">{% trans "Get Involved" %}</a>
-                {% trans "page to learn more." %}
-            </p>
-            <h3 class="mt-5">{% trans "Contact Us" %}</h3>
-            <p>
-                {% trans "Have questions or want to partner with us? Reach out via our" %}
-                <a href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
-                {% trans "page." %}
-            </p>
+<!-- Page Header -->
+<section class="py-5 bg-primary text-white" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">About Our Mission</h1>
+                <p class="lead">
+                    Discover the story behind our sustainable coffee movement and our commitment to environmental restoration.
+                </p>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="display-5 fw-bold text-primary mb-4">Our Mission</h2>
+                <p class="lead text-muted mb-4">{{ mission }}</p>
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-bullseye fa-lg"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Focused Impact</h5>
+                        <p class="text-muted mb-0">Every action we take is designed to create measurable positive change.</p>
+                    </div>
+                </div>
+            </div>
+            {% load static %}
+            <div class="col-lg-6">
+                <div class="bg-light rounded-6 p-10">
+                    <img src="{% static 'images/image1.jpeg' %}" 
+                        alt="Coffee farmers working" class="img-fluid rounded-3">
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vision Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                <h2 class="display-5 fw-bold text-primary mb-4">Our Vision</h2>
+                <p class="lead text-muted mb-4">{{ vision }}</p>
+                <div class="d-flex align-items-center">
+                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                        <i class="fas fa-globe-americas fa-lg"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">Global Reach</h5>
+                        <p class="text-muted mb-0">Building a worldwide network of sustainable coffee communities.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="bg-white rounded-3 p-4 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         alt="Coffee plantation" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-primary mb-3">Our Core Values</h2>
+                <p class="lead text-muted">
+                    These principles guide everything we do and shape our approach to creating positive change.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for value in values %}
+            <div class="col-lg-6">
+                <div class="d-flex align-items-start">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-4 flex-shrink-0" style="width: 80px; height: 80px;">
+                        {% if value.name == 'Sustainability' %}
+                            <i class="fas fa-leaf fa-2x"></i>
+                        {% elif value.name == 'Education' %}
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        {% elif value.name == 'Empowerment' %}
+                            <i class="fas fa-hands-helping fa-2x"></i>
+                        {% elif value.name == 'Innovation' %}
+                            <i class="fas fa-lightbulb fa-2x"></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 class="text-primary mb-3">{{ value.name }}</h4>
+                        <p class="text-muted mb-0">{{ value.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Story Timeline -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-primary mb-3">Our Journey</h2>
+                <p class="lead text-muted">
+                    From a small coffee shop to a global movement for sustainability.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="timeline">
+                    <div class="timeline-item mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="bg-white rounded-3 p-4 shadow-sm">
+                                    <h5 class="text-primary fw-bold">2020 - The Beginning</h5>
+                                    <p class="text-muted mb-0">
+                                        Started as a small coffee shop with a vision to make every cup count for the environment.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Coffee shop" class="img-fluid rounded-3">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 order-md-2">
+                                <div class="bg-white rounded-3 p-4 shadow-sm">
+                                    <h5 class="text-primary fw-bold">2021 - First Tree Planting</h5>
+                                    <p class="text-muted mb-0">
+                                        Planted our first 1,000 trees and launched the "One Cup, One Tree" campaign.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 order-md-1">
+                                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Tree planting" class="img-fluid rounded-3">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="bg-white rounded-3 p-4 shadow-sm">
+                                    <h5 class="text-primary fw-bold">2022 - Barista Academy Launch</h5>
+                                    <p class="text-muted mb-0">
+                                        Opened our first Barista Academy to train youth and create employment opportunities.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Barista training" class="img-fluid rounded-3">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 order-md-2">
+                                <div class="bg-white rounded-3 p-4 shadow-sm">
+                                    <h5 class="text-primary fw-bold">2023-2025 - Global Expansion</h5>
+                                    <p class="text-muted mb-0">
+                                        Expanded to multiple countries and partnered with international organizations for greater impact.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 order-md-1">
+                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Global network" class="img-fluid rounded-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold text-primary mb-3">Meet Our Team</h2>
+                <p class="lead text-muted">
+                    Passionate individuals working together to create a sustainable future.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                         alt="Team member" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+                    <h5 class="text-primary">John Doe</h5>
+                    <p class="text-muted">Founder & CEO</p>
+                    <p class="small">Passionate about sustainable agriculture and community development.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                         alt="Team member" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+                    <h5 class="text-primary">Jane Smith</h5>
+                    <p class="text-muted">Program Director</p>
+                    <p class="small">Expert in youth education and barista training programs.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                         alt="Team member" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+                    <h5 class="text-primary">Mike Johnson</h5>
+                    <p class="text-muted">Environmental Coordinator</p>
+                    <p class="small">Leading our reforestation efforts and environmental impact initiatives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="fw-bold mb-3">Join Our Mission</h3>
+                <p class="lead mb-4">
+                    Be part of a movement that's creating real change in communities and the environment.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-hands-helping me-2"></i>Become a Volunteer
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-handshake me-2"></i>Partner With Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
+

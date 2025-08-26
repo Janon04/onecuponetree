@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    "widget_tweaks",
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #'django.contrib.gis',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'blog',
     'core',
     'dashboard',
+    'events',  # Register the events app
     'farmers',
     'get_involved',
     'programs',

@@ -1,122 +1,425 @@
 <!DOCTYPE html>
-{% load i18n %}
-<html lang="{{ request.LANGUAGE_CODE }}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% trans "One Cup One Tree Initiative" %}{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    {% block extra_css %}{% endblock %}
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ SITE_DESCRIPTION }}{% endblock %}">
+    
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Internal CSS -->
     <style>
+        /* CSS Variables */
         :root {
-            --primary-color: #6F4E37; /* Coffee brown */
-            --secondary-color: #3A5F0B; /* Plant green */
-            --accent-color: #E3B04B; /* Light brown */
-            --light-color: #F8F4E3; /* Cream */
-            --dark-color: #2C2C2C; /* Dark gray */
+            --primary-color: #2d5016;
+            --secondary-color: #8b4513;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Poppins', sans-serif;
+            --border-radius: 15px;
+            --box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
         }
+        
+        /* Base Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            padding-top: 76px; /* Account for fixed navbar */
         }
-        .navbar {
-            background-color: var(--primary-color);
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
+        
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+        
+        .btn-primary:hover {
+            background-color: #1e3a0f;
+            border-color: #1e3a0f;
         }
-        .bg-primary {
-            background-color: var(--primary-color) !important;
+        
+        /* Navbar Styles */
+        .navbar-brand {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
         }
-        .text-primary {
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .navbar-nav .nav-link:hover {
             color: var(--primary-color) !important;
         }
+        
+        .navbar {
+            transition: var(--transition);
+        }
+        
+        /* Hero Section Styles */
         .hero-section {
             position: relative;
-            height: 100vh;
-            min-height: 600px;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            text-align: center;
+            overflow: hidden;
         }
-        .hero-video-container {
+        
+        .hero-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            object-fit: cover;
+            z-index: 1;
         }
-        .hero-video-container video {
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+        
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background: rgba(45, 80, 22, 0.7);
+            z-index: 2;
         }
+        
         .hero-content {
             position: relative;
-            z-index: 1;
-            padding: 0 20px;
+            z-index: 3;
         }
-        .quick-card {
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            color: inherit;
+        
+        /* Card Styles */
+        .impact-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
         }
-        .quick-card:hover {
+        
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .impact-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .impact-label {
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+        
+        .quick-access-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            height: 100%;
+        }
+        
+        .quick-access-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            text-decoration: none;
         }
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            font-size: 24px;
+        
+        .quick-access-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
         }
-        .impact-stat {
-            padding: 20px;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 66px;
+            }
+            
+            .hero-section {
+                min-height: 80vh;
+                text-align: center;
+            }
+            
+            .impact-number {
+                font-size: 2rem;
+            }
+            
+            .quick-access-card {
+                margin-bottom: 1rem;
+            }
         }
     </style>
+    
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% include 'partials/header.html' %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
+                <i class="fas fa-seedling me-2"></i>One Cup One Tree
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:about' %}">About Us</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
+                            Programs
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Coffee Farmer Support</a></li>
+                            <li><a class="dropdown-item" href="#">Youth Barista Academy</a></li>
+                            <li><a class="dropdown-item" href="#">One Cup, One Tree Campaign</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Get Involved</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Media & Stories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'events:event_list' %}">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>{{ user.get_full_name|default:user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="btn btn-primary ms-2" href="{% url 'account_signup' %}">Join Us</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
     
-    {% block hero %}{% endblock %}
-    
-    <main class="container-fluid px-0">
-        {% include 'partials/messages.html' %}
+    <!-- Main Content -->
+    <main>
         {% block content %}{% endblock %}
     </main>
     
-    {% include 'partials/footer.html' %}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-primary">
+                        <i class="fas fa-seedling me-2"></i>One Cup One Tree Initiative
+                    </h5>
+                    <p class="mb-3">{{ SITE_DESCRIPTION }}</p>
+                    <div class="social-links">
+                        {% for platform, url in SOCIAL_MEDIA_LINKS.items %}
+                            <a href="{{ url }}" target="_blank" rel="noopener">
+                                <i class="fab fa-{{ platform }}"></i>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Programs</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Farmer Support</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Barista Academy</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Tree Campaign</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Get Involved</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Volunteer</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Partner</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Donate</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Blog</a></li>
+                        <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">Events</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Gallery</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Contact</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i>{{ CONTACT_EMAIL }}</li>
+                        <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 One Cup One Tree Initiative. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-light text-decoration-none">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow');
+            } else {
+                navbar.classList.remove('shadow');
+            }
+        });
+        
+        // Counter animation for impact statistics
+        function animateCounters() {
+            const counters = document.querySelectorAll('.impact-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 20);
+            });
+        }
+        
+        // Trigger counter animation when in viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        
+        const impactSection = document.querySelector('.impact-stats');
+        if (impactSection) {
+            observer.observe(impactSection);
+        }
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,57 +1,354 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load widget_tweaks %}
+{% load static %}
 
 {% block title %}{% trans "Volunteer Signup" %}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .volunteer-signup {
+        background: linear-gradient(135deg, rgba(45, 80, 22, 0.03) 0%, rgba(139, 69, 19, 0.03) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .signup-card {
+        border: none;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .signup-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .signup-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+    }
+    
+    .signup-body {
+        padding: 2.5rem;
+    }
+    
+    .form-label {
+        font-weight: 500;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(45, 80, 22, 0.25);
+    }
+    
+    .password-toggle {
+        position: relative;
+    }
+    
+    .password-toggle-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+    }
+    
+    .benefits-list {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    .benefit-icon {
+        color: var(--primary-color);
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .btn-signup {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        border: none;
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(45, 80, 22, 0.2);
+    }
+    
+    .login-redirect {
+        border-top: 1px solid #e9ecef;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    
+    .progress-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .progress-step {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        z-index: 2;
+    }
+    
+    .progress-step.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .progress-step.completed {
+        background-color: var(--success-color);
+        color: white;
+    }
+    
+    .progress-bar::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #e9ecef;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+    
+    @media (max-width: 768px) {
+        .signup-body {
+            padding: 1.5rem;
+        }
+        
+        .volunteer-signup {
+            padding: 1rem 0;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-7 col-xl-6">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-body p-5">
-                    <h1 class="text-center mb-3">{% trans "Become a Volunteer" %}</h1>
-                    <p class="text-center text-muted mb-4">
-                        {% trans "Join One Cup One Tree and help us make a difference! Fill out the form below to sign up as a volunteer." %}
-                    </p>
-
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">
-                                    {{ field.label }}
-                                </label>
-
-                                {% if field.errors %}
-                                    {{ field.as_widget(attrs={'class': 'form-control is-invalid'}) }}
-                                {% else %}
-                                    {{ field.as_widget(attrs={'class': 'form-control'}) }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text }}</div>
-                                {% endif %}
-
-                                {% for error in field.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-
-                        <button type="submit" class="btn btn-success w-100 py-2 mt-3">
-                            {% trans "Sign Up" %}
-                        </button>
-                    </form>
-
-                    <div class="text-center mt-4">
-                        <p class="mb-0">
-                            {% trans "Already have an account?" %}
-                            <a href="{% url 'accounts:login' %}">{% trans "Login here" %}</a>
+<div class="volunteer-signup">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card signup-card rounded-4">
+                    <div class="signup-header rounded-top-4">
+                        <div class="signup-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h1 class="h2 mb-2">{% trans "Join Our Volunteer Community" %}</h1>
+                        <p class="mb-0 opacity-75">
+                            {% trans "Make a difference with One Cup One Tree" %}
                         </p>
+                    </div>
+                    
+                    <div class="signup-body">
+                        <!-- Progress Bar -->
+                        <div class="progress-bar">
+                            <div class="progress-step completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="progress-step active">2</div>
+                            <div class="progress-step">3</div>
+                        </div>
+                        
+                        <div class="benefits-list">
+                            <h6 class="mb-3"><i class="fas fa-gift me-2 text-primary"></i>{% trans "Volunteer Benefits" %}</h6>
+                            <div class="benefit-item">
+                                <span class="benefit-icon"><i class="fas fa-seedling"></i></span>
+                                <span>{% trans "Help plant trees in coffee-growing communities" %}</span>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon"><i class="fas fa-users"></i></span>
+                                <span>{% trans "Join a community of like-minded environmentalists" %}</span>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon"><i class="fas fa-award"></i></span>
+                                <span>{% trans "Receive training and certification opportunities" %}</span>
+                            </div>
+                        </div>
+
+                        <form method="post" novalidate id="volunteerSignupForm">
+                            {% csrf_token %}
+                            
+                            {% for field in form %}
+                                <div class="mb-4">
+                                    <label for="{{ field.id_for_label }}" class="form-label">
+                                        {{ field.label }}
+                                        {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                                    </label>
+                                    
+                                    {% if field.name == 'password1' or field.name == 'password2' %}
+                                        <div class="password-toggle">
+                                            {% if field.errors %}
+                                                {% render_field field class="form-control is-invalid" %}
+                                            {% else %}
+                                                {% render_field field class="form-control" %}
+                                            {% endif %}
+                                            <span class="password-toggle-icon">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    {% else %}
+                                        {% if field.errors %}
+                                            {% render_field field class="form-control is-invalid" %}
+                                        {% else %}
+                                            {% render_field field class="form-control" %}
+                                        {% endif %}
+                                    {% endif %}
+                                    
+                                    {% if field.help_text %}
+                                        <div class="form-text">{{ field.help_text }}</div>
+                                    {% endif %}
+                                    
+                                    {% for error in field.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="termsAgree" required>
+                                <label class="form-check-label" for="termsAgree">
+                                    {% trans "I agree to the" %} <a href="#" class="text-primary">{% trans "Terms of Service" %}</a> {% trans "and" %} <a href="#" class="text-primary">{% trans "Privacy Policy" %}</a>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="newsletterSubscribe">
+                                <label class="form-check-label" for="newsletterSubscribe">
+                                    {% trans "Subscribe to our newsletter for updates and opportunities" %}
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-signup w-100 py-3">
+                                <i class="fas fa-user-plus me-2"></i>{% trans "Complete Sign Up" %}
+                            </button>
+                        </form>
+
+                        <div class="login-redirect">
+                            <p class="mb-0">
+                                {% trans "Already part of our community?" %}
+                                <a href="{% url 'accounts:login' %}" class="text-primary fw-semibold">{% trans "Login here" %}</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password toggle functionality
+        const toggleIcons = document.querySelectorAll('.password-toggle-icon');
+        toggleIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                
+                // Toggle icon
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        });
+        
+        // Form validation
+        const form = document.getElementById('volunteerSignupForm');
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            
+            // Check if terms are agreed
+            const termsCheckbox = document.getElementById('termsAgree');
+            if (!termsCheckbox.checked) {
+                isValid = false;
+                termsCheckbox.classList.add('is-invalid');
+                
+                // Add error message if not already present
+                if (!document.getElementById('termsError')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.id = 'termsError';
+                    errorDiv.className = 'invalid-feedback d-block';
+                    errorDiv.textContent = '{% trans "You must agree to the terms and conditions" %}';
+                    termsCheckbox.parentNode.appendChild(errorDiv);
+                }
+            } else {
+                termsCheckbox.classList.remove('is-invalid');
+                const errorDiv = document.getElementById('termsError');
+                if (errorDiv) errorDiv.remove();
+            }
+            
+            if (!isValid) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Scroll to first error
+                const firstError = form.querySelector('.is-invalid');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+        
+        // Add animation to form elements
+        const formControls = document.querySelectorAll('.form-control');
+        formControls.forEach(control => {
+            control.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            control.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
