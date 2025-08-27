@@ -245,7 +245,7 @@
                         <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Media & Stories</a>
+                        <a class="nav-link" href="{% url 'blogs:post_list' %}">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'events:event_list' %}">Events</a>
@@ -325,7 +325,7 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>Resources</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Blog</a></li>
+                        <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">Blog</a></li>
                         <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">Events</a></li>
                         <li><a href="#" class="text-light text-decoration-none">Gallery</a></li>
                     </ul>
