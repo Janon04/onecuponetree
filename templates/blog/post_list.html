@@ -8,8 +8,8 @@
             {% for post in posts %}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 border-0 shadow-sm">
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
@@ -17,7 +17,7 @@
                             {{ post.published_at|date:"M d, Y" }} by {{ post.author.get_full_name|default:post.author.username }}
                         </p>
                         <p class="card-text">{{ post.summary|default:post.content|truncatewords:20 }}</p>
-                        <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-success btn-sm">Read More</a>
+                        <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-success btn-sm">Read More</a>
                     </div>
                 </div>
             </div>

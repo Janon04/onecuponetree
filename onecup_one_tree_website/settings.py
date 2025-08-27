@@ -119,7 +119,7 @@ LANGUAGES = [
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Maputo'  # Central Africa Time (CAT, UTC+2)
 
 USE_I18N = True
 
@@ -215,7 +215,7 @@ LOGGING = {
 # Custom Settings for One Cup One Tree Initiative
 SITE_NAME = "One Cup One Tree Initiative"
 SITE_DESCRIPTION = "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time."
-CONTACT_EMAIL = "info@onecuponetree.org"
+CONTACT_EMAIL = "janon3030@gmail.com"
 SOCIAL_MEDIA_LINKS = {
     'facebook': 'https://facebook.com/onecuponetree',
     'instagram': 'https://instagram.com/onecuponetree',
