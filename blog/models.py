@@ -18,6 +18,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(_('slug'), unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('author'))
     category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('category'))
+    description = models.TextField(_('description'), blank=True, null=True)
     content = models.TextField(_('content'))
     featured_image = models.ImageField(_('featured image'), upload_to='blog/', null=True, blank=True)
     is_published = models.BooleanField(_('is published'), default=False)
@@ -31,3 +32,5 @@ class BlogPost(models.Model):
     
     def __str__(self):
         return self.title
+
+# Translation registration will be handled in translation.py

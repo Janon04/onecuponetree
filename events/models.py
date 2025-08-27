@@ -39,6 +39,8 @@ class Event(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+# Translation registration will be handled in translation.py
+
 	class Meta:
 		verbose_name = _('Event')
 		verbose_name_plural = _('Events')

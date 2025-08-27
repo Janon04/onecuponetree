@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}About Us - {{ SITE_NAME }}{% endblock %}
+{% block title %}{% trans "About Us" %} - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
@@ -8,9 +9,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">About Our Mission</h1>
+                <h1 class="display-4 fw-bold mb-3">{% trans "About Our Mission" %}</h1>
                 <p class="lead">
-                    Discover the story behind our sustainable coffee movement and our commitment to environmental restoration.
+                    {% trans "Discover the story behind our sustainable coffee movement and our commitment to environmental restoration." %}
                 </p>
             </div>
         </div>
@@ -22,15 +23,15 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="display-5 fw-bold text-primary mb-4">Our Mission</h2>
+                <h2 class="display-5 fw-bold text-primary mb-4">{% trans "Our Mission" %}</h2>
                 <p class="lead text-muted mb-4">{{ mission }}</p>
                 <div class="d-flex align-items-center">
                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
                         <i class="fas fa-bullseye fa-lg"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1">Focused Impact</h5>
-                        <p class="text-muted mb-0">Every action we take is designed to create measurable positive change.</p>
+                        <h5 class="mb-1">{% trans "Focused Impact" %}</h5>
+                        <p class="text-muted mb-0">{% trans "Every action we take is designed to create measurable positive change." %}</p>
                     </div>
                 </div>
             </div>

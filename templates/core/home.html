@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}{{ SITE_NAME }} - Every Cup Counts. Every Tree Matters.{% endblock %}
+{% block title %}{{ SITE_NAME }} - {% trans "Every Cup Counts. Every Tree Matters." %}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -12,18 +13,18 @@
         <div class="row align-items-center">
             <div class="col-lg-8">
                 <h1 class="display-3 fw-bold mb-4">
-                    Every Cup Counts.<br>
-                    Every Tree Matters.
+                    {% trans "Every Cup Counts." %}<br>
+                    {% trans "Every Tree Matters." %}
                 </h1>
                 <p class="lead mb-5">
-                    A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time.
+                    {% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="#" class="btn btn-primary btn-lg px-4 py-3">
-                        <i class="fas fa-hands-helping me-2"></i>Join the Initiative
+                        <i class="fas fa-hands-helping me-2"></i>{% trans "Join the Initiative" %}
                     </a>
                     <a href="#" class="btn btn-outline-light btn-lg px-4 py-3">
-                        <i class="fas fa-envelope me-2"></i>Subscribe to Newsletter
+                        <i class="fas fa-envelope me-2"></i>{% trans "Subscribe to Newsletter" %}
                     </a>
                 </div>
             </div>
@@ -36,9 +37,9 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold text-primary mb-3">Our Impact So Far</h2>
+                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Our Impact So Far" %}</h2>
                 <p class="lead text-muted">
-                    Together, we're making a real difference in communities and the environment.
+                    {% trans "Together, we're making a real difference in communities and the environment." %}
                 </p>
             </div>
         </div>
@@ -47,19 +48,19 @@
             <div class="col-lg-3 col-md-6">
                 <div class="impact-card">
                     <div class="impact-number" data-target="{{ trees_planted }}">0</div>
-                    <div class="impact-label">Trees Planted</div>
+                    <div class="impact-label">{% trans "Trees Planted" %}</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="impact-card">
                     <div class="impact-number" data-target="{{ youth_trained }}">0</div>
-                    <div class="impact-label">Youth Trained</div>
+                    <div class="impact-label">{% trans "Youth Trained" %}</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="impact-card">
                     <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
-                    <div class="impact-label">Coffee Cups Sold</div>
+                    <div class="impact-label">{% trans "Coffee Cups Sold" %}</div>
                 </div>
             </div>
             
@@ -73,9 +74,9 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold text-primary mb-3">Get Started Today</h2>
+                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Get Started Today" %}</h2>
                 <p class="lead text-muted">
-                    Choose how you'd like to be part of our sustainable movement.
+                    {% trans "Choose how you'd like to be part of our sustainable movement." %}
                 </p>
             </div>
         </div>

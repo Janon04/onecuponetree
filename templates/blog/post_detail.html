@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
 <div class="container py-5">
@@ -17,11 +18,14 @@
                         <i class="fa fa-user"></i>
                         {{ post.author.get_full_name|default:post.author.username }}
                     </p>
+                    {% if post.description %}
+                        <p class="lead mb-4">{{ post.description }}</p>
+                    {% endif %}
                     <p class="mb-4">{{ post.content|linebreaks }}</p>
                 </div>
             </div>
             <div class="mt-4">
-                <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">Back to Blog</a>
+                <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">{% trans "Back to Blog" %}</a>
             </div>
         </div>
     </div>

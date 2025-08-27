@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -223,49 +224,61 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:home' %}">Home</a>
+                        <a class="nav-link" href="{% url 'core:home' %}">{% trans "Home" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:about' %}">About Us</a>
+                        <a class="nav-link" href="{% url 'core:about' %}">{% trans "About Us" %}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
-                            Programs
+                            {% trans "Programs" %}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Coffee Farmer Support</a></li>
-                            <li><a class="dropdown-item" href="#">Youth Barista Academy</a></li>
-                            <li><a class="dropdown-item" href="#">One Cup, One Tree Campaign</a></li>
+                            <li><a class="dropdown-item" href="#">{% trans "Coffee Farmer Support" %}</a></li>
+                            <li><a class="dropdown-item" href="#">{% trans "Youth Barista Academy" %}</a></li>
+                            <li><a class="dropdown-item" href="#">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
                     </li>
                     <!-- <li class="nav-item">
                         <a class="nav-link" href="#">Get Involved</a>
                     </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
+                        <a class="nav-link" href="#">{% trans "Shop" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
+                        <a class="nav-link" href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'events:event_list' %}">Events</a>
+                        <a class="nav-link" href="{% url 'events:event_list' %}">{% trans "Events" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:contact' %}">Contact</a>
+                        <a class="nav-link" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
                     </li>
                 </ul>
                 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center" style="margin-bottom:0;">
+                            {% csrf_token %}
+                            <select name="language" class="form-select form-select-sm me-2" onchange="this.form.submit()">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% for lang in LANGUAGES %}
+                                    <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>{{ lang.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle me-1"></i>{{ user.get_full_name|default:user.username }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="#">{% trans "Profile" %}</a></li>
+                                <li><a class="dropdown-item" href="#">{% trans "Dashboard" %}</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
                             </ul>
                         </li>
                     {% else %}
@@ -273,7 +286,7 @@
                             <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="btn btn-primary ms-2" href="{% url 'account_signup' %}">Join Us</a>
+                            <a class="btn btn-primary ms-2" href="{% url 'account_signup' %}">{% trans "Join Us" %}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -292,7 +305,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5 class="text-primary">
-                        <i class="fas fa-seedling me-2"></i>One Cup One Tree Initiative
+                        <i class="fas fa-seedling me-2"></i>{% trans "One Cup One Tree Initiative" %}
                     </h5>
                     <p class="mb-3">{{ SITE_DESCRIPTION }}</p>
                     <div class="social-links">
@@ -305,34 +318,34 @@
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Programs</h6>
+                    <h6>{% trans "Programs" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Farmer Support</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Barista Academy</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Tree Campaign</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Farmer Support" %}</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Barista Academy" %}</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Tree Campaign" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Get Involved</h6>
+                    <h6>{% trans "Get Involved" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Volunteer</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Partner</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Donate</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Volunteer" %}</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Partner" %}</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Donate" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Resources</h6>
+                    <h6>{% trans "Resources" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">Blog</a></li>
-                        <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">Events</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Gallery</a></li>
+                        <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">{% trans "Blog" %}</a></li>
+                        <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">{% trans "Events" %}</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">{% trans "Gallery" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Contact</h6>
+                    <h6>{% trans "Contact" %}</h6>
                     <ul class="list-unstyled">
                         <li><i class="fas fa-envelope me-2"></i>{{ CONTACT_EMAIL }}</li>
                         <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
@@ -348,8 +361,8 @@
                     <p class="mb-0">&copy; 2025 One Cup One Tree Initiative. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
-                    <a href="#" class="text-light text-decoration-none">Terms of Service</a>
+                    <a href="#" class="text-light text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
+                    <a href="#" class="text-light text-decoration-none">{% trans "Terms of Service" %}</a>
                 </div>
             </div>
         </div>

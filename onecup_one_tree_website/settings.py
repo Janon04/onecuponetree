@@ -19,6 +19,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
 
 # Application definition
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,7 +27,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
     # Third-party apps
     'rest_framework',
     'rest_framework.authtoken',
@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'whitenoise.runserver_nostatic',
-    
     # Local apps
     'accounts',
     'core',
@@ -48,6 +47,9 @@ INSTALLED_APPS = [
     'api',
     'blog',
 ]
+# django-modeltranslation settings
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_LANGUAGES = ('en', 'fr', 'rw')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

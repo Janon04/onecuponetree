@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Programs List</title>
+    {% load i18n %}
+    <title>{% trans "Programs List" %}</title>
 </head>
 <body>
-    <h1>Available Programs</h1>
+    <h1>{% trans "Available Programs" %}</h1>
     <ul>
         {% for program in programs %}
             <li>

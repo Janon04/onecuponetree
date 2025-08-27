@@ -1,32 +1,33 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}{% trans "Contact Us" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Contact Us</h1>
+    <h1 class="mb-4 text-center">{% trans "Contact Us" %}</h1>
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <form method="post">
                 {% csrf_token %}
 
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name:</label>
+                    <label for="name" class="form-label">{% trans "Name:" %}</label>
                     <input type="text" id="name" name="name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label">{% trans "Email:" %}</label>
                     <input type="email" id="email" name="email" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="message" class="form-label">Message:</label>
+                    <label for="message" class="form-label">{% trans "Message:" %}</label>
                     <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Send Message" %}</button>
                 </div>
             </form>
         </div>

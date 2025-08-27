@@ -4,6 +4,7 @@ django-allauth==65.11.0
 django-crispy-forms==2.4
 crispy-bootstrap5==2025.6
 Pillow==11.3.0
+django-modeltranslation==0.18.11
 whitenoise==6.9.0
 
 # Optional production dependencies
