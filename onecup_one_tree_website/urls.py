@@ -10,10 +10,11 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('programs/', include('programs.urls')),
     path('shop/', include('shop.urls')),
-    path('media/', include('media.urls')),
+    #path('media/', include('media.urls')),
     path('events/', include('events.urls')),
     path('contact/', include('contact.urls')),
     path('api/', include('api.urls')),
+    path('blogs/', include('blog.urls')),
 ]
 
 # Serve media files during development
