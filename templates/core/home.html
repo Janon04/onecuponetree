@@ -5,16 +5,15 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section">
-    <!-- Background Video (placeholder - in production, add actual video) -->
-    <div class="hero-overlay"></div>
-    
-    <div class="container hero-content">
+<section class="hero-section position-relative" style="background: #4e8d4e; padding: 3rem 0 2rem; margin-top: 60px;">
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=60') center/cover no-repeat;opacity:0.35;z-index:1;"></div>
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(44,76,42,0.7);z-index:2;"></div>
+    <div class="container hero-content position-relative" style="z-index:3;">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h1 class="display-3 fw-bold mb-4">
+                <h1 class="display-3 fw-bold mb-4" style="color:#C8A27A; text-shadow: 1px 2px 8px rgba(44,76,42,0.13);">
                     {% trans "Every Cup Counts." %}<br>
-                    {% trans "Every Tree Matters." %}
+                    <span style="color:#fff;">{% trans "Every Tree Matters." %}</span>
                 </h1>
                 <p class="lead mb-5">
                     {% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}
