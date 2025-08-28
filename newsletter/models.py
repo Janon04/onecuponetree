@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class Newsletter(models.Model):
     subject = models.CharField(_('subject'), max_length=255)
     content = models.TextField(_('content'))
+    image = models.ImageField(_('image'), upload_to='newsletter_images/', null=True, blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     published = models.BooleanField(_('published'), default=False)
     sent_at = models.DateTimeField(_('sent at'), null=True, blank=True)

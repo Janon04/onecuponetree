@@ -16,6 +16,9 @@
                             <div class="mb-2 text-muted" style="font-size:0.95em;">
                                 {{ newsletter.created_at|date:"F j, Y, g:i a" }}
                             </div>
+                            {% if newsletter.image %}
+                                <img src="{{ newsletter.image.url }}" class="img-fluid rounded mb-3" alt="Newsletter image">
+                            {% endif %}
                             <div class="card-text">{{ newsletter.content|linebreaks }}</div>
                         </div>
                     </div>
