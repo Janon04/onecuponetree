@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import VolunteerOpportunity, VolunteerApplication, BaristaTrainee
-from apps.accounts.models import User
+from accounts.models import User
 
 class VolunteerApplicationForm(forms.ModelForm):
     motivation = forms.CharField(
@@ -131,7 +131,7 @@ class BaristaTrainingApplicationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.user:
+        if self.instance and getattr(self.instance, 'user_id', None):
             self.fields['user'].initial = self.instance.user.id
 
 class VolunteerFilterForm(forms.Form):

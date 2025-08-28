@@ -332,7 +332,7 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>{% trans "Get Involved" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">{% trans "Volunteer" %}</a></li>
+                            <li><a href="{% url 'volunteers:opportunities' %}" class="text-light text-decoration-none">{% trans "Volunteer" %}</a></li>
                         <li><a href="#" class="text-light text-decoration-none">{% trans "Partner" %}</a></li>
                         <li><a href="#" class="text-light text-decoration-none">{% trans "Donate" %}</a></li>
                     </ul>
@@ -344,6 +344,7 @@
                         <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">{% trans "Blog" %}</a></li>
                         <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">{% trans "Events" %}</a></li>
                         <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none">{% trans "Gallery" %}</a></li>
+                            <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none">{% trans "Barista Academy" %}</a></li>
                     </ul>
                 </div>
                 

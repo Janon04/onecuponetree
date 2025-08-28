@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models import User
+from accounts.models import User
 
 class BaristaTrainee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
