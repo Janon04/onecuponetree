@@ -19,6 +19,7 @@ urlpatterns = [
     path('gallery/', include('gallery.urls')),
     path('volunteers/', include(('volunteers.urls', 'volunteers'), namespace='volunteers')),
     path('api/', include('api.urls')),
+    path('partners/', include(('partners.urls', 'partners'), namespace='partners')),
     path('blogs/', include('blog.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 ]

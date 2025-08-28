@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'gallery',
     'volunteers',
     'core',
+    'partners',
     'programs',
     'shop',
     'media',

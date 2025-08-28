@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Our Partners" %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">{% trans "Our Partners" %}</h1>
+    <div class="row g-4">
+        {% for partner in partners %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                {% if partner.logo %}
+                    <img src="{{ partner.logo.url }}" class="card-img-top mx-auto mt-3" style="max-width:120px;max-height:120px;object-fit:contain;" alt="{{ partner.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ partner.name }}</h5>
+                    {% if partner.description %}
+                        <p class="card-text small text-muted">{{ partner.description|truncatewords:20 }}</p>
+                    {% endif %}
+                    {% if partner.website %}
+                        <a href="{{ partner.website }}" class="btn btn-outline-primary btn-sm" target="_blank">{% trans "Visit Website" %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">{% trans "No partners found." %}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
