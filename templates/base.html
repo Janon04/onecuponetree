@@ -234,9 +234,9 @@
                             {% trans "Programs" %}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">{% trans "Coffee Farmer Support" %}</a></li>
-                            <li><a class="dropdown-item" href="#">{% trans "Youth Barista Academy" %}</a></li>
-                            <li><a class="dropdown-item" href="#">{% trans "One Cup, One Tree Campaign" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'farmers:farmer_support_list' %}">{% trans "Farmer Support" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'volunteers:barista_training' %}">{% trans "Youth Barista Academy" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'programs:program_list' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
                     </li>
                     <!-- <li class="nav-item">
@@ -251,9 +251,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'events:event_list' %}">{% trans "Events" %}</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
+                        </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
                     </li>
@@ -321,10 +322,11 @@
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Programs" %}</h6>
+                    <h6>{% trans "Activities" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">{% trans "Farmer Support" %}</a></li>
+                        <li><a href="{% url 'farmers:farmer_support_list' %}" class="text-light text-decoration-none">{% trans "Farmer Support" %}</a></li>
                         <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none">{% trans "Barista Academy" %}</a></li>
+                        <li><a href="{% url 'programs:program_list' %}" class="text-light text-decoration-none">{% trans "Programs" %}</a></li>
                         <li><a href="#" class="text-light text-decoration-none">{% trans "Tree Campaign" %}</a></li>
                     </ul>
                 </div>
@@ -342,6 +344,7 @@
                     <h6>{% trans "Resources" %}</h6>
                     <ul class="list-unstyled">
                         <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">{% trans "Blog" %}</a></li>
+                        
                         <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">{% trans "Events" %}</a></li>
                         <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none">{% trans "Gallery" %}</a></li>
                         

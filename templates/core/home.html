@@ -20,10 +20,10 @@
                     {% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}
                 </p>
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="#" class="btn btn-primary btn-lg px-4 py-3">
+                    <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
                         <i class="fas fa-hands-helping me-2"></i>{% trans "Join the Initiative" %}
                     </a>
-                    <a href="#" class="btn btn-outline-light btn-lg px-4 py-3">
+                    <a href="#newsletter-signup" class="btn btn-outline-light btn-lg px-4 py-3">
                         <i class="fas fa-envelope me-2"></i>{% trans "Subscribe to Newsletter" %}
                     </a>
                 </div>
@@ -139,7 +139,7 @@
 </section>
 
 <!-- Newsletter Signup -->
-<section class="py-5 bg-light">
+<section id="newsletter-signup" class="py-5 bg-light">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 text-center">

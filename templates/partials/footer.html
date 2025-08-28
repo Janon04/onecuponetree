@@ -1,13 +1,61 @@
 {% load i18n %}
-<footer class="bg-dark text-light py-4 mt-5">
+<footer class="footer bg-dark text-light pt-5 pb-3 mt-5">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h5>{% trans "One Cup One Tree Initiative" %}</h5>
-                <p>{% trans "Empowering farmers, training youth, and restoring our planet." %}</p>
+        <div class="row mb-4">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h5 class="text-primary mb-3">
+                    <i class="fas fa-seedling me-2"></i>{% trans "One Cup One Tree Initiative" %}
+                </h5>
+                <p class="small">{% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}</p>
+                <div class="social-links mt-3">
+                    <a href="#" class="me-3" title="Facebook" style="color:#1877f3;"><i class="fab fa-facebook-square fa-lg"></i> Facebook</a>
+                    <a href="#" class="me-3" title="X (Twitter)" style="color:#000;"><i class="fab fa-x-twitter fa-lg"></i> X</a>
+                    <a href="#" class="me-3" title="Instagram" style="color:#e4405f;"><i class="fab fa-instagram fa-lg"></i> Instagram</a>
+                    <a href="#" title="LinkedIn" style="color:#0a66c2;"><i class="fab fa-linkedin fa-lg"></i> LinkedIn</a>
+                </div>
             </div>
-            <div class="col-md-6 text-md-end">
-                <p>&copy; 2025 {% trans "One Cup One Tree Initiative" %}. {% trans "All rights reserved." %}</p>
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                <h6 class="text-uppercase mb-3">{% trans "Activities" %}</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'farmers:farmer_support_list' %}" class="text-light text-decoration-none small">{% trans "Farmer Support" %}</a></li>
+                    <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none small">{% trans "Barista Academy" %}</a></li>
+                    <li><a href="{% url 'programs:program_list' %}" class="text-light text-decoration-none small">{% trans "Programs" %}</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">{% trans "Tree Campaign" %}</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                <h6 class="text-uppercase mb-3">{% trans "Get Involved" %}</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'volunteers:opportunities' %}" class="text-light text-decoration-none small">{% trans "Volunteer" %}</a></li>
+                    <li><a href="{% url 'partners:partner_list' %}" class="text-light text-decoration-none small">{% trans "Partners" %}</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">{% trans "Donate" %}</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                <h6 class="text-uppercase mb-3">{% trans "Resources" %}</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none small">{% trans "Blog" %}</a></li>
+                    <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none small">{% trans "Events" %}</a></li>
+                    <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none small">{% trans "Gallery" %}</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-uppercase mb-3">{% trans "Contact" %}</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-envelope me-2"></i>info@onecuponetree.org</li>
+                    <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="bg-secondary">
+        <div class="row align-items-center">
+            <div class="col-md-6 small">
+                <p class="mb-0">&copy; 2025 {% trans "One Cup One Tree Initiative" %}. {% trans "All rights reserved." %}</p>
+            </div>
+            <div class="col-md-6 text-md-end small">
+                <a href="#" class="text-light text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
+                <a href="#" class="text-light text-decoration-none">{% trans "Terms of Service" %}</a>
             </div>
         </div>
     </div>

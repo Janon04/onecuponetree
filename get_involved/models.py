@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models import User
+from accounts.models import User
 
 class Partner(models.Model):
     PARTNER_TYPES = (
@@ -28,7 +28,7 @@ class Partner(models.Model):
         return self.name
 
 class Volunteer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     skills = models.TextField(_('skills'), blank=True)
     availability = models.CharField(_('availability'), max_length=100, blank=True)
     interests = models.TextField(_('interests'), blank=True)
@@ -40,7 +40,9 @@ class Volunteer(models.Model):
         verbose_name_plural = _('Volunteers')
     
     def __str__(self):
-        return self.user.get_full_name()
+        if self.user:
+            return self.user.get_full_name()
+        return f"Volunteer #{self.pk}"
 
 class Donation(models.Model):
     donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)

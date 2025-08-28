@@ -1,3 +1,5 @@
+def thank_you(request):
+    return render(request, 'get_involved/thank_you.html')
 from django.shortcuts import render, redirect
 from .models import Partner, Volunteer, Donation
 from .forms import VolunteerForm, DonationForm, PartnerForm
@@ -12,6 +14,7 @@ def join_initiative(request):
             volunteer = form.save(commit=False)
             if request.user.is_authenticated:
                 volunteer.user = request.user
+            # If not authenticated, user remains None (anonymous)
             volunteer.save()
             return redirect('get_involved:thank_you')
     else:

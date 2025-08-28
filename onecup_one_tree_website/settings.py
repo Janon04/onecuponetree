@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'contact',
     'api',
     'blog',
+    'farmers',
+    'newsletter',
+    'get_involved',
 ]
 # django-modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'

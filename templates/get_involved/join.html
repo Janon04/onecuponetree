@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Join the Initiative" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h2 class="fw-bold text-primary mb-4">{% trans "Join the Initiative" %}</h2>
+            <p class="mb-4 text-muted">{% trans "Fill out the form below to become a volunteer and help us make a difference!" %}</p>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-lg mt-3 w-100">
+                    <i class="fas fa-hands-helping me-2"></i>{% trans "Join Now" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
