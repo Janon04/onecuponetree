@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apps.accounts.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class ImpactStat(models.Model):
     stat_name = models.CharField(_('stat name'), max_length=100)

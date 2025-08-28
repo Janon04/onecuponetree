@@ -25,6 +25,7 @@ urlpatterns = [
     path('partners/', include(('partners.urls', 'partners'), namespace='partners')),
     path('blogs/', include('blog.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('dashboard/', include('dashboard.urls')),
 ]
 
 # Serve media files during development

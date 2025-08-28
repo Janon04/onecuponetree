@@ -1,19 +1,25 @@
+        {% if user.is_authenticated and user.is_staff %}
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/">Impact Dashboard (Admin)</a>
+        </li>
+        {% endif %}
+        {% if user.is_authenticated and user.is_staff %}
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/">Impact Dashboard (Map)</a>
+        </li>
+        {% endif %}
 {% load i18n %}
 <footer class="footer bg-dark text-light pt-5 pb-3 mt-5">
     <div class="container">
         <div class="row mb-4">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h5 class="text-primary mb-3">
-                    <i class="fas fa-seedling me-2"></i>{% trans "One Cup One Tree Initiative" %}
-                </h5>
-                <p class="small">{% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}</p>
+            <!-- Initiative name and description removed as requested -->
                 <div class="social-links mt-3">
                     <a href="#" class="me-3" title="Facebook" style="color:#1877f3;"><i class="fab fa-facebook-square fa-lg"></i> Facebook</a>
                     <a href="#" class="me-3" title="X (Twitter)" style="color:#000;"><i class="fab fa-x-twitter fa-lg"></i> X</a>
                     <a href="#" class="me-3" title="Instagram" style="color:#e4405f;"><i class="fab fa-instagram fa-lg"></i> Instagram</a>
                     <a href="#" title="LinkedIn" style="color:#0a66c2;"><i class="fab fa-linkedin fa-lg"></i> LinkedIn</a>
                 </div>
-            </div>
+            
             <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
                 <h6 class="text-uppercase mb-3">{% trans "Activities" %}</h6>
                 <ul class="list-unstyled">

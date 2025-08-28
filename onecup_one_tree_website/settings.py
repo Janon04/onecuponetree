@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     # Local apps
     'accounts',
+    'dashboard',
     'gallery',
     'volunteers',
     'core',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'farmers',
     'newsletter',
     'get_involved',
+    'apps.trees',
 ]
 # django-modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'

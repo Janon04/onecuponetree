@@ -16,8 +16,12 @@
     <style>
         /* CSS Variables */
         :root {
-            --primary-color: #2d5016;
-            --secondary-color: #8b4513;
+            --primary-color: #3A5C39;
+            --secondary-color: #8B4513;
+            --accent-color: #C8A27A;
+            --light-brown: #E6D2C1;
+            --dark-green: #2C4C2A;
+            --light-cream: #F8F4EF;
             --success-color: #28a745;
             --info-color: #17a2b8;
             --warning-color: #ffc107;
@@ -26,8 +30,8 @@
             --dark-color: #343a40;
             --font-body: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
-            --border-radius: 15px;
-            --box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --border-radius: 8px;
+            --box-shadow: 0 5px 20px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
         }
         
@@ -35,13 +39,16 @@
         body {
             font-family: var(--font-body);
             line-height: 1.6;
-            padding-top: 76px; /* Account for fixed navbar */
+            color: #4A4A4A;
+            background-color: var(--light-cream);
+            padding-top: 80px; /* Account for fixed navbar */
         }
         
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
             font-weight: 600;
             margin-bottom: 1rem;
+            color: var(--dark-green);
         }
         
         .text-primary {
@@ -55,62 +62,104 @@
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: var(--transition);
         }
         
         .btn-primary:hover {
-            background-color: #1e3a0f;
-            border-color: #1e3a0f;
+            background-color: var(--dark-green);
+            border-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
         /* Navbar Styles */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            padding: 0.8rem 0;
+            transition: var(--transition);
+        }
+        
         .navbar-brand {
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
         }
         
         .navbar-nav .nav-link {
             font-weight: 500;
             transition: var(--transition);
+            color: #555 !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            margin: 0 0.1rem;
         }
         
         .navbar-nav .nav-link:hover {
             color: var(--primary-color) !important;
+            background-color: rgba(58, 92, 57, 0.08);
         }
         
-        .navbar {
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color) !important;
+            background-color: rgba(58, 92, 57, 0.1);
+            font-weight: 600;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+        }
+        
+        .dropdown-item {
+            border-radius: var(--border-radius);
+            padding: 0.5rem 1rem;
             transition: var(--transition);
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(58, 92, 57, 0.1);
+            color: var(--primary-color);
         }
         
         /* Hero Section Styles */
         .hero-section {
             position: relative;
-            min-height: 100vh;
+            min-height: 85vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
             color: white;
             overflow: hidden;
-        }
-        
-        .hero-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-        
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(45, 80, 22, 0.7);
-            z-index: 2;
+            padding: 2rem 0;
         }
         
         .hero-content {
@@ -118,7 +167,42 @@
             z-index: 3;
         }
         
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: 2;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 76, 42, 0.85);
+            z-index: 1;
+        }
+        
         /* Card Styles */
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
         .impact-card {
             background: white;
             border-radius: var(--border-radius);
@@ -126,6 +210,7 @@
             text-align: center;
             box-shadow: var(--box-shadow);
             transition: var(--transition);
+            height: 100%;
         }
         
         .impact-card:hover {
@@ -134,14 +219,14 @@
         }
         
         .impact-number {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
         
         .impact-label {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--dark-color);
             font-weight: 500;
         }
@@ -149,51 +234,152 @@
         .quick-access-card {
             background: white;
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             transition: var(--transition);
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .quick-access-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
             text-decoration: none;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .quick-access-card:hover .quick-access-icon {
+            color: white;
         }
         
         .quick-access-icon {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        
+        /* Section Styles */
+        .section-title {
+            position: relative;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        .section-padding {
+            padding: 5rem 0;
+        }
+        
+        .bg-light-section {
+            background-color: white;
+        }
+        
+        .bg-alt-section {
+            background-color: var(--light-cream);
         }
         
         /* Footer Styles */
         .footer {
-            background-color: var(--dark-color);
+            background-color: var(--dark-green);
             color: white;
-            padding: 3rem 0 1rem;
+            padding: 4rem 0 1.5rem;
+        }
+        
+        .footer h5, .footer h6 {
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .footer h5::after, .footer h6::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+        
+        .footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer a:hover {
+            color: white;
+            padding-left: 5px;
         }
         
         .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
             color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
+            font-size: 1.2rem;
+            margin-right: 0.8rem;
             transition: var(--transition);
         }
         
         .social-links a:hover {
-            color: var(--primary-color);
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Form Styles */
+        .form-control {
+            border-radius: var(--border-radius);
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(58, 92, 57, 0.25);
         }
         
         /* Responsive Styles */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             body {
-                padding-top: 66px;
+                padding-top: 72px;
             }
             
+            .navbar-nav {
+                padding: 1rem 0;
+            }
+            
+            .navbar-nav .nav-link {
+                margin: 0.2rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
             .hero-section {
-                min-height: 80vh;
+                min-height: 70vh;
                 text-align: center;
             }
             
@@ -202,7 +388,11 @@
             }
             
             .quick-access-card {
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .section-padding {
+                padding: 3rem 0;
             }
         }
     </style>
@@ -211,10 +401,10 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
-                <i class="fas fa-seedling me-2"></i>One Cup One Tree
+                <i class="fas fa-coffee me-2"></i>One Cup One Tree Initiatives
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -224,13 +414,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:home' %}">{% trans "Home" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">{% trans "Home" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:about' %}">{% trans "About Us" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">{% trans "About Us" %}</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'farmers' in request.path or 'volunteers' in request.path or 'programs' in request.path %}active{% endif %}" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
                             {% trans "Programs" %}
                         </a>
                         <ul class="dropdown-menu">
@@ -239,29 +429,22 @@
                             <li><a class="dropdown-item" href="{% url 'programs:program_list' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Get Involved</a>
-                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="#">{% trans "Shop" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a>
+                        <a class="nav-link {% if 'gallery' in request.path %}active{% endif %}" href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a>
+                        <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a>
                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
-                        </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
                     </li>
                 </ul>
                 
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item">
+                    <li class="nav-item me-2">
                         <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center" style="margin-bottom:0;">
                             {% csrf_token %}
                             <select name="language" class="form-select form-select-sm me-2" onchange="this.form.submit()">
@@ -273,26 +456,6 @@
                             </select>
                         </form>
                     </li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i>{{ user.get_full_name|default:user.username }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">{% trans "Profile" %}</a></li>
-                                <li><a class="dropdown-item" href="#">{% trans "Dashboard" %}</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                        </li> -->
-                        <li class="nav-item">
-                            <a class="btn btn-primary ms-2" href="{% url 'account_signup' %}">{% trans "Join Us" %}</a>
-                        </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -308,53 +471,53 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
-                    <h5 class="text-primary">
-                        <i class="fas fa-seedling me-2"></i>{% trans "One Cup One Tree Initiative" %}
+                    <h5>
+                        <i class="fas fa-coffee me-2"></i>{% trans "One Cup One Tree Initiatives" %}
                     </h5>
-                    <p class="mb-3">{{ SITE_DESCRIPTION }}</p>
+                    <p class="mb-3">Empowering coffee farming communities through sustainable practices, fair trade, and education.</p>
                     <div class="social-links">
-                        {% for platform, url in SOCIAL_MEDIA_LINKS.items %}
-                            <a href="{{ url }}" target="_blank" rel="noopener">
-                                <i class="fab fa-{{ platform }}"></i>
-                            </a>
-                        {% endfor %}
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Activities" %}</h6>
+                    <h6>{% trans "Our Programs" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'farmers:farmer_support_list' %}" class="text-light text-decoration-none">{% trans "Farmer Support" %}</a></li>
-                        <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none">{% trans "Barista Academy" %}</a></li>
-                        <li><a href="{% url 'programs:program_list' %}" class="text-light text-decoration-none">{% trans "Programs" %}</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">{% trans "Tree Campaign" %}</a></li>
+                        <li><a href="{% url 'farmers:farmer_support_list' %}">{% trans "Farmer Support" %}</a></li>
+                        <li><a href="{% url 'volunteers:barista_training' %}">{% trans "Barista Academy" %}</a></li>
+                        <li><a href="{% url 'programs:program_list' %}">{% trans "Sustainability" %}</a></li>
+                        <li><a href="#">{% trans "Tree Campaign" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>{% trans "Get Involved" %}</h6>
                     <ul class="list-unstyled">
-                            <li><a href="{% url 'volunteers:opportunities' %}" class="text-light text-decoration-none">{% trans "Volunteer" %}</a></li>
-                        <li><a href="{% url 'partners:partner_list' %}" class="text-light text-decoration-none">{% trans "Partners" %}</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">{% trans "Donate" %}</a></li>
+                        <li><a href="{% url 'volunteers:opportunities' %}">{% trans "Volunteer" %}</a></li>
+                        <li><a href="{% url 'partners:partner_list' %}">{% trans "Partnership" %}</a></li>
+                        <li><a href="#">{% trans "Donate" %}</a></li>
+                        <li><a href="#">{% trans "Sponsor a Farm" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>{% trans "Resources" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none">{% trans "Blog" %}</a></li>
-                        
-                        <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none">{% trans "Events" %}</a></li>
-                        <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none">{% trans "Gallery" %}</a></li>
-                        
+                        <li><a href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a></li>
+                        <li><a href="#">{% trans "Research" %}</a></li>
+                        <li><a href="{% url 'events:event_list' %}">{% trans "Events" %}</a></li>
+                        <li><a href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Contact" %}</h6>
+                    <h6>{% trans "Contact Us" %}</h6>
                     <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope me-2"></i>{{ CONTACT_EMAIL }}</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@coffeefarmers.org</li>
                         <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
                         <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
                     </ul>
@@ -365,11 +528,12 @@
             
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 One Cup One Tree Initiative. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2025 One Cup One Tree Initiatives. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-light text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
-                    <a href="#" class="text-light text-decoration-none">{% trans "Terms of Service" %}</a>
+                    <a href="#" class="text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
+                    <a href="#" class="text-decoration-none me-3">{% trans "Terms of Service" %}</a>
+                    <a href="#" class="text-decoration-none">{% trans "Sitemap" %}</a>
                 </div>
             </div>
         </div>
@@ -399,9 +563,17 @@
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
                 navbar.classList.add('shadow');
+                navbar.style.padding = '0.5rem 0';
             } else {
                 navbar.classList.remove('shadow');
+                navbar.style.padding = '0.8rem 0';
             }
+        });
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
         });
         
         // Counter animation for impact statistics
