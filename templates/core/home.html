@@ -23,9 +23,14 @@
                     <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
                         <i class="fas fa-hands-helping me-2"></i>{% trans "Join the Initiative" %}
                     </a>
-                    <a href="#newsletter-signup" class="btn btn-outline-light btn-lg px-4 py-3">
-                        <i class="fas fa-envelope me-2"></i>{% trans "Subscribe to Newsletter" %}
-                    </a>
+                    <div class="btn-group">
+                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-light btn-lg px-4 py-3">
+                            <i class="fas fa-envelope me-2"></i>{% trans "View Newsletters" %}
+                        </a>
+                        <a href="#newsletter-signup" class="btn btn-primary btn-lg px-4 py-3">
+                            <i class="fas fa-paper-plane me-2"></i>{% trans "Subscribe" %}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

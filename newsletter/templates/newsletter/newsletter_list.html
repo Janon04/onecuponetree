@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Newsletters" %}{% endblock %}
+
+{% block content %}
+<div class="container section-padding">
+    <h2 class="section-title">{% trans "Newsletters" %}</h2>
+    {% if newsletters %}
+        <div class="row">
+            {% for newsletter in newsletters %}
+                <div class="col-md-8 offset-md-2 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ newsletter.subject }}</h4>
+                            <div class="mb-2 text-muted" style="font-size:0.95em;">
+                                {{ newsletter.created_at|date:"F j, Y, g:i a" }}
+                            </div>
+                            <div class="card-text">{{ newsletter.content|linebreaks }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% trans "No newsletters have been published yet." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,6 +1,10 @@
 from django.shortcuts import redirect
 from django.contrib import messages
-from .models import NewsletterSubscriber
+from .models import NewsletterSubscriber, Newsletter
+from django.shortcuts import render
+def newsletter_list(request):
+    newsletters = Newsletter.objects.filter(published=True).order_by('-created_at')
+    return render(request, 'newsletter/newsletter_list.html', {'newsletters': newsletters})
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
