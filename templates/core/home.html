@@ -3,19 +3,136 @@
 
 {% block title %}{{ SITE_NAME }} - {% trans "Every Cup Counts. Every Tree Matters." %}{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Home Page Hero Section Styles (from About Page) */
+    .hero-section {
+        background: linear-gradient(rgba(17, 9, 6, 0.85), rgba(0, 5, 3, 0.9)), url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        padding: 8rem 0 5rem;
+        margin-top: 60px;
+        color: #fdfdfd;
+        position: relative;
+    }
+    .hero-section .container {
+        position: relative;
+        z-index: 3;
+    }
+    /* Ensure quick-access-card text is visible on hover */
+    .quick-access-card:hover,
+    .quick-access-card:focus {
+        background-color: #110906 !important;
+        color: #fdfdfd !important;
+    }
+    .quick-access-card:hover h4,
+    .quick-access-card:hover p,
+    .quick-access-card:hover .quick-access-icon,
+    .quick-access-card:focus h4,
+    .quick-access-card:focus p,
+    .quick-access-card:focus .quick-access-icon {
+        color: #fdfdfd !important;
+    }
+</style>
+<style>
+    /* Impact Cards Layout Organization */
+    .impact-stats .impact-cards-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+    .impact-stats .impact-card {
+        min-width: 220px;
+        max-width: 260px;
+        flex: 1 1 220px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    @media (max-width: 991px) {
+        .impact-stats .impact-cards-row {
+            gap: 1.2rem;
+        }
+        .impact-stats .impact-card {
+            min-width: 180px;
+            max-width: 100%;
+        }
+    }
+    @media (max-width: 767px) {
+        .impact-stats .impact-cards-row {
+            flex-direction: column;
+            align-items: center;
+        }
+        .impact-stats .impact-card {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
+<style>
+    /* Impact Section Customization */
+    .impact-stats {
+        background: #e0ddd8 !important;
+        color: #110906;
+    }
+    .impact-stats h2 {
+        color: #110906 !important;
+        letter-spacing: 1px;
+        text-shadow: 1px 2px 8px #e0ddd8;
+    }
+    .impact-stats .impact-card {
+        background: #110906;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(17,9,6,0.08);
+        padding: 2rem 1rem;
+        text-align: center;
+        border: 2px solid #e0ddd8;
+        color: #fdfdfd;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .impact-stats .impact-card:hover {
+        box-shadow: 0 8px 24px rgba(17,9,6,0.18);
+        transform: translateY(-4px) scale(1.03);
+    }
+    .impact-stats .impact-number {
+        font-size: 2.7rem;
+        font-weight: 700;
+        color: #e0ddd8;
+        margin-bottom: 0.5rem;
+        background: #000503;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 2px 8px rgba(17,9,6,0.07);
+    }
+    .impact-stats .impact-label {
+        color: #fdfdfd !important;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+    .impact-stats p.lead {
+        color: #000503 !important;
+    }
+</style>
+{% endblock %}
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section position-relative" style="background: #4e8d4e; padding: 3rem 0 2rem; margin-top: 60px;">
-    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=60') center/cover no-repeat;opacity:0.35;z-index:1;"></div>
-    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(44,76,42,0.7);z-index:2;"></div>
-    <div class="container hero-content position-relative" style="z-index:3;">
+<section class="hero-section position-relative">
+    <div class="container hero-content">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h1 class="display-3 fw-bold mb-4" style="color:#C8A27A; text-shadow: 1px 2px 8px rgba(44,76,42,0.13);">
+                <h1 class="display-3 fw-bold mb-4" style="color:#e0ddd8; text-shadow: 1px 2px 8px #000503;">
                     {% trans "Every Cup Counts." %}<br>
-                    <span style="color:#fff;">{% trans "Every Tree Matters." %}</span>
+                    <span style="color:#fdfdfd;">{% trans "Every Tree Matters." %}</span>
                 </h1>
-                <p class="lead mb-5">
+                <p class="lead mb-5" style="color:#fdfdfd;">
                     {% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}
                 </p>
                 <div class="d-flex flex-wrap gap-3">
@@ -23,7 +140,7 @@
                         <i class="fas fa-hands-helping me-2"></i>{% trans "Join the Initiative" %}
                     </a>
                     <div class="btn-group">
-                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3" style="background:#fdfdfd;color:#110906;">
                             <i class="fas fa-envelope me-2"></i>{% trans "Newsletters" %}
                         </a>
                         <a href="#newsletter-signup" class="btn btn-primary btn-lg px-4 py-3">
@@ -37,49 +154,41 @@
 </section>
 
 <!-- Impact Statistics -->
-<section class="py-5 bg-light impact-stats">
+<section class="py-5 impact-stats">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Our Impact So Far" %}</h2>
-                <p class="lead text-muted">
+                <h2 class="display-5 fw-bold mb-3">{% trans "Our Impact So Far" %}</h2>
+                <p class="lead">
                     {% trans "Together, we're making a real difference in communities and the environment." %}
                 </p>
             </div>
         </div>
         
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="impact-card">
-                    <div class="impact-number" data-target="{{ trees_planted }}">0</div>
-                    <div class="impact-label">{% trans "Trees Planted" %}</div>
-                </div>
+        <div class="impact-cards-row">
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ trees_planted }}">0</div>
+                <div class="impact-label">{% trans "Trees Planted" %}</div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="impact-card">
-                    <div class="impact-number" data-target="{{ youth_trained }}">0</div>
-                    <div class="impact-label">{% trans "Youth Trained" %}</div>
-                </div>
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ youth_trained }}">0</div>
+                <div class="impact-label">{% trans "Youth Trained" %}</div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="impact-card">
-                    <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
-                    <div class="impact-label">{% trans "Coffee Cups Sold" %}</div>
-                </div>
-            </div>
-            
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
+                <div class="impact-label">{% trans "Coffee Cups Sold" %}</div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Quick Access Cards -->
-<section class="py-5">
+<section class="py-5" style="background:#e0ddd8;">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Get Started Today" %}</h2>
-                <p class="lead text-muted">
+                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">{% trans "Get Started Today" %}</h2>
+                <p class="lead" style="color:#000503;">
                     {% trans "Choose how you'd like to be part of our sustainable movement." %}
                 </p>
             </div>
@@ -91,8 +200,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h4 class="text-primary mb-3">Barista Academy</h4>
-                    <p class="text-muted mb-0">
+                    <h4 class="mb-3" style="color:#110906;">Barista Academy</h4>
+                    <p class="mb-0" style="color:#000503;">
                         Join our comprehensive barista training program and build your career in the coffee industry.
                     </p>
                 </a>
@@ -102,8 +211,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-seedling"></i>
                     </div>
-                    <h4 class="text-primary mb-3">Support Farmers</h4>
-                    <p class="text-muted mb-0">
+                    <h4 class="mb-3" style="color:#110906;">Support Farmers</h4>
+                    <p class="mb-0" style="color:#000503;">
                         Help coffee farmers with sustainable practices, seedlings, and market access.
                     </p>
                 </a>
@@ -113,8 +222,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-handshake"></i>
                     </div>
-                    <h4 class="text-primary mb-3">Partner With Us</h4>
-                    <p class="text-muted mb-0">
+                    <h4 class="mb-3" style="color:#110906;">Partner With Us</h4>
+                    <p class="mb-0" style="color:#000503;">
                         Collaborate with us to create lasting environmental and social impact.
                     </p>
                 </a>
@@ -124,17 +233,17 @@
 </section>
 
 <!-- Call to Action -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5" style="background:#110906; color:#fdfdfd;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h3 class="fw-bold mb-3">Ready to Make a Difference?</h3>
-                <p class="lead mb-0">
+                <h3 class="fw-bold mb-3" style="color:#e0ddd8;">Ready to Make a Difference?</h3>
+                <p class="lead mb-0" style="color:#fdfdfd;">
                     Join thousands of people who are already part of our sustainable coffee movement.
                 </p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <a href="#" class="btn btn-light btn-lg px-4 py-3">
+                <a href="#" class="btn btn-outline-primary btn-lg px-4 py-3" style="background:#fdfdfd;color:#110906;">
                     <i class="fas fa-rocket me-2"></i>Get Started Now
                 </a>
             </div>
@@ -143,21 +252,21 @@
 </section>
 
 <!-- Newsletter Signup -->
-<section id="newsletter-signup" class="py-5 bg-light">
+<section id="newsletter-signup" class="py-5" style="background:#fdfdfd;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 text-center">
-                <h3 class="fw-bold text-primary mb-3">Stay Updated</h3>
-                <p class="text-muted mb-4">
+                <h3 class="fw-bold mb-3" style="color:#110906;">Stay Updated</h3>
+                <p class="mb-4" style="color:#000503;">
                     Get the latest news about our programs, impact stories, and upcoming events.
                 </p>
                 <form class="d-flex gap-2">
-                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" required>
+                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" required style="background:#e0ddd8;color:#110906;">
                     <button type="submit" class="btn btn-primary btn-lg px-4">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
-                <small class="text-muted mt-2 d-block">
+                <small class="mt-2 d-block" style="color:#000503;">
                     We respect your privacy. Unsubscribe at any time.
                 </small>
             </div>

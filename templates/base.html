@@ -16,18 +16,10 @@
     <style>
         /* CSS Variables */
         :root {
-            --primary-color: #3A5C39;
-            --secondary-color: #8B4513;
-            --accent-color: #C8A27A;
-            --light-brown: #E6D2C1;
-            --dark-green: #2C4C2A;
-            --light-cream: #F8F4EF;
-            --success-color: #28a745;
-            --info-color: #17a2b8;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
+            --primary-color: #110906;
+            --secondary-color: #e0ddd8;
+            --accent-color: #000503;
+            --light-bg: #fdfdfd;
             --font-body: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
             --border-radius: 8px;
@@ -39,8 +31,8 @@
         body {
             font-family: var(--font-body);
             line-height: 1.6;
-            color: #4A4A4A;
-            background-color: var(--light-cream);
+            color: #110906;
+            background-color: var(--light-bg);
             padding-top: 80px; /* Account for fixed navbar */
         }
         
@@ -48,7 +40,7 @@
             font-family: var(--font-heading);
             font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--dark-green);
+            color: var(--primary-color);
         }
         
         .text-primary {
@@ -65,12 +57,14 @@
             border-radius: var(--border-radius);
             padding: 0.6rem 1.5rem;
             font-weight: 500;
+            color: #e0ddd8;
             transition: var(--transition);
         }
         
         .btn-primary:hover {
-            background-color: var(--dark-green);
-            border-color: var(--dark-green);
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #e0ddd8;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
@@ -81,19 +75,20 @@
             border-radius: var(--border-radius);
             padding: 0.6rem 1.5rem;
             font-weight: 500;
+            background: transparent;
             transition: var(--transition);
         }
         
         .btn-outline-primary:hover {
             background-color: var(--primary-color);
-            color: white;
+            color: #e0ddd8;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
         /* Navbar Styles */
         .navbar {
-            background-color: white;
+            background-color: #fdfdfd;
             box-shadow: 0 2px 15px rgba(0,0,0,0.08);
             padding: 0.8rem 0;
             transition: var(--transition);
@@ -115,7 +110,7 @@
         .navbar-nav .nav-link {
             font-weight: 500;
             transition: var(--transition);
-            color: #555 !important;
+            color: #110906 !important;
             padding: 0.5rem 1rem;
             border-radius: var(--border-radius);
             margin: 0 0.1rem;
@@ -123,12 +118,12 @@
         
         .navbar-nav .nav-link:hover {
             color: var(--primary-color) !important;
-            background-color: rgba(58, 92, 57, 0.08);
+            background-color: #e0ddd8;
         }
         
         .navbar-nav .nav-link.active {
             color: var(--primary-color) !important;
-            background-color: rgba(58, 92, 57, 0.1);
+            background-color: #e0ddd8;
             font-weight: 600;
         }
         
@@ -146,7 +141,7 @@
         }
         
         .dropdown-item:hover {
-            background-color: rgba(58, 92, 57, 0.1);
+            background-color: #e0ddd8;
             color: var(--primary-color);
         }
         
@@ -156,8 +151,8 @@
             min-height: 85vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
-            color: white;
+            background: linear-gradient(135deg, #110906 0%, #000503 100%);
+            color: #e0ddd8;
             overflow: hidden;
             padding: 2rem 0;
         }
@@ -185,7 +180,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(44, 76, 42, 0.85);
+            background: rgba(17, 9, 6, 0.85);
             z-index: 1;
         }
         
@@ -204,7 +199,7 @@
         }
         
         .impact-card {
-            background: white;
+            background: #fdfdfd;
             border-radius: var(--border-radius);
             padding: 2rem;
             text-align: center;
@@ -227,12 +222,12 @@
         
         .impact-label {
             font-size: 1rem;
-            color: var(--dark-color);
+            color: #000503;
             font-weight: 500;
         }
         
         .quick-access-card {
-            background: white;
+            background: #fdfdfd;
             border-radius: var(--border-radius);
             padding: 1.5rem;
             text-align: center;
@@ -250,11 +245,11 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
             text-decoration: none;
             background-color: var(--primary-color);
-            color: white;
+            color: #e0ddd8;
         }
         
         .quick-access-card:hover .quick-access-icon {
-            color: white;
+            color: #e0ddd8;
         }
         
         .quick-access-icon {
@@ -288,22 +283,22 @@
         }
         
         .bg-light-section {
-            background-color: white;
+            background-color: #fdfdfd;
         }
         
         .bg-alt-section {
-            background-color: var(--light-cream);
+            background-color: #e0ddd8;
         }
         
         /* Footer Styles */
         .footer {
-            background-color: var(--dark-green);
-            color: white;
+            background-color: var(--primary-color);
+            color: #e0ddd8;
             padding: 4rem 0 1.5rem;
         }
         
         .footer h5, .footer h6 {
-            color: white;
+            color: #e0ddd8;
             margin-bottom: 1.5rem;
             position: relative;
             padding-bottom: 0.8rem;
@@ -320,13 +315,13 @@
         }
         
         .footer a {
-            color: rgba(255, 255, 255, 0.8);
+            color: #e0ddd8;
             text-decoration: none;
             transition: var(--transition);
         }
         
         .footer a:hover {
-            color: white;
+            color: #fdfdfd;
             padding-left: 5px;
         }
         
@@ -336,16 +331,16 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: #000503;
             border-radius: 50%;
-            color: white;
+            color: #e0ddd8;
             font-size: 1.2rem;
             margin-right: 0.8rem;
             transition: var(--transition);
         }
         
         .social-links a:hover {
-            background-color: var(--accent-color);
+            background-color: #110906;
             transform: translateY(-3px);
         }
         
@@ -353,13 +348,13 @@
         .form-control {
             border-radius: var(--border-radius);
             padding: 0.8rem 1.2rem;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #e0ddd8;
             transition: var(--transition);
         }
         
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(58, 92, 57, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(17, 9, 6, 0.25);
         }
         
         /* Responsive Styles */
@@ -404,7 +399,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
-                <i class="fas fa-coffee me-2"></i>One Cup One Tree Initiatives
+                <i class="fas fa-coffee me-2"></i>One Cup Initiative
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -472,7 +467,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5>
-                        <i class="fas fa-coffee me-2"></i>{% trans "One Cup One Tree Initiatives" %}
+                        <i class="fas fa-coffee me-2"></i>{% trans "One Cup Initiative" %}
                     </h5>
                     <p class="mb-3">Empowering coffee farming communities through sustainable practices, fair trade, and education.</p>
                     <div class="social-links">
@@ -517,7 +512,7 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>{% trans "Contact Us" %}</h6>
                     <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope me-2"></i>info@onecuponetree.org</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@onecupinitiative.org</li>
                         <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
                         <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
                     </ul>
@@ -528,7 +523,7 @@
             
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 One Cup One Tree Initiatives. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2025 One Cup Initiative. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="#" class="text-decoration-none me-3">{% trans "Privacy Policy" %}</a>

@@ -7,10 +7,10 @@
 <style>
     /* About Page Specific Styles */
     .page-header {
-        background: linear-gradient(rgba(44, 76, 42, 0.85), rgba(44, 76, 42, 0.9)), url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        background: linear-gradient(rgba(17, 9, 6, 0.85), rgba(0, 5, 3, 0.9)), url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
         padding: 8rem 0 5rem;
         margin-top: 76px;
-        color: white;
+        color: #fdfdfd;
     }
     
     .mission-vision-section {
@@ -18,7 +18,7 @@
     }
     
     .value-card {
-        background: white;
+        background: #fdfdfd;
         border-radius: var(--border-radius);
         padding: 2rem;
         text-align: center;
@@ -34,20 +34,20 @@
     
     .value-icon {
         font-size: 2.5rem;
-        color: var(--primary-color);
+        color: #110906;
         margin-bottom: 1.5rem;
         display: inline-block;
         width: 80px;
         height: 80px;
         line-height: 80px;
-        background: rgba(58, 92, 57, 0.1);
+        background: #e0ddd8;
         border-radius: 50%;
         transition: var(--transition);
     }
     
     .value-card:hover .value-icon {
-        background: var(--primary-color);
-        color: white;
+        background: #110906;
+        color: #fdfdfd;
     }
     
     .timeline {
@@ -62,7 +62,7 @@
         top: 0;
         height: 100%;
         width: 3px;
-        background: var(--accent-color);
+        background: #000503;
     }
     
     .timeline-item {
@@ -78,8 +78,8 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background: var(--primary-color);
-        border: 4px solid var(--accent-color);
+        background: #110906;
+        border: 4px solid #000503;
     }
     
     .team-member {
@@ -93,14 +93,14 @@
         object-fit: cover;
         border-radius: 50%;
         margin-bottom: 1.5rem;
-        border: 4px solid var(--light-brown);
+        border: 4px solid #e0ddd8;
         box-shadow: var(--box-shadow);
     }
     
     .stats-counter {
-        background: linear-gradient(rgba(44, 76, 42, 0.9), rgba(44, 76, 42, 0.85)), url('https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover fixed no-repeat;
+        background: linear-gradient(rgba(17, 9, 6, 0.9), rgba(0, 5, 3, 0.85)), url('https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover fixed no-repeat;
         padding: 5rem 0;
-        color: white;
+        color: #fdfdfd;
     }
     
     .stat-item {
@@ -145,14 +145,13 @@
 
 {% block content %}
 <!-- Page Header -->
-<section class="page-header position-relative" style="background: #2C4C2A; color: #fff; padding: 3rem 0 2rem; margin-top: 60px;">
-    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=60') center/cover no-repeat;opacity:0.35;z-index:1;"></div>
+<section class="page-header position-relative">
     <div class="container position-relative" style="z-index:2;">
         <div class="row">
             <div class="col-lg-10 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">{% trans "About our Initiative" %}</h1>
-                <h2 class="h5 fw-semibold mb-2" style="color:#C8A27A;letter-spacing:1px;">{% trans "Making a difference in coffee communities" %}</h2>
-                <p class="lead mb-4">
+                <h1 class="display-4 fw-bold mb-3" style="color:#fdfdfd;">{% trans "About our Initiative" %}</h1>
+                <h2 class="h5 fw-semibold mb-2" style="color:#e0ddd8;letter-spacing:1px;">{% trans "Making a difference in coffee communities" %}</h2>
+                <p class="lead mb-4" style="color:#fdfdfd;">
                     {% trans "Discover our journey, mission, and commitment to sustainable coffee farming and environmental stewardship." %}
                 </p>
             </div>
@@ -161,29 +160,29 @@
 </section>
 
 <!-- Mission Section -->
-<section class="py-4">
+<section class="py-4" style="background:#fdfdfd;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <span class="fw-bold" style="color:#3A5C39;">{% trans "OUR MISSION" %}</span>
-                <h2 class="h3 fw-bold mb-3" style="color:#3A5C39;">{% trans "Empowering Coffee Communities" %}</h2>
-                <p class="mb-3" style="color:#555;">{{ mission }}</p>
+                <span class="fw-bold" style="color:#110906;">{% trans "OUR MISSION" %}</span>
+                <h2 class="h3 fw-bold mb-3" style="color:#110906;">{% trans "Empowering Coffee Communities" %}</h2>
+                <p class="mb-3" style="color:#000503;">{{ mission }}</p>
                 <div class="d-flex align-items-center mb-2">
-                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px; background:#110906;color:#fdfdfd;">
                         <i class="fas fa-seedling"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1">{% trans "Sustainable Farming" %}</h5>
-                        <p class="mb-0" style="color:#666;">{% trans "Promoting eco-friendly practices that protect our planet." %}</p>
+                        <h5 class="mb-1" style="color:#110906;">{% trans "Sustainable Farming" %}</h5>
+                        <p class="mb-0" style="color:#000503;">{% trans "Promoting eco-friendly practices that protect our planet." %}</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px; background:#110906;color:#fdfdfd;">
                         <i class="fas fa-users"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1">{% trans "Community Empowerment" %}</h5>
-                        <p class="mb-0" style="color:#666;">{% trans "Empowering local communities through education and support." %}</p>
+                        <h5 class="mb-1" style="color:#110906;">{% trans "Community Empowerment" %}</h5>
+                        <p class="mb-0" style="color:#000503;">{% trans "Empowering local communities through education and support." %}</p>
                     </div>
                 </div>
             </div>
@@ -191,7 +190,7 @@
                 <div class="position-relative">
                     <img src="{% static 'images/coffee-farmers-working.jpg' %}" 
                          alt="Coffee farmers working together" class="img-fluid rounded-3 shadow">
-                    <div class="position-absolute bottom-0 start-0 bg-primary text-white p-3 m-3 rounded">
+                    <div class="position-absolute bottom-0 start-0 p-3 m-3 rounded" style="background:#110906;color:#fdfdfd;">
                         <h5 class="mb-0">{% trans "Since 2020" %}</h5>
                         <small>{% trans "Making a difference in coffee communities" %}</small>
                     </div>
@@ -234,25 +233,25 @@
 </section>
 
 <!-- Vision Section -->
-<section class="mission-vision-section bg-light-cream">
+<section class="mission-vision-section" style="background:#e0ddd8;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 order-lg-2 mb-5 mb-lg-0">
-                <span class="text-primary fw-bold">{% trans "OUR VISION" %}</span>
-                <h2 class="display-5 fw-bold text-primary mb-4">{% trans "A Sustainable Future for Coffee" %}</h2>
-                <p class="lead text-muted mb-4">{{ vision }}</p>
+                <span class="fw-bold" style="color:#110906;">{% trans "OUR VISION" %}</span>
+                <h2 class="display-5 fw-bold mb-4" style="color:#110906;">{% trans "A Sustainable Future for Coffee" %}</h2>
+                <p class="lead mb-4" style="color:#000503;">{{ vision }}</p>
                 <div class="d-flex align-items-center">
-                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px; background:#110906;color:#fdfdfd;">
                         <i class="fas fa-globe-americas fa-lg"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1">{% trans "Global Impact" %}</h5>
-                        <p class="text-muted mb-0">{% trans "Creating a worldwide network of sustainable coffee communities." %}</p>
+                        <h5 class="mb-1" style="color:#110906;">{% trans "Global Impact" %}</h5>
+                        <p class="mb-0" style="color:#000503;">{% trans "Creating a worldwide network of sustainable coffee communities." %}</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 order-lg-1">
-                <div class="bg-white rounded-3 p-2 shadow-sm">
+                <div class="rounded-3 p-2 shadow-sm" style="background:#fdfdfd;">
                     <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=60" alt="Sustainable coffee plantation" class="img-fluid rounded-3" loading="lazy" style="max-height:220px;object-fit:cover;">
                 </div>
             </div>
@@ -261,13 +260,13 @@
 </section>
 
 <!-- Values Section -->
-<section class="py-4" style="background:#f8f4ef;">
+<section class="py-4" style="background:#fdfdfd;">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <span class="fw-bold" style="color:#3A5C39;">{% trans "OUR VALUES" %}</span>
-                <h2 class="h3 fw-bold mb-3" style="color:#3A5C39;">{% trans "Core Principles That Guide Us" %}</h2>
-                <p class="mb-3" style="color:#555;">
+                <span class="fw-bold" style="color:#110906;">{% trans "OUR VALUES" %}</span>
+                <h2 class="h3 fw-bold mb-3" style="color:#110906;">{% trans "Core Principles That Guide Us" %}</h2>
+                <p class="mb-3" style="color:#000503;">
                     {% trans "These fundamental beliefs shape our approach to creating positive change in coffee communities." %}
                 </p>
             </div>
@@ -276,8 +275,8 @@
         <div class="row g-4">
             {% for value in values %}
             <div class="col-lg-6">
-                <div class="value-card" style="box-shadow:0 2px 8px rgba(44,76,42,0.07);">
-                    <div class="value-icon" style="background:#3A5C39;color:#fff;">
+                <div class="value-card" style="box-shadow:0 2px 8px #e0ddd8;">
+                    <div class="value-icon" style="background:#e0ddd8;color:#110906;">
                         {% if value.name == 'Sustainability' %}
                             <i class="fas fa-leaf"></i>
                         {% elif value.name == 'Education' %}
@@ -292,8 +291,8 @@
                             <i class="fas fa-users"></i>
                         {% endif %}
                     </div>
-                    <h4 class="text-primary mb-3">{{ value.name }}</h4>
-                    <p class="text-muted mb-0">{{ value.description }}</p>
+                    <h4 class="mb-3" style="color:#110906;">{{ value.name }}</h4>
+                    <p class="mb-0" style="color:#000503;">{{ value.description }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -302,13 +301,13 @@
 </section>
 
 <!-- Story Timeline -->
-<section class="mission-vision-section bg-light-cream">
+<section class="mission-vision-section" style="background:#e0ddd8;">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <span class="text-primary fw-bold">{% trans "OUR JOURNEY" %}</span>
-                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Milestones in Our Story" %}</h2>
-                <p class="lead text-muted">
+                <span class="fw-bold" style="color:#110906;">{% trans "OUR JOURNEY" %}</span>
+                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">{% trans "Milestones in Our Story" %}</h2>
+                <p class="lead" style="color:#000503;">
                     {% trans "From humble beginnings to a growing movement for sustainable coffee farming." %}
                 </p>
             </div>
@@ -320,10 +319,10 @@
                     <div class="timeline-item">
                         <div class="row align-items-center">
                             <div class="col-md-6 mb-4 mb-md-0">
-                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
-                                    <span class="badge bg-primary mb-2">2020</span>
-                                    <h5 class="text-primary fw-bold">{% trans "The Beginning" %}</h5>
-                                    <p class="text-muted mb-0">
+                                <div class="rounded-3 p-4 shadow-sm h-100" style="background:#fdfdfd;">
+                                    <span class="badge mb-2" style="background:#110906;color:#fdfdfd;">2020</span>
+                                    <h5 class="fw-bold" style="color:#110906;">{% trans "The Beginning" %}</h5>
+                                    <p class="mb-0" style="color:#000503;">
                                         {% trans "Founded with a vision to make every cup of coffee count for both farmers and the environment." %}
                                     </p>
                                 </div>
@@ -338,11 +337,11 @@
                     <div class="timeline-item">
                         <div class="row align-items-center">
                             <div class="col-md-6 order-md-2 mb-4 mb-md-0">
-                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
-                                    <span class="badge bg-primary mb-2">2021</span>
-                                    <h5 class="text-primary fw-bold">{% trans "First Tree Planting Initiative" %}</h5>
-                                    <p class="text-muted mb-0">
-                                        {% trans "Launched our 'One Cup, One Tree' campaign, planting our first 1,000 trees in coffee-growing regions." %}
+                                <div class="rounded-3 p-4 shadow-sm h-100" style="background:#fdfdfd;">
+                                    <span class="badge mb-2" style="background:#110906;color:#fdfdfd;">2021</span>
+                                    <h5 class="fw-bold" style="color:#110906;">{% trans "First Tree Planting Initiative" %}</h5>
+                                    <p class="mb-0" style="color:#000503;">
+                                        {% trans "Launched our 'One Cup, ' campaign, planting our first 1,000 trees in coffee-growing regions." %}
                                     </p>
                                 </div>
                             </div>
@@ -356,10 +355,10 @@
                     <div class="timeline-item">
                         <div class="row align-items-center">
                             <div class="col-md-6 mb-4 mb-md-0">
-                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
-                                    <span class="badge bg-primary mb-2">2022</span>
-                                    <h5 class="text-primary fw-bold">{% trans "Barista Academy Launch" %}</h5>
-                                    <p class="text-muted mb-0">
+                                <div class="rounded-3 p-4 shadow-sm h-100" style="background:#fdfdfd;">
+                                    <span class="badge mb-2" style="background:#110906;color:#fdfdfd;">2022</span>
+                                    <h5 class="fw-bold" style="color:#110906;">{% trans "Barista Academy Launch" %}</h5>
+                                    <p class="mb-0" style="color:#000503;">
                                         {% trans "Opened our first Barista Academy to train youth and create employment opportunities in the coffee value chain." %}
                                     </p>
                                 </div>
@@ -374,10 +373,10 @@
                     <div class="timeline-item">
                         <div class="row align-items-center">
                             <div class="col-md-6 order-md-2 mb-4 mb-md-0">
-                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
-                                    <span class="badge bg-primary mb-2">2023-2025</span>
-                                    <h5 class="text-primary fw-bold">{% trans "Global Expansion" %}</h5>
-                                    <p class="text-muted mb-0">
+                                <div class="rounded-3 p-4 shadow-sm h-100" style="background:#fdfdfd;">
+                                    <span class="badge mb-2" style="background:#110906;color:#fdfdfd;">2023-2025</span>
+                                    <h5 class="fw-bold" style="color:#110906;">{% trans "Global Expansion" %}</h5>
+                                    <p class="mb-0" style="color:#000503;">
                                         {% trans "Expanded to multiple countries and established partnerships with international organizations for greater impact." %}
                                     </p>
                                 </div>
@@ -395,13 +394,13 @@
 </section>
 
 <!-- Team Section -->
-<section class="mission-vision-section">
+<section class="mission-vision-section" style="background:#fdfdfd;">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <span class="text-primary fw-bold">{% trans "OUR TEAM" %}</span>
-                <h2 class="display-5 fw-bold text-primary mb-3">{% trans "Meet Our Leadership" %}</h2>
-                <p class="lead text-muted">
+                <span class="fw-bold" style="color:#110906;">{% trans "OUR TEAM" %}</span>
+                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">{% trans "Meet Our Leadership" %}</h2>
+                <p class="lead" style="color:#000503;">
                     {% trans "Dedicated professionals working together to create a sustainable future for coffee farming." %}
                 </p>
             </div>
@@ -412,9 +411,9 @@
                 <div class="team-member">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
                          alt="Janon Duk - Founder & CEO" class="team-img">
-                    <h5 class="text-primary mb-1">Janon Duk</h5>
-                    <p class="text-muted mb-2">{% trans "Founder & CEO" %}</p>
-                    <p class="small text-muted px-3">
+                    <h5 class="mb-1" style="color:#110906;">Janon Duk</h5>
+                    <p class="mb-2" style="color:#000503;">{% trans "Founder & CEO" %}</p>
+                    <p class="small px-3" style="color:#000503;">
                         {% trans "Passionate about sustainable agriculture and community development with over 15 years in the coffee industry." %}
                     </p>
                     <div class="social-links justify-content-center mt-3">
@@ -428,9 +427,9 @@
                 <div class="team-member">
                     <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
                          alt="Kalisa Johnson - Program Director" class="team-img">
-                    <h5 class="text-primary mb-1">Kalisa Johnson</h5>
-                    <p class="text-muted mb-2">{% trans "Program Director" %}</p>
-                    <p class="small text-muted px-3">
+                    <h5 class="mb-1" style="color:#110906;">Kalisa Johnson</h5>
+                    <p class="mb-2" style="color:#000503;">{% trans "Program Director" %}</p>
+                    <p class="small px-3" style="color:#000503;">
                         {% trans "Expert in youth education and barista training programs with a background in community development." %}
                     </p>
                     <div class="social-links justify-content-center mt-3">
@@ -444,9 +443,9 @@
                 <div class="team-member">
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
                          alt="Mike Johnson - Environmental Coordinator" class="team-img">
-                    <h5 class="text-primary mb-1">Mike Johnson</h5>
-                    <p class="text-muted mb-2">{% trans "Environmental Coordinator" %}</p>
-                    <p class="small text-muted px-3">
+                    <h5 class="mb-1" style="color:#110906;">Mike Johnson</h5>
+                    <p class="mb-2" style="color:#000503;">{% trans "Environmental Coordinator" %}</p>
+                    <p class="small px-3" style="color:#000503;">
                         {% trans "Leading our reforestation efforts and environmental impact initiatives with expertise in agroforestry." %}
                     </p>
                     <div class="social-links justify-content-center mt-3">
@@ -461,19 +460,19 @@
 </section>
 
 <!-- Call to Action -->
-<section class="py-4" style="background:#3A5C39;color:#fff;">
+<section class="py-4" style="background:#110906;color:#fdfdfd;">
     <div class="container">
         <div class="row text-center">
             <div class="col-lg-8 mx-auto">
-                <h3 class="fw-bold mb-3">{% trans "Join Our Mission" %}</h3>
-                <p class="lead mb-4">
+                <h3 class="fw-bold mb-3" style="color:#e0ddd8;">{% trans "Join Our Mission" %}</h3>
+                <p class="lead mb-4" style="color:#fdfdfd;">
                     {% trans "Be part of a movement that's creating real change in coffee communities and the environment." %}
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="{% url 'volunteers:opportunities' %}" class="btn btn-light btn-lg px-4">
+                    <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-primary btn-lg px-4" style="background:#fdfdfd;color:#110906;">
                         <i class="fas fa-hands-helping me-2"></i>{% trans "Become a Volunteer" %}
                     </a>
-                    <a href="{% url 'partners:partner_list' %}" class="btn btn-outline-light btn-lg px-4">
+                    <a href="{% url 'partners:partner_list' %}" class="btn btn-primary btn-lg px-4">
                         <i class="fas fa-handshake me-2"></i>{% trans "Partner With Us" %}
                     </a>
                 </div>
