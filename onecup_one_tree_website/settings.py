@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     # Local apps
     'accounts',
+    'gallery',
     'core',
     'programs',
     'shop',
@@ -121,7 +122,7 @@ LANGUAGES = [
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
-TIME_ZONE = 'Africa/Maputo'  # Central Africa Time (CAT, UTC+2)
+TIME_ZONE = 'Africa/Maputo' 
 
 USE_I18N = True
 

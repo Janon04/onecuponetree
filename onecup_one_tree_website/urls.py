@@ -16,6 +16,7 @@ urlpatterns = [
     #path('media/', include('media.urls')),
     path('events/', include('events.urls')),
     path('contact/', include('contact.urls')),
+    path('gallery/', include('gallery.urls')),
     path('api/', include('api.urls')),
     path('blogs/', include('blog.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
