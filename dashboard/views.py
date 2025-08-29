@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum  
 from .models import ImpactStat, Testimonial
-from apps.trees.models import Tree
+from trees.models import Tree
 from farmers.models import Farmer
 from volunteers.models import BaristaTrainee
+from core.models import Donation
 
 def impact_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_staff:
@@ -12,6 +13,8 @@ def impact_dashboard(request):
         'trees_planted': Tree.objects.filter(is_active=True).count(),
         'farmers_supported': Farmer.objects.count(),
         'youth_trained': BaristaTrainee.objects.filter(graduated=True).count(),
+        'total_donations': Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0,
+        'recent_donations': Donation.objects.filter(payment_status='paid').order_by('-created_at')[:5],
     }
     
     recent_trees = Tree.objects.filter(latitude__isnull=False, longitude__isnull=False).order_by('-planted_date')[:5]
@@ -35,4 +38,6 @@ def impact_dashboard(request):
         'map_trees': map_trees,
         'testimonials': testimonials,
         'impact_stats': impact_stats,
+        'recent_donations': stats['recent_donations'],
+        'total_donations': stats['total_donations'],
     })

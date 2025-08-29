@@ -1,7 +1,10 @@
-
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
-from .forms import ContactForm
+from .forms import ContactForm, DonationForm
+from django.contrib import messages
+from .utils import send_donation_thank_you
+from .models import Donation
+
 class ContactView(View):
     template_name = 'core/contact.html'
 
@@ -66,3 +69,20 @@ class AboutView(TemplateView):
         })
         
         return context
+
+
+def donate(request):
+    if request.method == 'POST':
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            donation = form.save()
+            send_donation_thank_you(donation)
+            messages.success(request, 'Thank you for your donation!')
+            return redirect('core:donate')
+    else:
+        form = DonationForm()
+    return render(request, 'core/donate.html', {'form': form})
+
+def donation_list(request):
+    donations = Donation.objects.filter(payment_status='paid').order_by('-created_at')[:50]
+    return render(request, 'core/donation_list.html', {'donations': donations})

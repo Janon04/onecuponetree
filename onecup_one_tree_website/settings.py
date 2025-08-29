@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'farmers',
     'newsletter',
     'get_involved',
-    'apps.trees',
+    'trees',
 ]
 # django-modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
