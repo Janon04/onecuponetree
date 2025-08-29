@@ -23,6 +23,8 @@ class FarmerAdmin(admin.ModelAdmin):
 	list_display = ("full_name", "household_id", "village_cell", "sector_district", "phone_number", "main_income_source", "is_coop_member")
 	search_fields = ("full_name", "household_id", "phone_number", "village_cell", "sector_district")
 	inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerSupportActivityInline, FarmerStoryInline]
+	from .forms import FarmerForm
+	form = FarmerForm
 
 @admin.register(HouseholdMember)
 class HouseholdMemberAdmin(admin.ModelAdmin):

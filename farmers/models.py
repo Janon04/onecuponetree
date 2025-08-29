@@ -12,7 +12,7 @@ def today_utc_plus_2():
 
 # Section A & B: Household Identification & Head Information
 class Farmer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     household_id = models.CharField(
         _('Household ID'),
@@ -22,8 +22,18 @@ class Farmer(models.Model):
         blank=True,
         help_text=_('16 digit household ID'),
     )
-    village_cell = models.CharField(_('Village/Cell'), max_length=100)
-    sector_district = models.CharField(_('Sector/District'), max_length=100)
+    VILLAGE_CELL_CHOICES = [
+        ('village1', _('Village 1')),
+        ('village2', _('Village 2')),
+        ('village3', _('Village 3')),
+    ]
+    SECTOR_DISTRICT_CHOICES = [
+        ('sector1', _('Sector 1')),
+        ('sector2', _('Sector 2')),
+        ('sector3', _('Sector 3')),
+    ]
+    village_cell = models.CharField(_('Village/Cell'), max_length=100, choices=VILLAGE_CELL_CHOICES)
+    sector_district = models.CharField(_('Sector/District'), max_length=100, choices=SECTOR_DISTRICT_CHOICES)
     interview_date = models.DateField(
         _('Date of interview'),
         default=today_utc_plus_2,  # ✅ default today UTC+2
@@ -56,7 +66,13 @@ class Farmer(models.Model):
         choices=EDUCATION_LEVEL_CHOICES,
         default='none',
     )
-    occupation = models.CharField(_('Occupation/Income Source'), max_length=100)
+    OCCUPATION_CHOICES = [
+        ('farmer', _('Farmer')),
+        ('teacher', _('Teacher')),
+        ('trader', _('Trader')),
+        ('other', _('Other')),
+    ]
+    occupation = models.CharField(_('Occupation/Income Source'), max_length=100, choices=OCCUPATION_CHOICES)
     phone_number = models.CharField(_('Phone Number'), max_length=20, blank=True)
 
     # Section D: Education of Children
@@ -85,13 +101,25 @@ class Farmer(models.Model):
     has_loans = models.BooleanField(_('Do you have access to loans/credit?'), default=False)
 
     # Section F: Food Security & Nutrition
-    main_staple_foods = models.CharField(_('Main staple foods'), max_length=100, blank=True)
+    MAIN_STAPLE_CHOICES = [
+        ('maize', _('Maize')),
+        ('beans', _('Beans')),
+        ('cassava', _('Cassava')),
+        ('rice', _('Rice')),
+        ('other', _('Other')),
+    ]
+    main_staple_foods = models.CharField(_('Main staple foods'), max_length=100, choices=MAIN_STAPLE_CHOICES, blank=True)
     MEALS_PER_DAY_CHOICES = ((1, '1'), (2, '2'), (3, '3'))
     meals_per_day = models.PositiveSmallIntegerField(
         _('Meals eaten per day'), choices=MEALS_PER_DAY_CHOICES, default=2
     )
     food_shortage = models.BooleanField(_('Faced hunger/food shortage in last 3 months?'), default=False)
-    food_shortage_when = models.CharField(_('If yes, when?'), max_length=100, blank=True)
+    FOOD_SHORTAGE_WHEN_CHOICES = [
+        ('dry_season', _('Dry Season')),
+        ('rainy_season', _('Rainy Season')),
+        ('other', _('Other')),
+    ]
+    food_shortage_when = models.CharField(_('If yes, when?'), max_length=100, choices=FOOD_SHORTAGE_WHEN_CHOICES, blank=True)
 
     # Section G: Health & Sanitation
     nearest_health_facility = models.CharField(_('Nearest health facility'), max_length=100, blank=True)
@@ -99,7 +127,14 @@ class Farmer(models.Model):
         _('Health facility distance (km)'), max_digits=5, decimal_places=2, null=True, blank=True
     )
     has_chronic_illness = models.BooleanField(_('Any household member with chronic illness/disability?'), default=False)
-    chronic_illness_details = models.CharField(_('Chronic illness/disability details'), max_length=100, blank=True)
+    CHRONIC_ILLNESS_CHOICES = [
+        ('none', _('None')),
+        ('diabetes', _('Diabetes')),
+        ('hiv', _('HIV/AIDS')),
+        ('disability', _('Disability')),
+        ('other', _('Other')),
+    ]
+    chronic_illness_details = models.CharField(_('Chronic illness/disability details'), max_length=100, choices=CHRONIC_ILLNESS_CHOICES, blank=True)
     WATER_SOURCE_CHOICES = (('tap', _('Tap')), ('borehole', _('Borehole')), ('river', _('River')), ('other', _('Other')))
     water_source = models.CharField(_('Water source'), max_length=10, choices=WATER_SOURCE_CHOICES)
     water_source_other = models.CharField(_('Other water source'), max_length=100, blank=True)
@@ -131,7 +166,14 @@ class Farmer(models.Model):
     is_coop_member = models.BooleanField(_('Member of cooperative/association?'), default=False)
     is_savings_group_member = models.BooleanField(_('Member of savings group (IBIMINA)?'), default=False)
     has_support = models.BooleanField(_('Support received from government/NGOs?'), default=False)
-    support_details = models.CharField(_('Support details'), max_length=100, blank=True)
+    SUPPORT_DETAILS_CHOICES = [
+        ('none', _('None')),
+        ('govt', _('Government')),
+        ('ngo', _('NGO')),
+        ('community', _('Community')),
+        ('other', _('Other')),
+    ]
+    support_details = models.CharField(_('Support details'), max_length=100, choices=SUPPORT_DETAILS_CHOICES, blank=True)
 
     # Legacy / optional fields
     location = models.CharField(_('location'), max_length=255, blank=True)
