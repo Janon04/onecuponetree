@@ -222,8 +222,8 @@ LOGGING = {
     },
 }
 
-# Custom Settings for One Cup One Tree Initiative
-SITE_NAME = "One Cup One Tree Initiative"
+# Custom Settings for One Cup Initiative
+SITE_NAME = "One Cup Initiative"
 SITE_DESCRIPTION = "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time."
 CONTACT_EMAIL = "janon3030@gmail.com"
 SOCIAL_MEDIA_LINKS = {
