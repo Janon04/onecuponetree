@@ -74,11 +74,17 @@ class AboutView(TemplateView):
 def donate(request):
     if request.method == 'POST':
         form = DonationForm(request.POST)
+        print('POST data:', request.POST)
         if form.is_valid():
-            donation = form.save()
+            print('Form is valid!')
+            donation = form.save(commit=False)
+            donation.payment_status = 'paid'  # Mark as paid for testing/demo
+            donation.save()
             send_donation_thank_you(donation)
             messages.success(request, 'Thank you for your donation!')
             return redirect('core:donate')
+        else:
+            print('Form errors:', form.errors)
     else:
         form = DonationForm()
     return render(request, 'core/donate.html', {'form': form})

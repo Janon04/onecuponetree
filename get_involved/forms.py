@@ -1,5 +1,5 @@
 from django import forms
-from .models import Volunteer, Partner, Donation
+from .models import Volunteer, Partner
 from django.utils.translation import gettext_lazy as _
 
 class VolunteerForm(forms.ModelForm):
@@ -51,32 +51,6 @@ class PartnerForm(forms.ModelForm):
             'contact_person': _('Contact Person'),
         }
 
-class DonationForm(forms.ModelForm):
-    amount = forms.DecimalField(
-        label=_('Donation Amount'),
-        min_value=5,
-        widget=forms.NumberInput(attrs={
-            'placeholder': '50.00'
-        })
-    )
-    
-    class Meta:
-        model = Donation
-        fields = ['amount', 'is_recurring', 'payment_method', 'notes']
-        widgets = {
-            'notes': forms.Textarea(attrs={
-                'rows': 3,
-                'placeholder': _('Any special instructions or dedication')
-            }),
-            'payment_method': forms.Select(attrs={
-                'class': 'form-control'
-            }),
-        }
-        labels = {
-            'is_recurring': _('Make this a monthly recurring donation'),
-            'payment_method': _('Payment Method'),
-            'notes': _('Notes'),
-        }
 
 class BaristaTrainingApplicationForm(forms.Form):
     full_name = forms.CharField(

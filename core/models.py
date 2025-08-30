@@ -16,6 +16,45 @@ class Contact(models.Model):
 		return f"{self.name} - {self.subject}"
 
 class Donation(models.Model):
+    # New fields for professional donation form
+    phone = models.CharField(_('Phone Number'), max_length=30, blank=True)
+    country = models.CharField(_('Country'), max_length=100, blank=True)
+    province_district = models.CharField(_('Province / District'), max_length=100, blank=True)
+    DONATION_FREQ_CHOICES = [
+        ('one_time', _('One-time Donation')),
+        ('recurring', _('Monthly / Recurring Donation')),
+    ]
+    donation_frequency = models.CharField(_('Donation Frequency'), max_length=20, choices=DONATION_FREQ_CHOICES, default='one_time')
+    CURRENCY_CHOICES = [
+        ('RWF', 'RWF'),
+        ('USD', 'USD'),
+        ('EUR', 'EUR'),
+        ('KES', 'KES'),
+        ('UGX', 'UGX'),
+        ('Other', _('Other')),
+    ]
+    currency = models.CharField(_('Currency'), max_length=10, choices=CURRENCY_CHOICES, default='RWF')
+    MODE_CHOICES = [
+        ('mobile_money', _('Mobile Money (MTN / Airtel)')),
+        ('bank_transfer', _('Bank Transfer')),
+        ('card', _('Credit/Debit Card')),
+        ('cash', _('Cash')),
+        ('other', _('Other')),
+    ]
+    donation_mode = models.CharField(_('Mode of Donation'), max_length=20, choices=MODE_CHOICES, default='mobile_money')
+    transaction_reference = models.CharField(_('Transaction Reference Number'), max_length=100, blank=True)
+    PURPOSE_CHOICES = [
+        ('training', _('Training Programs')),
+        ('community', _('Community Projects')),
+        ('equipment', _('Equipment / Materials')),
+        ('general', _('General Support (where most needed)')),
+    ]
+    purpose = models.CharField(_('Purpose of Donation'), max_length=20, choices=PURPOSE_CHOICES, blank=True)
+    public_acknowledgement = models.BooleanField(_('Publicly acknowledge as donor?'), default=True)
+    communication_opt_in = models.BooleanField(_('Receive updates about the initiative?'), default=True)
+    declaration = models.BooleanField(_('I confirm this donation is made willingly.'), default=False)
+    donor_signature = models.CharField(_('Full Name of Donor (as signature)'), max_length=100, blank=True)
+    signature_date = models.DateField(_('Date of signature'), null=True, blank=True)
     DONATION_TYPE_CHOICES = [
         ('general', _('General Initiative Support')),
         ('tree', _('Sponsor a Coffee Tree')),

@@ -1,16 +1,5 @@
-<div class="mb-4 d-flex justify-content-end">
-    <a href="/admin/trees/tree/add/" class="btn btn-outline-success me-2" target="_blank">
-        <i class="fas fa-plus-circle"></i> Add New Tree (with Coordinates)
-    </a>
-    <a href="/admin/trees/tree/" class="btn btn-outline-primary me-2" target="_blank">
-        <i class="fas fa-edit"></i> Edit Tree Coordinates
-    </a>
-    <a href="https://leafletjs.com/examples/quick-start/" class="btn btn-outline-info" target="_blank">
-        <i class="fas fa-map-marked-alt"></i> Map Setup Help
-    </a>
-</div>
 {% extends "base.html" %}
-{% load static i18n %}
+{% load i18n static %}
 
 {% block extra_css %}
 <!-- Leaflet CSS CDN -->
@@ -30,6 +19,13 @@
         font-size: 2.5rem;
         font-weight: bold;
     }
+    .dashboard-chart {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
 </style>
 {% endblock %}
 
@@ -37,6 +33,14 @@
 <div class="container py-5">
     <h1 class="text-center mb-5">{% trans "Impact Dashboard" %}</h1>
     
+    <div class="dashboard-chart mb-5">
+        <h4 class="mb-4">{% trans "Trees Planted Per Month" %}</h4>
+        <canvas id="treesPlantedChart" height="100"></canvas>
+    </div>
+    <div class="dashboard-chart mb-5">
+        <h4 class="mb-4">{% trans "Donations Per Month" %}</h4>
+        <canvas id="donationsPerMonthChart" height="100"></canvas>
+    </div>
     <div class="row mb-5">
         <div class="col-md-3">
             <div class="stat-card bg-success text-white">
@@ -102,6 +106,7 @@
         </div>
         <div class="card-body p-0">
             <div id="impact-map"></div>
+        <script id="map-trees-data" type="application/json">{{ map_trees|safe }}</script>
         </div>
     </div>
     
@@ -148,23 +153,84 @@
 {% block extra_js %}
 <!-- Leaflet JS CDN -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1jRVv6bQ8b+gk+g1Q9Q1Q9Q1Q9Q1Q9Q1Q9Q1Q9Q1Q=" crossorigin=""></script>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    function map_init(map, options) {
-        // Add base layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        // Add trees to the map using latitude and longitude
-        var markers = [];
-        {% for tree in map_trees %}
-        var marker = L.marker([{{ tree.latitude }}, {{ tree.longitude }}]).addTo(map)
-            .bindPopup("<b>Tree {{ tree.tree_id }}</b><br>{{ tree.species }}<br>Planted on {{ tree.planted_date }}");
-        markers.push([{{ tree.latitude }}, {{ tree.longitude }}]);
-        {% endfor %}
-        if (markers.length > 0) {
-            map.fitBounds(markers);
+// Map initialization
+function map_init(map, options) {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    var markers = [];
+    var mapTrees = [];
+    try {
+        mapTrees = JSON.parse(document.getElementById('map-trees-data').textContent);
+    } catch (e) {}
+    mapTrees.forEach(function(tree) {
+        var marker = L.marker([tree.latitude, tree.longitude]).addTo(map)
+            .bindPopup(`<b>Tree ${tree.tree_id}</b><br>${tree.species}<br>Planted on ${tree.planted_date}`);
+        markers.push([tree.latitude, tree.longitude]);
+    });
+    if (markers.length > 0) {
+        map.fitBounds(markers);
+    }
+}
+
+// Chart.js: Trees Planted Per Month
+const treesPlantedData = {
+    labels: {{ month_labels|safe }},
+    datasets: [{
+        label: "Trees Planted",
+    data: {{ trees_month_data|safe }},
+        backgroundColor: "rgba(40, 167, 69, 0.5)",
+        borderColor: "#28a745",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4
+    }]
+};
+const ctxTrees = document.getElementById('treesPlantedChart').getContext('2d');
+new Chart(ctxTrees, {
+    type: 'line',
+    data: treesPlantedData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
         }
     }
+});
+
+const donationsPerMonthData = {
+    labels: {{ month_labels|safe }},
+    datasets: [{
+        label: "Donations (RWF)",
+    data: {{ donations_month_data|safe }},
+        backgroundColor: "rgba(23, 162, 184, 0.5)",
+        borderColor: "#17a2b8",
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4
+    }]
+};
+const ctxDonations = document.getElementById('donationsPerMonthChart').getContext('2d');
+new Chart(ctxDonations, {
+    type: 'bar',
+    data: donationsPerMonthData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
 </script>
 {% endblock %}

@@ -1,8 +1,8 @@
 def thank_you(request):
     return render(request, 'get_involved/thank_you.html')
 from django.shortcuts import render, redirect
-from .models import Partner, Volunteer, Donation
-from .forms import VolunteerForm, DonationForm, PartnerForm
+from .models import Partner, Volunteer
+from .forms import VolunteerForm, PartnerForm
 
 def get_involved(request):
     return render(request, 'get_involved/get_involved.html')
@@ -39,15 +39,4 @@ def volunteers(request):
     volunteers = Volunteer.objects.filter(is_active=True)
     return render(request, 'get_involved/volunteers.html', {'volunteers': volunteers})
 
-def donate(request):
-    if request.method == 'POST':
-        form = DonationForm(request.POST)
-        if form.is_valid():
-            donation = form.save(commit=False)
-            if request.user.is_authenticated:
-                donation.donor = request.user
-            donation.save()
-            return redirect('get_involved:thank_you')
-    else:
-        form = DonationForm()
-    return render(request, 'get_involved/donate.html', {'form': form})
+# The donate view and DonationForm are removed as the Donation model is now only in core. Use the core donation system for all donation logic.

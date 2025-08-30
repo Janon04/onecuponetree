@@ -44,18 +44,3 @@ class Volunteer(models.Model):
             return self.user.get_full_name()
         return f"Volunteer #{self.pk}"
 
-class Donation(models.Model):
-    donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    amount = models.DecimalField(_('amount'), max_digits=10, decimal_places=2)
-    donation_date = models.DateTimeField(_('donation date'), auto_now_add=True)
-    is_recurring = models.BooleanField(_('is recurring'), default=False)
-    payment_method = models.CharField(_('payment method'), max_length=50)
-    notes = models.TextField(_('notes'), blank=True)
-    
-    class Meta:
-        verbose_name = _('Donation')
-        verbose_name_plural = _('Donations')
-        ordering = ['-donation_date']
-    
-    def __str__(self):
-        return f"Donation of {self.amount} by {self.donor}"

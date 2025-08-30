@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}Impact Dashboard | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Our Impact</h1>
+    <p class="lead text-center mb-4">See how your support is making a difference in our community and environment.</p>
+    {% include 'dashboard/impact.html' %}
+</div>
+{% endblock %}
