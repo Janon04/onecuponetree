@@ -1,7 +1,10 @@
+def support_activities_public(request):
+    activities = FarmerSupportActivity.objects.filter(is_public=True).order_by('-date')
+    return render(request, 'farmers/support_activities_public.html', {'activities': activities})
 from django.shortcuts import render, get_object_or_404
 from .models import Farmer, FarmerStory, FarmerSupportActivity
 def farmer_support_list(request):
-    activities = FarmerSupportActivity.objects.select_related('farmer').order_by('-date')
+    activities = FarmerSupportActivity.objects.order_by('-date')
     return render(request, 'farmers/support_list.html', {'activities': activities})
 
 def farmer_list(request):

@@ -22,7 +22,7 @@ class FarmerStoryInline(admin.TabularInline):
 class FarmerAdmin(admin.ModelAdmin):
 	list_display = ("full_name", "household_id", "village_cell", "sector_district", "phone_number", "main_income_source", "is_coop_member")
 	search_fields = ("full_name", "household_id", "phone_number", "village_cell", "sector_district")
-	inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerSupportActivityInline, FarmerStoryInline]
+	inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerStoryInline]
 	from .forms import FarmerForm
 	form = FarmerForm
 
@@ -38,8 +38,11 @@ class HouseholdAssetAdmin(admin.ModelAdmin):
 
 @admin.register(FarmerSupportActivity)
 class FarmerSupportActivityAdmin(admin.ModelAdmin):
-	list_display = ("title", "farmer", "date", "support_type", "is_successful")
-	search_fields = ("title", "support_type", "farmer__full_name")
+	list_display = ("title", "activity_type", "date", "location", "staff", "is_public")
+	list_filter = ("activity_type", "date", "is_public")
+	search_fields = ("title", "description", "location", "outcome")
+	filter_horizontal = ("farmers",)
+	readonly_fields = ("created_at", "updated_at")
 
 @admin.register(FarmerStory)
 class FarmerStoryAdmin(admin.ModelAdmin):

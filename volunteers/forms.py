@@ -1,3 +1,4 @@
+import datetime
 from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models import BaristaTraining, BaristaTrainingApplication
@@ -16,14 +17,81 @@ class BaristaTrainingForm(forms.ModelForm):
         }
 
 class BaristaTrainingEventApplicationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['age'].widget.attrs['readonly'] = True
+    def clean_id_number(self):
+        id_number = self.cleaned_data.get('id_number', '')
+        if not id_number.isdigit() or len(id_number) != 16:
+            raise forms.ValidationError(_('National ID must be exactly 16 digits.'))
+        return id_number
+
+    def clean(self):
+        cleaned_data = super().clean()
+        id_number = cleaned_data.get('id_number', '')
+        # Auto-calculate age from ID if possible (Rwanda NID: 2nd-5th digits = YYYY, 6-7th = MM, 8-9th = DD)
+        if id_number and len(id_number) == 16 and id_number.isdigit():
+            year = int(id_number[1:5])
+            month = int(id_number[5:7])
+            day = int(id_number[7:9])
+            try:
+                birth_date = datetime.date(year, month, day)
+                today = datetime.date.today()
+                age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+                cleaned_data['age'] = age
+                cleaned_data['date_of_birth'] = birth_date
+            except Exception:
+                pass
+        return cleaned_data
     class Meta:
         model = BaristaTrainingApplication
-        fields = ['name', 'email', 'phone', 'motivation']
+        fields = [
+            # 1. Personal Information
+            'full_name', 'date_of_birth', 'age', 'gender', 'nationality', 'id_number',
+            # 2. Contact Information
+            'phone', 'email', 'country', 'province', 'district', 'sector', 'cell', 'village',
+            # 3. Educational & Professional Background
+            'education_level', 'occupation', 'skills_experience',
+            # 4. Training-Specific Information
+            'motivation', 'expected_skills', 'attended_similar', 'attended_similar_details', 'preferred_location', 'availability',
+            # 5. Additional Information
+            'emergency_contact_name', 'emergency_contact_relationship', 'emergency_contact_phone', 'special_needs', 'languages_spoken',
+            # 6. Declaration & Consent
+            'confirm_information', 'agree_participation', 'signature_name', 'signature_date',
+        ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'full_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'nationality': forms.TextInput(attrs={'class': 'form-control'}),
+            'id_number': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Why are you interested in this training?')}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
+            'province': forms.TextInput(attrs={'class': 'form-control'}),
+            'district': forms.TextInput(attrs={'class': 'form-control'}),
+            'sector': forms.TextInput(attrs={'class': 'form-control'}),
+            'cell': forms.TextInput(attrs={'class': 'form-control'}),
+            'village': forms.TextInput(attrs={'class': 'form-control'}),
+            'education_level': forms.TextInput(attrs={'class': 'form-control'}),
+            'occupation': forms.TextInput(attrs={'class': 'form-control'}),
+            'skills_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Why do you want to attend this training?')}),
+            'expected_skills': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': _('What skills or knowledge do you expect to gain?')}),
+            'attended_similar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'attended_similar_details': forms.TextInput(attrs={'class': 'form-control'}),
+            'preferred_location': forms.TextInput(attrs={'class': 'form-control'}),
+            'availability': forms.TextInput(attrs={'class': 'form-control'}),
+            'emergency_contact_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'emergency_contact_relationship': forms.TextInput(attrs={'class': 'form-control'}),
+            'emergency_contact_phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'special_needs': forms.TextInput(attrs={'class': 'form-control'}),
+            'languages_spoken': forms.TextInput(attrs={'class': 'form-control'}),
+            'confirm_information': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'agree_participation': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'signature_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'signature_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
 from django import forms
 from django.utils.translation import gettext_lazy as _

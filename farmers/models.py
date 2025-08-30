@@ -1,8 +1,43 @@
+# --- All imports at the top ---
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from datetime import timedelta
+
+# --- Farmer Support Activity Model ---
+class FarmerSupportActivity(models.Model):
+    ACTIVITY_TYPE_CHOICES = [
+        ('training', _('Training & Education')),
+        ('input', _('Input Distribution')),
+        ('technical', _('Technical Assistance')),
+        ('market', _('Market Access')),
+        ('financial', _('Financial Support')),
+        ('monitoring', _('Monitoring & Evaluation')),
+        ('community', _('Community Building')),
+        ('health', _('Health & Wellbeing')),
+        ('other', _('Other')),
+    ]
+    activity_type = models.CharField(_('Activity Type'), max_length=20, choices=ACTIVITY_TYPE_CHOICES)
+    title = models.CharField(_('Title'), max_length=200)
+    description = models.TextField(_('Description'))
+    date = models.DateField(_('Date'))
+    location = models.CharField(_('Location'), max_length=100, blank=True)
+    staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='support_activities')
+    farmers = models.ManyToManyField('Farmer', blank=True, related_name='support_activities')
+    outcome = models.TextField(_('Outcome/Notes'), blank=True)
+    attachment = models.FileField(_('Attachment (photo, doc, etc.)'), upload_to='support_activities/', blank=True, null=True)
+    is_public = models.BooleanField(_('Show on public site'), default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('Farmer Support Activity')
+        verbose_name_plural = _('Farmer Support Activities')
+        ordering = ['-date', '-created_at']
+
+    def __str__(self):
+        return f"{self.get_activity_type_display()} - {self.title} ({self.date})"
 
 
 # helper: today in UTC+2
@@ -232,22 +267,7 @@ class HouseholdAsset(models.Model):
         return f"{self.asset_type}: {self.description}"
 
 
-# Section J: Support activities
-class FarmerSupportActivity(models.Model):
-    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='support_activities')
-    title = models.CharField(_('title'), max_length=200)
-    description = models.TextField(_('description'), blank=True, null=True)
-    date = models.DateField(_('date'))
-    support_type = models.CharField(_('support type'), max_length=100)
-    is_successful = models.BooleanField(_('is successful'), default=True)
 
-    class Meta:
-        verbose_name = _('Farmer Support Activity')
-        verbose_name_plural = _('Farmer Support Activities')
-        ordering = ['-date']
-
-    def __str__(self):
-        return f"{self.title} ({self.farmer.full_name})"
 
 
 # Farmer Stories

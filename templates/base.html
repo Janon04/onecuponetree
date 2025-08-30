@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -399,7 +399,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
-                <i class="fas fa-coffee me-2"></i>One Cup Initiative
+                <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:40px; margin-right:10px; vertical-align:middle;"> One Cup Initiative
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -419,7 +419,8 @@
                             {% trans "Programs" %}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'farmers:farmer_support_list' %}">{% trans "Farmer Support" %}</a></li>
+                            {# Removed admin-only Farmer Support link from public navigation #}
+                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">{% trans "Youth Barista Academy" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'programs:program_list' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
@@ -467,7 +468,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h5>
-                        <i class="fas fa-coffee me-2"></i>{% trans "One Cup Initiative" %}
+                        <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:32px; margin-right:8px; vertical-align:middle;">{% trans "One Cup Initiative" %}
                     </h5>
                     <p class="mb-3">Empowering coffee farming communities through sustainable practices, fair trade, and education.</p>
                     <div class="social-links">
@@ -482,7 +483,8 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>{% trans "Our Programs" %}</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'farmers:farmer_support_list' %}">{% trans "Farmer Support" %}</a></li>
+                        {# Removed admin-only Farmer Support link from public footer #}
+                        <li><a href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
                         <li><a href="{% url 'volunteers:barista_training_list' %}">{% trans "Barista Academy" %}</a></li>
                         <li><a href="{% url 'programs:program_list' %}">{% trans "Sustainability" %}</a></li>
                         <li><a href="#">{% trans "Tree Campaign" %}</a></li>

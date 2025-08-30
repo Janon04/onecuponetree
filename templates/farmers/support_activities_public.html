@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Farmer Support Activities{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4 text-center">Our Farmer Support Activities</h1>
+  <div class="row g-4">
+    {% for activity in activities %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          {% if activity.attachment %}
+            <img src="{{ activity.attachment.url }}" class="card-img-top" alt="Activity photo">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ activity.title }}</h5>
+            <p class="card-text small mb-2"><i class="fa fa-calendar-alt me-1"></i> {{ activity.date }}</p>
+            <p class="card-text small mb-2"><i class="fa fa-map-marker-alt me-1"></i> {{ activity.location }}</p>
+            <p class="card-text"><span class="badge bg-primary">{{ activity.get_activity_type_display }}</span></p>
+            <p class="card-text flex-grow-1">{{ activity.description|truncatewords:20 }}</p>
+            {% if activity.outcome %}
+              <p class="card-text small mt-2" style="color: rgb(249, 112, 7);">Outcome: {{ activity.outcome|truncatewords:15 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info text-center">No support activities have been published yet. Please check back soon!</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
