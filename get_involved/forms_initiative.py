@@ -1,29 +1,41 @@
 from django import forms
-from .models import Volunteer, Partner
 from django.utils.translation import gettext_lazy as _
+from .models import InitiativeJoin, Partner
+from django.core.exceptions import ValidationError
 
-class VolunteerForm(forms.ModelForm):
+class InitiativeJoinForm(forms.ModelForm):
     class Meta:
-        model = Volunteer
-        fields = ['skills', 'availability', 'interests']
+        model = InitiativeJoin
+        fields = [
+            'join_as', 'full_name', 'gender', 'date_of_birth', 'nationality', 'national_id', 'profile_photo',
+            'org_name', 'org_registration', 'org_type', 'org_contact_person', 'org_website', 'org_logo',
+            'email', 'phone', 'country', 'province', 'district', 'sector', 'cell', 'village', 'how_heard',
+            'purpose', 'skills', 'interests', 'availability', 'motivation', 'amount', 'preferred_location',
+            'dedication_message', 'area_of_expertise', 'willing_to_mentor', 'resources_to_offer',
+            'barista_experience', 'preferred_training', 'consent'
+        ]
         widgets = {
-            'skills': forms.Textarea(attrs={
-                'rows': 3,
-                'placeholder': _('List any relevant skills you have')
-            }),
-            'availability': forms.Select(attrs={
-                'class': 'form-control'
-            }),
-            'interests': forms.Textarea(attrs={
-                'rows': 3,
-                'placeholder': _('What areas are you most interested in?')
-            }),
+            'join_as': forms.RadioSelect,
+            'gender': forms.Select(choices=[('', '---'), ('male', _('Male')), ('female', _('Female')), ('other', _('Other'))]),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'purpose': forms.RadioSelect(choices=[
+                ('volunteer', _('Volunteer')),
+                ('tree_sponsor', _('Tree Sponsor')),
+                ('farmer_supporter', _('Farmer Supporter')),
+                ('barista_academy', _('Barista Academy')),
+                ('partner', _('Partner/Organization')),
+                ('other', _('Other')),
+            ]),
+            'willing_to_mentor': forms.RadioSelect(choices=[(True, _('Yes')), (False, _('No'))]),
+            'consent': forms.CheckboxInput,
         }
-        labels = {
-            'skills': _('Your Skills'),
-            'availability': _('Availability'),
-            'interests': _('Areas of Interest'),
-        }
+
+    def clean_national_id(self):
+        national_id = self.cleaned_data.get('national_id', '')
+        if national_id:
+            if not national_id.isdigit() or len(national_id) != 16:
+                raise ValidationError(_('National ID must be exactly 16 digits.'))
+        return national_id
 
 class PartnerForm(forms.ModelForm):
     class Meta:
@@ -50,7 +62,6 @@ class PartnerForm(forms.ModelForm):
             'partner_type': _('Partner Type'),
             'contact_person': _('Contact Person'),
         }
-
 
 class BaristaTrainingApplicationForm(forms.Form):
     full_name = forms.CharField(

@@ -20,7 +20,7 @@ urlpatterns = [
     path('volunteers/', include(('volunteers.urls', 'volunteers'), namespace='volunteers')),
     path('farmers/', include(('farmers.urls', 'farmers'), namespace='farmers')),
     path('api/', include('api.urls')),
-    path('get-involved/', include(('get_involved.urls', 'get_involved'), namespace='get_involved')),
+    path('get-involved/', include(('get_involved.urls_initiative', 'get_involved'), namespace='get_involved')),
     path('newsletter/', include(('newsletter.urls', 'newsletter'), namespace='newsletter')),
     path('partners/', include(('partners.urls', 'partners'), namespace='partners')),
     path('blogs/', include('blog.urls')),

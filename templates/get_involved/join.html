@@ -4,19 +4,166 @@
 {% block title %}{% trans "Join the Initiative" %}{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-5" style="background-color: #fff;">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <h2 class="fw-bold text-primary mb-4">{% trans "Join the Initiative" %}</h2>
-            <p class="mb-4 text-muted">{% trans "Fill out the form below to become a volunteer and help us make a difference!" %}</p>
-            <form method="post" novalidate>
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary btn-lg mt-3 w-100">
-                    <i class="fas fa-hands-helping me-2"></i>{% trans "Join Now" %}
-                </button>
-            </form>
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
+                <div class="card-body p-5">
+                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
+                        🤝 Join the Initiative
+                    </h1>
+                    <p class="lead text-center mb-4" style="color: #f5f5f5;">
+                        Join our mission! Please fill out the form below to let us know how you want to get involved.
+                    </p>
+
+                    {% if success %}
+                        <div id="join-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
+                            Thank you for joining! We have received your submission.
+                        </div>
+                        <script>
+                            setTimeout(function() {
+                                var alertElem = document.getElementById('join-success-alert');
+                                if (alertElem) { alertElem.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    {% endif %}
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>There were errors in your submission:</strong>
+                            <ul class="mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <!-- 1. Personal Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">1. Personal Information</h4>
+                        <div class="mb-3">
+                            {{ form.join_as.label_tag }}<br>
+                            {{ form.join_as }}
+                        </div>
+                        <div id="individual-fields">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">{{ form.full_name.label_tag }}{{ form.full_name }}</div>
+                                <div class="col-md-6 mb-3">{{ form.gender.label_tag }}{{ form.gender }}</div>
+                                <div class="col-md-6 mb-3">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
+                                <div class="col-md-6 mb-3">{{ form.nationality.label_tag }}{{ form.nationality }}</div>
+                                <div class="col-md-6 mb-3">{{ form.national_id.label_tag }}{{ form.national_id }}</div>
+                                <div class="col-md-6 mb-3">{{ form.occupation.label_tag }}{{ form.occupation }}</div>
+                                <div class="col-md-6 mb-3">{{ form.profile_photo.label_tag }}{{ form.profile_photo }}</div>
+                            </div>
+                        </div>
+                        <div id="organization-fields">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">{{ form.org_name.label_tag }}{{ form.org_name }}</div>
+                                <div class="col-md-6 mb-3">{{ form.org_registration.label_tag }}{{ form.org_registration }}</div>
+                                <div class="col-md-6 mb-3">{{ form.org_type.label_tag }}{{ form.org_type }}</div>
+                                <div class="col-md-6 mb-3">{{ form.org_contact_person.label_tag }}{{ form.org_contact_person }}</div>
+                                <div class="col-md-6 mb-3">{{ form.org_website.label_tag }}{{ form.org_website }}</div>
+                                <div class="col-md-6 mb-3">{{ form.org_logo.label_tag }}{{ form.org_logo }}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">{{ form.email.label_tag }}{{ form.email }}</div>
+                            <div class="col-md-6 mb-3">{{ form.phone.label_tag }}{{ form.phone }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">{{ form.country.label_tag }}{{ form.country }}</div>
+                            <div class="col-md-4 mb-3">{{ form.province.label_tag }}{{ form.province }}</div>
+                            <div class="col-md-4 mb-3">{{ form.district.label_tag }}{{ form.district }}</div>
+                            <div class="col-md-4 mb-3">{{ form.sector.label_tag }}{{ form.sector }}</div>
+                            <div class="col-md-4 mb-3">{{ form.cell.label_tag }}{{ form.cell }}</div>
+                            <div class="col-md-4 mb-3">{{ form.village.label_tag }}{{ form.village }}</div>
+                        </div>
+                        <div class="mb-3">{{ form.how_heard.label_tag }}{{ form.how_heard }}</div>
+
+                        <!-- 2. How Would You Like to Get Involved? -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">2. How Would You Like to Get Involved?</h4>
+                        <div class="mb-3">{{ form.purpose.label_tag }}<br>{{ form.purpose }}</div>
+
+                        <!-- 3. Details Based on Purpose (show/hide with JS) -->
+                        <div id="purpose-volunteer">
+                            <div class="mb-3">{{ form.skills.label_tag }}{{ form.skills }}</div>
+                            <div class="mb-3">{{ form.availability.label_tag }}{{ form.availability }}</div>
+                            <div class="mb-3">{{ form.interests.label_tag }}{{ form.interests }}</div>
+                        </div>
+                        <div id="purpose-tree_sponsor">
+                            <div class="mb-3">{{ form.amount.label_tag }}{{ form.amount }}</div>
+                            <div class="mb-3">{{ form.preferred_location.label_tag }}{{ form.preferred_location }}</div>
+                            <div class="mb-3">{{ form.dedication_message.label_tag }}{{ form.dedication_message }}</div>
+                        </div>
+                        <div id="purpose-farmer_supporter">
+                            <div class="mb-3">{{ form.area_of_expertise.label_tag }}{{ form.area_of_expertise }}</div>
+                            <div class="mb-3">{{ form.willing_to_mentor.label_tag }}{{ form.willing_to_mentor }}</div>
+                            <div class="mb-3">{{ form.resources_to_offer.label_tag }}{{ form.resources_to_offer }}</div>
+                        </div>
+                        <div id="purpose-barista_academy">
+                            <div class="mb-3">{{ form.barista_experience.label_tag }}{{ form.barista_experience }}</div>
+                            <div class="mb-3">{{ form.preferred_training.label_tag }}{{ form.preferred_training }}</div>
+                        </div>
+                        <div id="purpose-partner">
+                            <!-- Already covered in organization fields -->
+                        </div>
+                        <div id="purpose-other">
+                            <div class="mb-3">{{ form.motivation.label_tag }}{{ form.motivation }}</div>
+                        </div>
+
+                        <!-- 4. Motivation/Message -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">3. Motivation</h4>
+                        <div class="mb-3">{{ form.motivation.label_tag }}{{ form.motivation }}</div>
+
+                        <!-- 5. Consent & Confirmation -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">4. Consent & Confirmation</h4>
+                        <div class="form-check mb-2">
+                            {{ form.consent }} {{ form.consent.label_tag }}
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-lg btn-warning fw-bold" style="color: #2c1810;">
+                                <i class="fas fa-hands-helping me-2"></i>{% trans "Join Now" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+// Show/hide fields based on join_as and purpose
+document.addEventListener('DOMContentLoaded', function() {
+    function showFields() {
+        var joinAs = document.querySelector('input[name="join_as"]:checked');
+        var isIndividual = joinAs && joinAs.value === 'individual';
+        var isOrg = joinAs && joinAs.value === 'organization';
+        document.getElementById('individual-fields').style.display = isIndividual ? '' : 'none';
+        document.getElementById('organization-fields').style.display = isOrg ? '' : 'none';
+
+        var purpose = document.querySelector('input[name="purpose"]:checked');
+        var purposes = ['volunteer','tree_sponsor','farmer_supporter','barista_academy','partner','other'];
+        purposes.forEach(function(p) {
+            var el = document.getElementById('purpose-' + p);
+            if (el) el.style.display = (purpose && purpose.value === p) ? '' : 'none';
+        });
+    }
+    document.querySelectorAll('input[name="join_as"]').forEach(function(r) {
+        r.addEventListener('change', showFields);
+    });
+    document.querySelectorAll('input[name="purpose"]').forEach(function(r) {
+        r.addEventListener('change', showFields);
+    });
+    showFields();
+});
+</script>
 {% endblock %}
