@@ -6,9 +6,9 @@
 <div class="container py-5" style="background-color: #fff;">
     <div class="row justify-content-center">
         <div class="col-lg-7 col-md-9">
-            <div class="card shadow border-0 rounded-4" style="background-color: #2c1810; color: #fff;">
+            <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
                 <div class="card-body p-5">
-                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #d2691e;">
+                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
                         📋 DONATION FORM
                     </h1>
                     <p class="lead text-center mb-4" style="color: #f5f5f5;">
@@ -18,13 +18,16 @@
 
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
+                            <div id="donation-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
                                 {{ message }}
                             </div>
-                            <script>
-                                alert("Thank you for your donation! Your support is making a real difference.");
-                            </script>
                         {% endfor %}
+                        <script>
+                            setTimeout(function() {
+                                var alertElem = document.getElementById('donation-success-alert');
+                                if (alertElem) { alertElem.style.display = 'none'; }
+                            }, 5000);
+                        </script>
                     {% endif %}
 
                     <form method="post" novalidate>
@@ -46,7 +49,7 @@
                         {% endif %}
 
                         <!-- 1. Donor Information -->
-                        <h4 class="mt-4 mb-3">1. Donor Information</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">1. Donor Information</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="id_donor_name" class="form-label">Full Name / Organization Name</label>
@@ -76,7 +79,7 @@
                         </div>
 
                         <!-- 2. Donation Details -->
-                        <h4 class="mt-4 mb-3">2. Donation Details</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">2. Donation Details</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Donation Frequency</label><br>
@@ -109,7 +112,7 @@
                         </div>
 
                         <!-- 3. Purpose of Donation (Optional) -->
-                        <h4 class="mt-4 mb-3">3. Purpose of Donation (Optional)</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">3. Purpose of Donation (Optional)</h4>
                         <div class="mb-3">
                             <label class="form-label">I would like my donation to support:</label><br>
                             {{ form.purpose }}
@@ -121,7 +124,7 @@
                         </div>
 
                         <!-- 4. Acknowledgement & Consent -->
-                        <h4 class="mt-4 mb-3">4. Acknowledgement & Consent</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">4. Acknowledgement & Consent</h4>
                         <div class="mb-3">
                             <label class="form-label">Would you like your name to be publicly acknowledged as a donor?</label><br>
                             {{ form.public_acknowledgement }}
@@ -138,7 +141,7 @@
                         </div>
 
                         <!-- 5. Confirmation -->
-                        <h4 class="mt-4 mb-3">5. Confirmation</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">5. Confirmation</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="id_donor_signature" class="form-label">Full Name of Donor (as signature)</label>

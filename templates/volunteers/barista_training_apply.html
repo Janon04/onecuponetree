@@ -1,114 +1,154 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Apply for {{ training.title }} | Barista Training{% endblock %}
 {% block content %}
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-6">
-      <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-5">
-          <h1 class="mb-3">Apply for {{ training.title }}</h1>
-          <form method="post">
-            {% csrf_token %}
-            <h5 class="mb-3">📋 Training Application Form</h5>
-            <p class="text-muted small mb-4">Please fill in all required details. All information will be kept confidential and used only for training purposes.</p>
+            <div class="container py-5" style="background-color: #fff;">
+              <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-9">
+                  <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
+                    <div class="card-body p-5">
+                      <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
+                        📋 Training Application Form
+                      </h1>
+                      <p class="lead text-center mb-4" style="color: #f5f5f5;">
+                        Please fill in all required details. All information will be kept confidential and used only for training purposes.
+                      </p>
 
-            <h6 class="mt-4">1. Personal Information</h6>
-            <div class="row g-2">
-              <div class="col-md-8">{{ form.full_name.label_tag }}{{ form.full_name }}</div>
-              <div class="col-md-4">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
-              <div class="col-md-4">{{ form.age.label_tag }}{{ form.age }}</div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const dobInput = document.getElementById('id_date_of_birth');
-    const ageInput = document.getElementById('id_age');
-    if (ageInput) {
-      ageInput.readOnly = true;
-    }
-    function calculateAge(dateString) {
-      if (!dateString) return '';
-      const today = new Date();
-      const dob = new Date(dateString);
-      let age = today.getFullYear() - dob.getFullYear();
-      const m = today.getMonth() - dob.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
-      return age >= 0 ? age : '';
-    }
-    if (dobInput && ageInput) {
-      dobInput.addEventListener('change', function() {
-        ageInput.value = calculateAge(dobInput.value);
-      });
-      // Set age on page load if dob is already filled
-      if (dobInput.value) {
-        ageInput.value = calculateAge(dobInput.value);
-      }
-    }
-  });
-</script>
-              <div class="col-md-4">{{ form.gender.label_tag }}{{ form.gender }}</div>
-              <div class="col-md-4">{{ form.nationality.label_tag }}{{ form.nationality }}</div>
-              <div class="col-md-6">{{ form.id_number.label_tag }}{{ form.id_number }}</div>
-            </div>
+                      {% if messages %}
+                        {% for message in messages %}
+                          <div id="training-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                        <script>
+                          setTimeout(function() {
+                            var alertElem = document.getElementById('training-success-alert');
+                            if (alertElem) { alertElem.style.display = 'none'; }
+                          }, 5000);
+                        </script>
+                      {% endif %}
 
-            <h6 class="mt-4">2. Contact Information</h6>
-            <div class="row g-2">
-              <div class="col-md-6">{{ form.phone.label_tag }}{{ form.phone }}</div>
-              <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}</div>
-              <div class="col-md-6">{{ form.country.label_tag }}{{ form.country }}</div>
-              <div class="col-md-6">{{ form.province.label_tag }}{{ form.province }}</div>
-              <div class="col-md-6">{{ form.district.label_tag }}{{ form.district }}</div>
-              <div class="col-md-6">{{ form.sector.label_tag }}{{ form.sector }}</div>
-              <div class="col-md-6">{{ form.cell.label_tag }}{{ form.cell }}</div>
-              <div class="col-md-6">{{ form.village.label_tag }}{{ form.village }}</div>
-            </div>
+                      <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% if form.errors %}
+                          <div class="alert alert-danger">
+                            <strong>There were errors in your submission:</strong>
+                            <ul class="mb-0">
+                            {% for field in form %}
+                              {% for error in field.errors %}
+                                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                              {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                              <li>{{ error }}</li>
+                            {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
 
-            <h6 class="mt-4">3. Educational & Professional Background</h6>
-            <div class="row g-2">
-              <div class="col-md-6">{{ form.education_level.label_tag }}{{ form.education_level }}</div>
-              <div class="col-md-6">{{ form.occupation.label_tag }}{{ form.occupation }}</div>
-              <div class="col-12">{{ form.skills_experience.label_tag }}{{ form.skills_experience }}</div>
-            </div>
+                        <!-- 1. Personal Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">1. Personal Information</h4>
+                        <div class="row g-2">
+                          <div class="col-md-8">{{ form.full_name.label_tag }}{{ form.full_name }}</div>
+                          <div class="col-md-4">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
+                          <div class="col-md-4">{{ form.age.label_tag }}{{ form.age }}</div>
+                          <div class="col-md-4">{{ form.gender.label_tag }}{{ form.gender }}</div>
+                          <div class="col-md-4">{{ form.nationality.label_tag }}{{ form.nationality }}</div>
+                          <div class="col-md-6">{{ form.id_number.label_tag }}{{ form.id_number }}</div>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                          const dobInput = document.getElementById('id_date_of_birth');
+                          const ageInput = document.getElementById('id_age');
+                          if (ageInput) {
+                            ageInput.readOnly = true;
+                          }
+                          function calculateAge(dateString) {
+                            if (!dateString) return '';
+                            const today = new Date();
+                            const dob = new Date(dateString);
+                            let age = today.getFullYear() - dob.getFullYear();
+                            const m = today.getMonth() - dob.getMonth();
+                            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                              age--;
+                            }
+                            return age >= 0 ? age : '';
+                          }
+                          if (dobInput && ageInput) {
+                            dobInput.addEventListener('change', function() {
+                              ageInput.value = calculateAge(dobInput.value);
+                            });
+                            if (dobInput.value) {
+                              ageInput.value = calculateAge(dobInput.value);
+                            }
+                          }
+                        });
+                        </script>
 
-            <h6 class="mt-4">4. Training-Specific Information</h6>
-            <div class="row g-2">
-              <div class="col-12">{{ form.motivation.label_tag }}{{ form.motivation }}</div>
-              <div class="col-12">{{ form.expected_skills.label_tag }}{{ form.expected_skills }}</div>
-              <div class="col-md-6">{{ form.attended_similar.label_tag }} {{ form.attended_similar }}</div>
-              <div class="col-md-6">{{ form.attended_similar_details.label_tag }}{{ form.attended_similar_details }}</div>
-              <div class="col-md-6">{{ form.preferred_location.label_tag }}{{ form.preferred_location }}</div>
-              <div class="col-md-6">{{ form.availability.label_tag }}{{ form.availability }}</div>
-            </div>
+                        <!-- 2. Contact Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">2. Contact Information</h4>
+                        <div class="row g-2">
+                          <div class="col-md-6">{{ form.phone.label_tag }}{{ form.phone }}</div>
+                          <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}</div>
+                          <div class="col-md-6">{{ form.country.label_tag }}{{ form.country }}</div>
+                          <div class="col-md-6">{{ form.province.label_tag }}{{ form.province }}</div>
+                          <div class="col-md-6">{{ form.district.label_tag }}{{ form.district }}</div>
+                          <div class="col-md-6">{{ form.sector.label_tag }}{{ form.sector }}</div>
+                          <div class="col-md-6">{{ form.cell.label_tag }}{{ form.cell }}</div>
+                          <div class="col-md-6">{{ form.village.label_tag }}{{ form.village }}</div>
+                        </div>
 
-            <h6 class="mt-4">5. Additional Information</h6>
-            <div class="row g-2">
-              <div class="col-md-6">{{ form.emergency_contact_name.label_tag }}{{ form.emergency_contact_name }}</div>
-              <div class="col-md-6">{{ form.emergency_contact_relationship.label_tag }}{{ form.emergency_contact_relationship }}</div>
-              <div class="col-md-6">{{ form.emergency_contact_phone.label_tag }}{{ form.emergency_contact_phone }}</div>
-              <div class="col-md-6">{{ form.special_needs.label_tag }}{{ form.special_needs }}</div>
-              <div class="col-12">{{ form.languages_spoken.label_tag }}{{ form.languages_spoken }}</div>
-            </div>
+                        <!-- 3. Educational & Professional Background -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">3. Educational & Professional Background</h4>
+                        <div class="row g-2">
+                          <div class="col-md-6">{{ form.education_level.label_tag }}{{ form.education_level }}</div>
+                          <div class="col-md-6">{{ form.occupation.label_tag }}{{ form.occupation }}</div>
+                          <div class="col-12">{{ form.skills_experience.label_tag }}{{ form.skills_experience }}</div>
+                        </div>
 
-            <h6 class="mt-4">6. Declaration & Consent</h6>
-            <div class="form-check mb-2">
-              {{ form.confirm_information }} {{ form.confirm_information.label_tag }}
-            </div>
-            <div class="form-check mb-2">
-              {{ form.agree_participation }} {{ form.agree_participation.label_tag }}
-            </div>
-            <div class="row g-2">
-              <div class="col-md-8">{{ form.signature_name.label_tag }}{{ form.signature_name }}</div>
-              <div class="col-md-4">{{ form.signature_date.label_tag }}{{ form.signature_date }}</div>
-            </div>
+                        <!-- 4. Training-Specific Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">4. Training-Specific Information</h4>
+                        <div class="row g-2">
+                          <div class="col-12">{{ form.motivation.label_tag }}{{ form.motivation }}</div>
+                          <div class="col-12">{{ form.expected_skills.label_tag }}{{ form.expected_skills }}</div>
+                          <div class="col-md-6">{{ form.attended_similar.label_tag }} {{ form.attended_similar }}</div>
+                          <div class="col-md-6">{{ form.attended_similar_details.label_tag }}{{ form.attended_similar_details }}</div>
+                          <div class="col-md-6">{{ form.preferred_location.label_tag }}{{ form.preferred_location }}</div>
+                          <div class="col-md-6">{{ form.availability.label_tag }}{{ form.availability }}</div>
+                        </div>
 
-            <button type="submit" class="btn btn-primary mt-4">Submit Application</button>
-          </form>
-        </div>
-      </div>
-      <div class="mt-4">
-        <a href="{% url 'volunteers:barista_training_detail' training.pk %}" class="btn btn-outline-secondary">Back to Training Details</a>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+                        <!-- 5. Additional Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">5. Additional Information</h4>
+                        <div class="row g-2">
+                          <div class="col-md-6">{{ form.emergency_contact_name.label_tag }}{{ form.emergency_contact_name }}</div>
+                          <div class="col-md-6">{{ form.emergency_contact_relationship.label_tag }}{{ form.emergency_contact_relationship }}</div>
+                          <div class="col-md-6">{{ form.emergency_contact_phone.label_tag }}{{ form.emergency_contact_phone }}</div>
+                          <div class="col-md-6">{{ form.special_needs.label_tag }}{{ form.special_needs }}</div>
+                          <div class="col-12">{{ form.languages_spoken.label_tag }}{{ form.languages_spoken }}</div>
+                        </div>
+
+                        <!-- 6. Declaration & Consent -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">6. Declaration & Consent</h4>
+                        <div class="form-check mb-2">
+                          {{ form.confirm_information }} {{ form.confirm_information.label_tag }}
+                        </div>
+                        <div class="form-check mb-2">
+                          {{ form.agree_participation }} {{ form.agree_participation.label_tag }}
+                        </div>
+                        <div class="row g-2">
+                          <div class="col-md-8">{{ form.signature_name.label_tag }}{{ form.signature_name }}</div>
+                          <div class="col-md-4">{{ form.signature_date.label_tag }}{{ form.signature_date }}</div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                          <button type="submit" class="btn btn-lg btn-warning fw-bold" style="color: #2c1810;">Submit Application</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <a href="{% url 'volunteers:barista_training_detail' training.pk %}" class="btn btn-outline-secondary">Back to Training Details</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endblock %}
