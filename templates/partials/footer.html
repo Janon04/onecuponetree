@@ -9,7 +9,7 @@
         </li>
         {% endif %}
 {% load i18n %}
-<footer class="footer bg-dark text-light pt-5 pb-3 mt-5">
+<footer class="footer bg-dark text-light pt-3 pb-1 mt-5 footer-small">
     <div class="container">
         <div class="row mb-4">
             <!-- Initiative name and description removed as requested -->
@@ -20,9 +20,9 @@
                     <a href="https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ" class="me-3" title="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube fa-lg"></i> YouTube</a>
                 </div>
             
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                <h6 class="text-uppercase mb-3">{% trans "Activities" %}</h6>
-                <ul class="list-unstyled">
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0 footer-small">
+                <h6 class="text-uppercase mb-3 footer-small">{% trans "Activities" %}</h6>
+                <ul class="list-unstyled footer-small">
                     <li><a href="{% url 'farmers:farmer_support_list' %}" class="text-light text-decoration-none small">{% trans "Farmer Support" %}</a></li>
                     <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none small">{% trans "Barista Academy" %}</a></li>
                     <li><a href="{% url 'programs:program_list' %}" class="text-light text-decoration-none small">{% trans "Programs" %}</a></li>
@@ -30,41 +30,70 @@
                     <li><a href="{% url 'newsletter:newsletter_list' %}" class="text-light text-decoration-none small">{% trans "Newsletters" %}</a></li>
                 </ul>
             </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                <h6 class="text-uppercase mb-3">{% trans "Get Involved" %}</h6>
-                <ul class="list-unstyled">
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0 footer-small">
+                <h6 class="text-uppercase mb-3 footer-small">{% trans "Get Involved" %}</h6>
+                <ul class="list-unstyled footer-small">
                     <li><a href="{% url 'volunteers:opportunities' %}" class="text-light text-decoration-none small">{% trans "Volunteer" %}</a></li>
                     <li><a href="{% url 'partners:partner_list' %}" class="text-light text-decoration-none small">{% trans "Partners" %}</a></li>
                     <li><a href="{% url 'core:donate' %}" class="text-light text-decoration-none small">{% trans "Donate" %}</a></li>
                 </ul>
             </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                <h6 class="text-uppercase mb-3">{% trans "Resources" %}</h6>
-                <ul class="list-unstyled">
+            <div class="col-lg-2 col-md-4 mb-4 mb-lg-0 footer-small">
+                <h6 class="text-uppercase mb-3 footer-small">{% trans "Resources" %}</h6>
+                <ul class="list-unstyled footer-small">
                     <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none small">{% trans "Blog" %}</a></li>
                     <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none small">{% trans "Events" %}</a></li>
                     <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none small">{% trans "Gallery" %}</a></li>
                 </ul>
             </div>
-            <div class="col-lg-2 col-md-6">
-                <h6 class="text-uppercase mb-3">{% trans "Contact" %}</h6>
-                <ul class="list-unstyled small">
+            <div class="col-lg-2 col-md-6 footer-small">
+                <h6 class="text-uppercase mb-3 footer-small">{% trans "Contact" %}</h6>
+                <ul class="list-unstyled small footer-small">
                     <li><i class="fas fa-envelope me-2"></i>info@onecuponetree.org</li>
-                    <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
-                    <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
+                    <li><i class="fas fa-phone me-2"></i>+250 788 354 403</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
+                    <li>
+                        <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
+                            <i class="fas fa-map me-2"></i>{% trans "View on Google Maps" %}
+                        </a>
+                    </li>
                 </ul>
             </div>
-        </div>
+
+
+                <!-- Google Map Location (Footer) -->
+                <div class="row justify-content-center my-4">
+                        <div class="col-12 col-md-6">
+                                <div class="map-responsive" style="overflow:hidden; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.10); height:220px; position:relative;">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.668393964393!2d30.1025397!3d-1.9553987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca7d7008f0575%3A0x57abf3f2b852188d!2sOne%20Cup%20Coffeehouse!5e0!3m2!1sen!2s!4v1690000000000!5m2!1sen!2s"
+                                        width="100%"
+                                        height="220"
+                                        style="border:0; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:12px;"
+                                        allowfullscreen=""
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                </div>
+                        </div>
+                </div>
+
         <hr class="bg-secondary">
-        <div class="row align-items-center">
-            <div class="col-md-6 small">
-                <p class="mb-0">&copy; 2025 {% trans "One Cup One Tree Initiative" %}. {% trans "All rights reserved." %}</p>
+        <div class="row justify-content-center footer-small">
+            <div class="col-12 text-center footer-small">
+                <p class="mb-2 footer-small">&copy; 2025 {% trans "One Cup One Tree Initiative" %}. {% trans "All rights reserved." %}</p>
+                <div>
+                    <a href="#" class="text-light text-decoration-none me-3 footer-small">{% trans "Privacy Policy" %}</a>
+                    <a href="#" class="text-light text-decoration-none footer-small">{% trans "Terms of Service" %}</a>
+                </div>
             </div>
-            <div class="col-md-6 text-md-end small">
-                <a href="#" class="text-light text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
-                <a href="#" class="text-light text-decoration-none">{% trans "Terms of Service" %}</a>
-            </div>
+        </div>
         </div>
     </div>
+<style>
+    .footer-small, .footer .list-unstyled, .footer ul, .footer li, .footer a, .footer p, .footer span, .footer address {
+        font-size: 0.92rem !important;
+    }
+</style>
 </footer>
 

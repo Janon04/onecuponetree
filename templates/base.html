@@ -309,11 +309,14 @@
         }
         
         /* Footer Styles */
+        .footer-small, .footer .list-unstyled, .footer ul, .footer li, .footer a, .footer p, .footer span, .footer address {
+            font-size: 0.92rem !important;
+        }
 
         .footer {
             background-color: #4b2e1a;
             color: #e0ddd8;
-            padding: 4rem 0 1.5rem;
+            padding: 1.2rem 0 0.3rem;
         }
         
         .footer h5, .footer h6 {
@@ -534,22 +537,21 @@
                     <h6>{% trans "Contact Us" %}</h6>
                     <ul class="list-unstyled">
                         <li><i class="fas fa-envelope me-2"></i>info@onecupinitiative.org</li>
-                        <li><i class="fas fa-phone me-2"></i>+250 786 003 139</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i>Kigali, Rwanda</li>
+                        <li><i class="fas fa-phone me-2"></i>+250 788 354 403</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
+                            <li>
+                                <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
+                                    <i class="fas fa-map me-2"></i>{% trans "View on Google Maps" %}
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
             
-            <hr class="my-4">
-            
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 One Cup Initiative. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-decoration-none me-3">{% trans "Privacy Policy" %}</a>
-                    <a href="#" class="text-decoration-none me-3">{% trans "Terms of Service" %}</a>
-                    <a href="#" class="text-decoration-none">{% trans "Sitemap" %}</a>
+            <hr class="bg-secondary">
+            <div class="row justify-content-center footer-small">
+                <div class="col-12 text-center footer-small">
+                    <p class="mb-2 footer-small">&copy; 2025 One Cup Initiative. All rights reserved.</p>
                 </div>
             </div>
         </div>
