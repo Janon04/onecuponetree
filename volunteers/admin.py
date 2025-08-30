@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import BaristaTrainee, VolunteerOpportunity, VolunteerApplication
+from .models import VolunteerOpportunity, VolunteerApplication, BaristaTraining, BaristaTrainingApplication
 
-admin.site.register(BaristaTrainee)
 admin.site.register(VolunteerOpportunity)
 admin.site.register(VolunteerApplication)
+admin.site.register(BaristaTraining)
+admin.site.register(BaristaTrainingApplication)

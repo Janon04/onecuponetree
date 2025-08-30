@@ -1,6 +1,33 @@
+from django.utils.translation import gettext_lazy as _
+from django import forms
+from .models import BaristaTraining, BaristaTrainingApplication
+
+class BaristaTrainingForm(forms.ModelForm):
+    class Meta:
+        model = BaristaTraining
+        fields = ['title', 'description', 'date', 'location', 'banner', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'banner': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class BaristaTrainingEventApplicationForm(forms.ModelForm):
+    class Meta:
+        model = BaristaTrainingApplication
+        fields = ['name', 'email', 'phone', 'motivation']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Why are you interested in this training?')}),
+        }
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import VolunteerOpportunity, VolunteerApplication, BaristaTrainee
+from .models import VolunteerOpportunity, VolunteerApplication
 from accounts.models import User
 
 class VolunteerApplicationForm(forms.ModelForm):
@@ -88,51 +115,7 @@ class VolunteerOpportunityForm(forms.ModelForm):
             'is_active': _('Is this opportunity currently available?')
         }
 
-class BaristaTrainingApplicationForm(forms.ModelForm):
-    experience = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'rows': 3,
-            'class': 'form-control',
-            'placeholder': _('Any previous coffee-related experience')
-        }),
-        required=False,
-        label=_('Coffee Experience')
-    )
-    
-    why_interested = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'rows': 4,
-            'class': 'form-control',
-            'placeholder': _('Why are you interested in becoming a barista?')
-        }),
-        label=_('Motivation')
-    )
-    
-    training_center = forms.ChoiceField(
-        choices=[
-            ('kigali', _('Kigali Training Center')),
-            ('rubavu', _('Rubavu Training Center')),
-            ('huye', _('Huye Training Center'))
-        ],
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        label=_('Preferred Training Location')
-    )
 
-    class Meta:
-        model = BaristaTrainee
-        fields = ['user', 'training_center', 'experience', 'why_interested']
-        widgets = {
-            'user': forms.HiddenInput()
-        }
-        labels = {
-            'training_center': _('Training Center'),
-            'why_interested': _('Why do you want to join the program?')
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance and getattr(self.instance, 'user_id', None):
-            self.fields['user'].initial = self.instance.user.id
 
 class VolunteerFilterForm(forms.Form):
     STATUS_CHOICES = [

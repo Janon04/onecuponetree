@@ -2,21 +2,45 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 
-class BaristaTrainee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    training_center = models.CharField(_('training center'), max_length=100)
-    start_date = models.DateField(_('start date'))
-    end_date = models.DateField(_('end date'), null=True, blank=True)
-    graduated = models.BooleanField(_('graduated'), default=False)
-    internship_location = models.CharField(_('internship location'), max_length=100, blank=True)
-    notes = models.TextField(_('notes'), blank=True)
-    
+class BaristaTraining(models.Model):
+    title = models.CharField(_('title'), max_length=200)
+    description = models.TextField(_('description'))
+    date = models.DateField(_('training date'))
+    location = models.CharField(_('location'), max_length=100)
+    banner = models.ImageField(_('banner or pullup'), upload_to='barista_training_banners/', blank=True, null=True)
+    is_active = models.BooleanField(_('is active'), default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
-        verbose_name = _('Barista Trainee')
-        verbose_name_plural = _('Barista Trainees')
-    
+        verbose_name = _('Barista Training')
+        verbose_name_plural = _('Barista Trainings')
+        ordering = ['-date']
+
     def __str__(self):
-        return self.user.get_full_name()
+        return f"{self.title} ({self.date})"
+
+
+class BaristaTrainingApplication(models.Model):
+    training = models.ForeignKey(BaristaTraining, on_delete=models.CASCADE, related_name='applications')
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    name = models.CharField(_('name'), max_length=100)
+    email = models.EmailField(_('email'))
+    phone = models.CharField(_('phone'), max_length=30, blank=True)
+    motivation = models.TextField(_('motivation'), blank=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('Barista Training Application')
+        verbose_name_plural = _('Barista Training Applications')
+        ordering = ['-applied_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.training.title}"
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from accounts.models import User
+
 
 class VolunteerOpportunity(models.Model):
     title = models.CharField(_('title'), max_length=200)

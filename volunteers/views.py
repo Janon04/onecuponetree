@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from .models import VolunteerOpportunity, VolunteerApplication, BaristaTrainee
-from .forms import VolunteerApplicationForm, BaristaTrainingApplicationForm
+from .models import VolunteerOpportunity, VolunteerApplication, BaristaTraining, BaristaTrainingApplication
+from .forms import VolunteerApplicationForm, BaristaTrainingEventApplicationForm
 
 def volunteer_opportunities(request):
     opportunities = VolunteerOpportunity.objects.filter(is_active=True)
@@ -35,16 +35,28 @@ def apply_opportunity(request, pk):
         'opportunity': opportunity,
     })
 
-def barista_training(request):
+
+# --- New Barista Training Event Views ---
+def barista_training_list(request):
+    trainings = BaristaTraining.objects.filter(is_active=True).order_by('-date')
+    return render(request, 'volunteers/barista_training_list.html', {'trainings': trainings})
+
+def barista_training_detail(request, pk):
+    training = get_object_or_404(BaristaTraining, pk=pk, is_active=True)
+    return render(request, 'volunteers/barista_training_detail.html', {'training': training})
+
+def barista_training_apply(request, pk):
+    training = get_object_or_404(BaristaTraining, pk=pk, is_active=True)
     if request.method == 'POST':
-        form = BaristaTrainingApplicationForm(request.POST)
+        form = BaristaTrainingEventApplicationForm(request.POST)
         if form.is_valid():
-            trainee = form.save(commit=False)
+            application = form.save(commit=False)
+            application.training = training
             if request.user.is_authenticated:
-                trainee.user = request.user
-            trainee.save()
-            messages.success(request, _("Thank you for applying to the Barista Training Program!"))
-            return redirect('volunteers:barista_training')
+                application.user = request.user
+            application.save()
+            messages.success(request, _(f"Thank you for applying to {training.title}!"))
+            return redirect('volunteers:barista_training_list')
     else:
-        form = BaristaTrainingApplicationForm()
-    return render(request, 'volunteers/barista_training.html', {'form': form})
+        form = BaristaTrainingEventApplicationForm()
+    return render(request, 'volunteers/barista_training_apply.html', {'form': form, 'training': training})

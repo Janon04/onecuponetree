@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Apply for {{ training.title }} | Barista Training{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-5">
+          <h1 class="mb-3">Apply for {{ training.title }}</h1>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
+          </form>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="{% url 'volunteers:barista_training_detail' training.pk %}" class="btn btn-outline-secondary">Back to Training Details</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

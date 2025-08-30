@@ -3,7 +3,6 @@ from django.db.models import Sum
 from .models import ImpactStat, Testimonial
 from trees.models import Tree
 from farmers.models import Farmer
-from volunteers.models import BaristaTrainee
 from core.models import Donation
 
 def impact_dashboard(request):
@@ -12,7 +11,7 @@ def impact_dashboard(request):
     stats = {
         'trees_planted': Tree.objects.filter(is_active=True).count(),
         'farmers_supported': Farmer.objects.count(),
-        'youth_trained': BaristaTrainee.objects.filter(graduated=True).count(),
+        # 'youth_trained': BaristaTrainee.objects.filter(graduated=True).count(),
         'total_donations': Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0,
         'recent_donations': Donation.objects.filter(payment_status='paid').order_by('-created_at')[:5],
     }
