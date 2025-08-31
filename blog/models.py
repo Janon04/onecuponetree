@@ -21,6 +21,7 @@ class BlogPost(models.Model):
     description = models.TextField(_('description'), blank=True, null=True)
     content = models.TextField(_('content'))
     featured_image = models.ImageField(_('featured image'), upload_to='blog/', null=True, blank=True)
+    video = models.FileField(_('video'), upload_to='blog/videos/', null=True, blank=True, help_text=_('Upload a short video (mp4, mov, webm, max 50MB)'))
     is_published = models.BooleanField(_('is published'), default=False)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)

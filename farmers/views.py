@@ -1,3 +1,6 @@
+def story_list(request):
+    stories = FarmerStory.objects.filter(is_published=True).order_by('-created_at')
+    return render(request, 'farmers/story_list.html', {'stories': stories})
 def support_activities_public(request):
     activities = FarmerSupportActivity.objects.filter(is_public=True).order_by('-date')
     return render(request, 'farmers/support_activities_public.html', {'activities': activities})

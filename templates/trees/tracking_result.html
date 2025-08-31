@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h3>{{ tree.get_species_display }}</h3>
-                            <p class="text-muted">ID: {{ tree.tree_id }}</p>
+                            {# <p class="text-muted">ID: {{ tree.tree_id }}</p> #}
                             
                             <ul class="list-group list-group-flush mb-4">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -49,7 +49,12 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            {% if tree.photo %}
+                            {% if tree.video %}
+                            <video class="img-fluid rounded mb-3" controls style="width:100%;height:auto;max-height:220px;object-fit:cover;">
+                                <source src="{{ tree.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            {% elif tree.photo %}
                             <img src="{{ tree.photo.url }}" alt="Tree {{ tree.tree_id }}" class="img-fluid rounded mb-3">
                             {% endif %}
                             

@@ -227,7 +227,7 @@ class Farmer(models.Model):
         verbose_name_plural = _('Farmers')
 
     def __str__(self):
-        return f"{self.full_name} ({self.household_id})"
+        return f"{self.full_name}" if self.full_name else super().__str__()
 
     def clean(self):
         if self.household_id and (len(self.household_id) != 16 or not self.household_id.isdigit()):
@@ -276,6 +276,7 @@ class FarmerStory(models.Model):
     title = models.CharField(_('title'), max_length=200)
     content = models.TextField(_('content'))
     photo = models.ImageField(_('photo'), upload_to='farmer_stories/', blank=True, null=True)
+    video = models.FileField(_('video'), upload_to='farmer_stories/videos/', blank=True, null=True, help_text=_('Upload a short video (mp4, mov, webm, max 50MB)'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     is_published = models.BooleanField(_('is published'), default=True)
 

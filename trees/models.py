@@ -42,6 +42,13 @@ class Tree(models.Model):
         null=True, 
         blank=True
     )
+    video = models.FileField(
+        _('Video'),
+        upload_to='trees/videos/',
+        null=True,
+        blank=True,
+        help_text=_('Upload a short video (mp4, mov, webm, max 50MB)')
+    )
     co2_offset = models.DecimalField(
         _('CO₂ Offset (kg)'), 
         max_digits=10, 

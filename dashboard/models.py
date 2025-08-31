@@ -21,6 +21,7 @@ class Testimonial(models.Model):
     role = models.CharField(_('role'), max_length=100, blank=True)
     content = models.TextField(_('content'))
     photo = models.ImageField(_('photo'), upload_to='testimonials/', blank=True, null=True)
+    video = models.FileField(_('video'), upload_to='testimonials/videos/', blank=True, null=True, help_text=_('Upload a short video testimonial (mp4, mov, webm, max 50MB)'))
     is_featured = models.BooleanField(_('is featured'), default=False)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     

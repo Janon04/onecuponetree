@@ -36,6 +36,12 @@ class Event(models.Model):
 		blank=True,
 		help_text=_('Event image or banner')
 	)
+	video = models.FileField(
+		upload_to='events/videos/',
+		null=True,
+		blank=True,
+		help_text=_('Upload a short video (mp4, mov, webm, max 50MB)')
+	)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

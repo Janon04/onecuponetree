@@ -8,6 +8,8 @@ class BaristaTraining(models.Model):
     date = models.DateField(_('training date'))
     location = models.CharField(_('location'), max_length=100)
     banner = models.ImageField(_('banner or pullup'), upload_to='barista_training_banners/', blank=True, null=True)
+    image = models.ImageField(_('image'), upload_to='barista_training/images/', blank=True, null=True)
+    video = models.FileField(_('video'), upload_to='barista_training/videos/', blank=True, null=True, help_text=_('Upload a short video (mp4, mov, webm, max 50MB)'))
     is_active = models.BooleanField(_('is active'), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

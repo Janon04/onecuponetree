@@ -8,7 +8,14 @@
         {% for image in images %}
         <div class="col-md-4 col-lg-3">
             <div class="card h-100 border-0 shadow-sm">
-                <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.title }}">
+                {% if image.video %}
+                    <video class="card-img-top" controls style="width:100%;height:auto;max-height:220px;object-fit:cover;">
+                        <source src="{{ image.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% elif image.image %}
+                    <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.title }}">
+                {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ image.title }}</h5>
                     {% if image.description %}

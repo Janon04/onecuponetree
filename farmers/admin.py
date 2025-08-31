@@ -44,7 +44,22 @@ class FarmerSupportActivityAdmin(admin.ModelAdmin):
 	filter_horizontal = ("farmers",)
 	readonly_fields = ("created_at", "updated_at")
 
+from django.utils.html import format_html
+
 @admin.register(FarmerStory)
 class FarmerStoryAdmin(admin.ModelAdmin):
-	list_display = ("title", "farmer", "created_at", "is_published")
+	list_display = ("title", "farmer", "created_at", "is_published", "media_preview")
 	search_fields = ("title", "farmer__full_name")
+	readonly_fields = ("media_preview",)
+	fieldsets = (
+		(None, {
+			'fields': ("farmer", "title", "content", "photo", "video", "media_preview", "is_published")
+		}),
+	)
+	def media_preview(self, obj):
+		if obj.video:
+			return format_html('<video width="180" controls><source src="{}" type="video/mp4">Your browser does not support the video tag.</video>', obj.video.url)
+		elif obj.photo:
+			return format_html('<img src="{}" width="120" />', obj.photo.url)
+		return ""
+	media_preview.short_description = 'Preview'

@@ -1,8 +1,20 @@
 from django.contrib import admin
 from .models import Program
 
+from django.utils.html import format_html
+
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
-	list_display = ('name', 'is_active', 'created_at')
+	list_display = ('name', 'is_active', 'created_at', 'media_preview')
 	search_fields = ('name', 'description')
 	list_filter = ('is_active',)
+
+	readonly_fields = ('media_preview',)
+
+	def media_preview(self, obj):
+		if obj.video:
+			return format_html('<video width="120" controls><source src="{}" type="video/mp4">Your browser does not support the video tag.</video>', obj.video.url)
+		elif obj.image:
+			return format_html('<img src="{}" width="120" style="object-fit:cover;" />', obj.image.url)
+		return ""
+	media_preview.short_description = 'Media Preview'

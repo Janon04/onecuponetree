@@ -8,6 +8,14 @@
         {% for program in programs %}
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm text-center">
+                {% if program.video %}
+                    <video class="card-img-top" controls style="width:100%;height:auto;max-height:220px;object-fit:cover;">
+                        <source src="{{ program.video.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% elif program.image %}
+                    <img src="{{ program.image.url }}" class="card-img-top" alt="{{ program.name }}">
+                {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ program.name }}</h5>
                     {% if program.description %}
