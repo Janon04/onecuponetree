@@ -47,6 +47,18 @@ def today_utc_plus_2():
 
 # Section A & B: Household Identification & Head Information
 class Farmer(models.Model):
+    # --- Sponsor a Farm fields ---
+    sponsorship_goal = models.DecimalField(_('Sponsorship Goal (USD)'), max_digits=10, decimal_places=2, null=True, blank=True, help_text=_('Target amount for farm sponsorship'))
+    sponsorship_received = models.DecimalField(_('Sponsorship Received (USD)'), max_digits=10, decimal_places=2, default=0, help_text=_('Total amount received for sponsorship'))
+    sponsorship_description = models.TextField(_('Sponsorship Description'), blank=True, help_text=_('Public info for sponsors'))
+    sponsorship_is_active = models.BooleanField(_('Sponsorship Active'), default=False, help_text=_('Is this farm open for sponsorship?'))
+    sponsorship_logo = models.ImageField(_('Sponsorship Logo'), upload_to='farm_sponsorships/logos/', blank=True, null=True)
+    sponsorship_video = models.FileField(_('Sponsorship Video'), upload_to='farm_sponsorships/videos/', blank=True, null=True, help_text=_('Optional video for sponsors'))
+
+    def sponsorship_progress(self):
+        if self.sponsorship_goal and self.sponsorship_goal > 0:
+            return min(100, int((self.sponsorship_received / self.sponsorship_goal) * 100))
+        return 0
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     household_id = models.CharField(
@@ -287,3 +299,43 @@ class FarmerStory(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.farmer}"
+
+
+# --- Sponsor a Farm models (moved from models_farm_sponsor.py) ---
+class Farm(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    location = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to="farm_images/", blank=True, null=True)
+    video = models.FileField(upload_to="farm_videos/", blank=True, null=True)
+    sponsorship_is_active = models.BooleanField(default=True, help_text="Is this farm open for sponsorship?")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    def total_sponsorship_amount(self):
+        return sum(s.amount for s in self.sponsorships.filter(status='completed'))
+
+    def sponsorship_count(self):
+        return self.sponsorships.filter(status='completed').count()
+
+class FarmSponsorship(models.Model):
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("completed", "Completed"),
+        ("failed", "Failed"),
+    ]
+    farm = models.ForeignKey(Farm, related_name="sponsorships", on_delete=models.CASCADE)
+    sponsor_name = models.CharField(max_length=255, blank=True, help_text="Optional public sponsor name")
+    sponsor_email = models.EmailField(blank=True, help_text="For receipt/confirmation, not shown publicly")
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    message = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Sponsorship for {self.farm.name} - {self.amount} ({self.status})"

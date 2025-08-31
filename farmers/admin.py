@@ -1,6 +1,7 @@
 
 from django.contrib import admin
 from .models import Farmer, HouseholdMember, HouseholdAsset, FarmerSupportActivity, FarmerStory
+from .models import Farm, FarmSponsorship
 
 class HouseholdMemberInline(admin.TabularInline):
 	model = HouseholdMember
@@ -63,3 +64,32 @@ class FarmerStoryAdmin(admin.ModelAdmin):
 			return format_html('<img src="{}" width="120" />', obj.photo.url)
 		return ""
 	media_preview.short_description = 'Preview'
+
+# --- Sponsor a Farm admin ---
+@admin.register(Farm)
+class FarmAdmin(admin.ModelAdmin):
+	list_display = ("name", "location", "is_active", "created_at", "total_sponsorship_amount", "sponsorship_count")
+	search_fields = ("name", "location")
+	list_filter = ("is_active",)
+	readonly_fields = ("created_at", "updated_at", "total_sponsorship_amount", "sponsorship_count", "image_preview", "video_preview")
+
+	def image_preview(self, obj):
+		if obj.image:
+			return f'<img src="{obj.image.url}" style="max-height:100px;" />'
+		return ""
+	image_preview.allow_tags = True
+	image_preview.short_description = "Image Preview"
+
+	def video_preview(self, obj):
+		if obj.video:
+			return f'<video src="{obj.video.url}" style="max-height:100px;" controls></video>'
+		return ""
+	video_preview.allow_tags = True
+	video_preview.short_description = "Video Preview"
+
+@admin.register(FarmSponsorship)
+class FarmSponsorshipAdmin(admin.ModelAdmin):
+	list_display = ("farm", "sponsor_name", "amount", "status", "created_at")
+	search_fields = ("farm__name", "sponsor_name", "sponsor_email")
+	list_filter = ("status", "created_at")
+	readonly_fields = ("created_at", "updated_at")
