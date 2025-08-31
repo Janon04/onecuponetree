@@ -121,12 +121,12 @@
                     Your browser does not support the video tag.
                 </video>
                 {% elif testimonial.photo %}
-                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="{{ testimonial.author }}">
+                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="Testimonial photo">
                 {% endif %}
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
                         <p>{{ testimonial.content }}</p>
-                        <footer class="blockquote-footer">{{ testimonial.author }} <cite>{{ testimonial.role }}</cite></footer>
+                        <footer class="blockquote-footer"><cite>{{ testimonial.role }}</cite></footer>
                     </blockquote>
                 </div>
             </div>
