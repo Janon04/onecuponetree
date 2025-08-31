@@ -1,21 +1,145 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load i18n %}
-{% block title %}{% trans "Apply for Opportunity" %}{% endblock %}
+{% block title %}{% trans "Apply for Community Volunteer – One Cup Initiative" %}{% endblock %}
+
 {% block content %}
-<div class="container py-5">
+<div class="container py-5" style="background-color: #fff;">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card shadow-sm border-0 rounded-4">
+        <div class="col-lg-7 col-md-9">
+            <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
                 <div class="card-body p-5">
-                    <h1 class="mb-3">{% trans "Apply for" %} {{ opportunity.title }}</h1>
-                    <form method="post">
+                    
+                    <!-- Header -->
+                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810; font-weight:700; letter-spacing:0.5px;">
+                        👐 {% trans "COMMUNITY VOLUNTEER APPLICATION" %}
+                    </h1>
+                    <p class="lead text-center mb-4" style="color: #f5f5f5;">
+                        {% trans "Thank you for your interest in volunteering! Please fill in all required details. All information will be kept confidential and used only for volunteer purposes." %}
+                    </p>
+
+                    <!-- Success Message -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div id="volunteer-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        <script>
+                            setTimeout(function() {
+                                var alertElem = document.getElementById('volunteer-success-alert');
+                                if (alertElem) { alertElem.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    {% endif %}
+
+                    <!-- Form -->
+                    <form method="post" novalidate>
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-success mt-3">{% trans "Submit Application" %}</button>
+
+                        <!-- Display Form Errors -->
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{% trans "There were errors in your submission:" %}</strong>
+                                <ul class="mb-0">
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- 1. Personal Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            1. {% trans "Personal Information" %}
+                        </h4>
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form.full_name.label_tag }}{{ form.full_name }}{% for error in form.full_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}{% for error in form.date_of_birth.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.gender.label_tag }}{{ form.gender }}{% for error in form.gender.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.id_number.label_tag }}{{ form.id_number }}{% for error in form.id_number.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.phone.label_tag }}{{ form.phone }}{% for error in form.phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}{% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.country.label_tag }}{{ form.country }}{% for error in form.country.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.province.label_tag }}{{ form.province }}{% for error in form.province.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-12">{{ form.sector_cell_village.label_tag }}{{ form.sector_cell_village }}{% for error in form.sector_cell_village.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                        </div>
+
+                        <!-- 2. Motivation Letter -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            2. {% trans "Motivation Letter" %}
+                        </h4>
+                        <div class="mb-3">{{ form.motivation.label_tag }}{{ form.motivation }}{% for error in form.motivation.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+
+                        <!-- 3. Skills & Experience -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            3. {% trans "Relevant Skills & Experience" %}
+                        </h4>
+                        <div class="mb-3">{{ form.skills.label_tag }}{{ form.skills }}{% for error in form.skills.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+
+                        <!-- 4. Availability -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            4. {% trans "Availability" %}
+                        </h4>
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-6">{{ form.availability_weekdays.label_tag }}{{ form.availability_weekdays }}{% for error in form.availability_weekdays.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-2 form-check">{{ form.availability_weekends }} {{ form.availability_weekends.label_tag }}{% for error in form.availability_weekends.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-2 form-check">{{ form.availability_full_time }} {{ form.availability_full_time.label_tag }}{% for error in form.availability_full_time.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-2 form-check">{{ form.availability_part_time }} {{ form.availability_part_time.label_tag }}{% for error in form.availability_part_time.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.availability_specific_dates.label_tag }}{{ form.availability_specific_dates }}{% for error in form.availability_specific_dates.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                        </div>
+
+                        <!-- 5. Areas of Interest -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            5. {% trans "Areas of Interest" %}
+                        </h4>
+                        <div class="row g-3 mb-2">
+                            <div class="col-md-4 form-check">{{ form.interest_community_outreach }} {{ form.interest_community_outreach.label_tag }}</div>
+                            <div class="col-md-4 form-check">{{ form.interest_event_support }} {{ form.interest_event_support.label_tag }}</div>
+                            <div class="col-md-4 form-check">{{ form.interest_training_mentorship }} {{ form.interest_training_mentorship.label_tag }}</div>
+                            <div class="col-md-6 form-check">{{ form.interest_environmental }} {{ form.interest_environmental.label_tag }}</div>
+                            <div class="col-md-6 form-check">{{ form.interest_fundraising }} {{ form.interest_fundraising.label_tag }}</div>
+                            <div class="col-md-6 form-check">{{ form.interest_admin_support }} {{ form.interest_admin_support.label_tag }}</div>
+                            <div class="col-md-6">{{ form.interest_other.label_tag }}{{ form.interest_other }}</div>
+                        </div>
+
+                        <!-- 6. Emergency Contact -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            6. {% trans "Emergency Contact" %}
+                        </h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">{{ form.emergency_contact_name.label_tag }}{{ form.emergency_contact_name }}{% for error in form.emergency_contact_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-4">{{ form.emergency_contact_relationship.label_tag }}{{ form.emergency_contact_relationship }}{% for error in form.emergency_contact_relationship.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-4">{{ form.emergency_contact_phone.label_tag }}{{ form.emergency_contact_phone }}{% for error in form.emergency_contact_phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                        </div>
+
+
+                        <!-- 8. Declaration & Signature -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">
+                            8. {% trans "Declaration & Signature" %}
+                        </h4>
+                        <div class="mb-3 form-check">{{ form.declaration }} {{ form.declaration.label_tag }}{% for error in form.declaration.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form.signature_name.label_tag }}{{ form.signature_name }}{% for error in form.signature_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                            <div class="col-md-6">{{ form.signature_date.label_tag }}{{ form.signature_date }}{% for error in form.signature_date.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-lg btn-warning fw-bold" style="color: #2c1810; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px;">
+                                {% trans "Submit Application" %}
+                            </button>
+                        </div>
+
                     </form>
                 </div>
             </div>
-            <div class="mt-4">
+            
+            <!-- Back Button -->
+            <div class="mt-4 text-center">
                 <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-secondary">{% trans "Back to Opportunities" %}</a>
             </div>
         </div>
