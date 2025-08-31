@@ -5,21 +5,48 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-sm border-0 rounded-4">
-                {% if event.image %}
-                    <img src="{{ event.image.url }}" class="card-img-top rounded-top-4" alt="{{ event.title }}">
+            <div class="card shadow-lg border-0 rounded-4 blog-detail-pro" style="background-color: #fff7ef; color: #4b2e1a;">
+                {% if event.video %}
+                    <div class="blog-media-zoom-wrapper position-relative" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#mediaModal">
+                        <video class="card-img-top blog-media-zoom" controls preload="metadata" style="width:100%;height:auto;max-height:340px;object-fit:cover; background:#222; transition: transform 0.5s cubic-bezier(.4,2,.6,1);">
+                            <source src="{{ event.video.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="blog-media-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg,rgba(34,22,10,0.10) 0%,rgba(34,22,10,0.22) 100%); pointer-events:none;"></div>
+                    </div>
+                {% elif event.image %}
+                    <div class="blog-media-zoom-wrapper position-relative" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#mediaModal">
+                        <img src="{{ event.image.url }}" class="card-img-top blog-media-zoom" alt="{{ event.title }}" style="object-fit:cover;max-height:340px; width:100%; transition: transform 0.5s cubic-bezier(.4,2,.6,1);">
+                        <div class="blog-media-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg,rgba(34,22,10,0.10) 0%,rgba(34,22,10,0.22) 100%); pointer-events:none;"></div>
+                    </div>
                 {% endif %}
+                <!-- Modal for enlarged media -->
+                <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content" style="background:rgba(34,22,10,0.92); border-radius:1.2rem;">
+                            <div class="modal-body p-0 position-relative">
+                                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index:10; filter:invert(1);"></button>
+                                {% if event.video %}
+                                    <video controls autoplay style="width:100%; max-height:80vh; display:block; border-radius:1.2rem; background:#222;">
+                                        <source src="{{ event.video.url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                {% elif event.image %}
+                                    <img src="{{ event.image.url }}" alt="{{ event.title }}" style="width:100%; max-height:80vh; object-fit:contain; border-radius:1.2rem; display:block; background:#fff;">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body p-5">
-                    <h1 class="mb-3">{{ event.title }}</h1>
-                    <p class="text-muted mb-2">
-                        <i class="bi bi-calendar-event"></i>
+                    <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ event.title }}</h1>
+                    <p class="mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;">
+                        <i class="fa fa-calendar"></i>
                         {{ event.start_date|date:"M d, Y H:i" }} - {{ event.end_date|date:"M d, Y H:i" }}
-                    </p>
-                    <p class="mb-2">
-                        <i class="bi bi-geo-alt-fill text-success"></i> {{ event.location }}
+                        {% if event.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ event.location }}{% endif %}
                     </p>
                     {% if event.description %}
-                        <p class="mb-4">{{ event.description }}</p>
+                        <p class="lead mb-4" style="color:#000; opacity:1;">{{ event.description }}</p>
                     {% endif %}
                     <p class="mb-1"><strong>{% trans "Status:" %}</strong> {{ event.get_status_display }}</p>
                     {% if event.organizer %}
@@ -33,4 +60,30 @@
         </div>
     </div>
 </div>
+<style>
+    .blog-detail-pro {
+        box-shadow: 0 8px 32px rgba(34,22,10,0.13), 0 2px 12px rgba(210,112,13,0.13);
+    }
+    .blog-media-zoom-wrapper:hover .blog-media-zoom {
+        transform: scale(1.07);
+        z-index: 2;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+        filter: brightness(1.06) contrast(1.06);
+    }
+    .blog-media-zoom {
+        transition: transform 0.5s cubic-bezier(.4,2,.6,1), filter 0.5s;
+        cursor: zoom-in;
+    }
+    .blog-media-overlay {
+        border-top-left-radius:1.2rem; border-top-right-radius:1.2rem;
+    }
+    @media (max-width: 991px) {
+        .blog-detail-pro { border-radius: 0.8rem !important; }
+        .blog-media-overlay { border-top-left-radius:0.8rem; border-top-right-radius:0.8rem; }
+    }
+    @media (max-width: 767px) {
+        .blog-detail-pro { border-radius: 0.5rem !important; }
+        .blog-media-overlay { border-top-left-radius:0.5rem; border-top-right-radius:0.5rem; }
+    }
+</style>
 {% endblock %}
