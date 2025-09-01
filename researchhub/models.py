@@ -1,5 +1,6 @@
 
 from django.db import models
+from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -26,7 +27,8 @@ from django.utils.translation import gettext_lazy as _
 
 class ResearchCategory(models.Model):
 	name = models.CharField(_('Category Name'), max_length=100, unique=True)
-	description = models.TextField(_('Description'), blank=True)
+	from ckeditor.fields import RichTextField
+	description = RichTextField(_('Description'), blank=True)
 	is_active = models.BooleanField(_('Active'), default=True)
 
 	class Meta:
@@ -40,7 +42,7 @@ class ResearchCategory(models.Model):
 class ResearchPublication(models.Model):
 	category = models.ForeignKey(ResearchCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='publications', verbose_name=_('Category'))
 	title = models.CharField(_('Title'), max_length=200)
-	summary = models.TextField(_('Summary'), blank=True)
+	summary = RichTextField(_('Summary'), blank=True)
 	author = models.CharField(_('Author(s)'), max_length=100, blank=True)
 	publication_date = models.DateField(_('Publication Date'), blank=True, null=True)
 	document = models.FileField(_('Document (PDF, DOC, etc.)'), upload_to='research_documents/', blank=True, null=True)

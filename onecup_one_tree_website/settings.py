@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'get_involved',
     'trees',
     'researchhub',
+    'ckeditor',
 ]
 # django-modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'

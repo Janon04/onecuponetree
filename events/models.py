@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
 
 class Event(models.Model):
 	"""Model representing an event."""
@@ -12,7 +13,8 @@ class Event(models.Model):
 	]
 
 	title = models.CharField(max_length=200, help_text=_('Event title'))
-	description = models.TextField(help_text=_('Event description'))
+	from ckeditor.fields import RichTextField
+	description = RichTextField(help_text=_('Event description'))
 	start_date = models.DateTimeField(help_text=_('Event start date and time'))
 	end_date = models.DateTimeField(help_text=_('Event end date and time'))
 	location = models.CharField(max_length=255, help_text=_('Event location'))

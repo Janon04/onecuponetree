@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from datetime import timedelta
+from ckeditor.fields import RichTextField
 
 # --- Farmer Support Activity Model ---
 class FarmerSupportActivity(models.Model):
@@ -50,7 +51,8 @@ class Farmer(models.Model):
     # --- Sponsor a Farm fields ---
     sponsorship_goal = models.DecimalField(_('Sponsorship Goal (USD)'), max_digits=10, decimal_places=2, null=True, blank=True, help_text=_('Target amount for farm sponsorship'))
     sponsorship_received = models.DecimalField(_('Sponsorship Received (USD)'), max_digits=10, decimal_places=2, default=0, help_text=_('Total amount received for sponsorship'))
-    sponsorship_description = models.TextField(_('Sponsorship Description'), blank=True, help_text=_('Public info for sponsors'))
+    from ckeditor.fields import RichTextField
+    sponsorship_description = RichTextField(_('Sponsorship Description'), blank=True, help_text=_('Public info for sponsors'))
     sponsorship_is_active = models.BooleanField(_('Sponsorship Active'), default=False, help_text=_('Is this farm open for sponsorship?'))
     sponsorship_logo = models.ImageField(_('Sponsorship Logo'), upload_to='farm_sponsorships/logos/', blank=True, null=True)
     sponsorship_video = models.FileField(_('Sponsorship Video'), upload_to='farm_sponsorships/videos/', blank=True, null=True, help_text=_('Optional video for sponsors'))
@@ -226,7 +228,7 @@ class Farmer(models.Model):
     location = models.CharField(_('location'), max_length=255, blank=True)
     farm_size = models.DecimalField(_('farm size (hectares)'), max_digits=10, decimal_places=2, null=True, blank=True)
     joined_date = models.DateField(_('joined date'), null=True, blank=True)
-    bio = models.TextField(_('bio'), blank=True)
+    bio = RichTextField(_('bio'), blank=True)
     photo = models.ImageField(_('photo'), upload_to='farmers/', null=True, blank=True)
     is_featured = models.BooleanField(_('is featured'), default=False)
 
@@ -286,7 +288,7 @@ class HouseholdAsset(models.Model):
 class FarmerStory(models.Model):
     farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='stories')
     title = models.CharField(_('title'), max_length=200)
-    content = models.TextField(_('content'))
+    content = RichTextField(_('content'))
     photo = models.ImageField(_('photo'), upload_to='farmer_stories/', blank=True, null=True)
     video = models.FileField(_('video'), upload_to='farmer_stories/videos/', blank=True, null=True, help_text=_('Upload a short video (mp4, mov, webm, max 50MB)'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -304,7 +306,7 @@ class FarmerStory(models.Model):
 # --- Sponsor a Farm models (moved from models_farm_sponsor.py) ---
 class Farm(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = RichTextField()
     location = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to="farm_images/", blank=True, null=True)
     video = models.FileField(upload_to="farm_videos/", blank=True, null=True)
@@ -332,7 +334,7 @@ class FarmSponsorship(models.Model):
     sponsor_name = models.CharField(max_length=255, blank=True, help_text="Optional public sponsor name")
     sponsor_email = models.EmailField(blank=True, help_text="For receipt/confirmation, not shown publicly")
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    message = models.TextField(blank=True)
+    message = RichTextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
