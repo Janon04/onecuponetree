@@ -442,7 +442,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             {# Removed admin-only Farmer Support link from public navigation #}
-                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">{% trans "Youth Barista Academy" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
@@ -513,7 +513,7 @@
                     <h6>{% trans "Our Programs" %}</h6>
                     <ul class="list-unstyled">
                         {# Removed admin-only Farmer Support link from public footer #}
-                        <li><a href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
+                        <li><a href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support" %}</a></li>
                         <li><a href="{% url 'volunteers:barista_training_list' %}">{% trans "Barista Academy" %}</a></li>
                         <li><a href="{% url 'programs:program_list' %}">{% trans "Sustainability" %}</a></li>
                         <li><a href="{% url 'trees:plant_tree' %}">{% trans "Tree Campaign" %}</a></li>

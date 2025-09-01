@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Farmer Support Activities" %}{% endblock %}
+{% block title %}{% trans "Farmer Support" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="mb-4 text-primary">{% trans "Farmer Support Activities" %}</h1>
+    <h1 class="mb-4 text-primary">{% trans "Farmer Support" %}</h1>
     {% if activities %}
         <div class="row">
             {% for activity in activities %}
