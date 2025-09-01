@@ -1,6 +1,15 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Tree
+from .models import Tree, TreePlantingSubmission
+@admin.register(TreePlantingSubmission)
+class TreePlantingSubmissionAdmin(admin.ModelAdmin):
+    list_display = (
+        'full_name', 'tree_type', 'quantity', 'country', 'province', 'district',
+        'planting_date', 'contribution_type', 'submitted_at'
+    )
+    list_filter = ('tree_type', 'country', 'province', 'district', 'contribution_type', 'planting_date', 'submitted_at')
+    search_fields = ('full_name', 'contact', 'country', 'province', 'district', 'village', 'reason')
+    readonly_fields = ('submitted_at',)
 
 @admin.register(Tree)
 class TreeAdmin(admin.ModelAdmin):

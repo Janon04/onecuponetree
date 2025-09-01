@@ -20,10 +20,12 @@ urlpatterns = [
     path('volunteers/', include(('volunteers.urls', 'volunteers'), namespace='volunteers')),
     path('farmers/', include(('farmers.urls', 'farmers'), namespace='farmers')),
     path('api/', include('api.urls')),
+    path('trees/', include(('trees.urls', 'trees'), namespace='trees')),
     path('get-involved/', include(('get_involved.urls_initiative', 'get_involved'), namespace='get_involved')),
     path('newsletter/', include(('newsletter.urls', 'newsletter'), namespace='newsletter')),
     path('partners/', include(('partners.urls', 'partners'), namespace='partners')),
     path('blogs/', include('blog.urls')),
+    path('research/', include(('researchhub.urls', 'researchhub'), namespace='researchhub')),
     path('i18n/', include('django.conf.urls.i18n')),
     path('dashboard/', include('dashboard.urls')),
 ]

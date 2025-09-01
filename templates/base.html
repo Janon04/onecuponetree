@@ -444,7 +444,7 @@
                             {# Removed admin-only Farmer Support link from public navigation #}
                             <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">{% trans "Youth Barista Academy" %}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'programs:program_list' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -480,6 +480,13 @@
     </nav>
     
     <!-- Main Content -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <main>
         {% block content %}{% endblock %}
     </main>
@@ -509,7 +516,7 @@
                         <li><a href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support Activities" %}</a></li>
                         <li><a href="{% url 'volunteers:barista_training_list' %}">{% trans "Barista Academy" %}</a></li>
                         <li><a href="{% url 'programs:program_list' %}">{% trans "Sustainability" %}</a></li>
-                        <li><a href="#">{% trans "Tree Campaign" %}</a></li>
+                        <li><a href="{% url 'trees:plant_tree' %}">{% trans "Tree Campaign" %}</a></li>
                     </ul>
                 </div>
                 
@@ -527,7 +534,7 @@
                     <h6>{% trans "Resources" %}</h6>
                     <ul class="list-unstyled">
                         <li><a href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a></li>
-                        <li><a href="#">{% trans "Research" %}</a></li>
+                        <li><a href="{% url 'researchhub:publication_list' %}">{% trans "Research" %}</a></li>
                         <li><a href="{% url 'events:event_list' %}">{% trans "Events" %}</a></li>
                         <li><a href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a></li>
                         <li><a href="{% url 'farmers:story_list' %}">{% trans "Farmer Stories" %}</a></li>
@@ -542,7 +549,7 @@
                         <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
                             <li>
                                 <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
-                                    <i class="fas fa-map me-2"></i>{% trans "View on Google Maps" %}
+                                    <i class="fas fa-map me-2"></i>{% trans "Google Maps" %}
                                 </a>
                             </li>
                     </ul>

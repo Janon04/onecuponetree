@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Publication Download Requests" %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4" style="color:#d2700d;">{% trans "Publication Download Requests" %}</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>{% trans "Publication" %}</th>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Email" %}</th>
+                <th>{% trans "Reason" %}</th>
+                <th>{% trans "Requested At" %}</th>
+                <th>{% trans "Approved" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td>{{ req.publication.title }}</td>
+                <td>{{ req.name }}</td>
+                <td>{{ req.email }}</td>
+                <td>{{ req.reason|default:'-' }}</td>
+                <td>{{ req.requested_at|date:"M d, Y H:i" }}</td>
+                <td>{% if req.approved %}<span class="badge bg-success">{% trans "Yes" %}</span>{% else %}<span class="badge bg-warning text-dark">{% trans "No" %}</span>{% endif %}</td>
+                <td>
+                    {% if not req.approved %}
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="approve_id" value="{{ req.id }}">
+                        <button type="submit" class="btn btn-sm btn-success">{% trans "Approve" %}</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

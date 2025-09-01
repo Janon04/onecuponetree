@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 #from django.contrib.gis.forms import PointField
 from .models import Tree
-from apps.farmers.models import Farmer
+from farmers.models import Farmer
 
 class TreeTrackingForm(forms.Form):
     tree_id = forms.CharField(
@@ -80,37 +80,97 @@ class TreeUpdateForm(forms.ModelForm):
             })
         }
 
-class TreeFilterForm(forms.Form):
-    SPECIES_CHOICES = [('', _('All Species'))] + Tree.TREE_SPECIES
-    
-    species = forms.ChoiceField(
-        choices=SPECIES_CHOICES,
-        required=False,
-        label=_('Filter by Species'),
+
+# --- New Form for Tree Planting Initiative ---
+class TreePlantingInitiativeForm(forms.Form):
+    TREE_TYPE_CHOICES = [
+        ('mango', _('Mango')),
+        ('coffee', _('Coffee')),
+        ('eucalyptus', _('Eucalyptus')),
+        ('avocado', _('Avocado')),
+        ('other', _('Other')),
+    ]
+    CONTRIBUTION_TYPE_CHOICES = [
+        ('self', _('I will provide and plant the trees myself 🌱')),
+        ('donate', _('I will donate/provide trees for planting 🌳')),
+        ('support', _('I will support others to plant trees (financial or logistical support) 💚')),
+    ]
+
+    tree_type = forms.ChoiceField(
+        choices=TREE_TYPE_CHOICES,
+        label=_('Tree Type'),
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    
-    date_from = forms.DateField(
-        required=False,
-        label=_('From Date'),
-        widget=forms.DateInput(attrs={
-            'class': 'form-control',
-            'type': 'date'
-        })
+    quantity = forms.IntegerField(
+        label=_('Quantity (Number of Trees)'),
+        min_value=1,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': _('How many trees?')})
     )
-    
-    date_to = forms.DateField(
-        required=False,
-        label=_('To Date'),
-        widget=forms.DateInput(attrs={
-            'class': 'form-control',
-            'type': 'date'
-        })
+    country = forms.CharField(
+        label=_('Country'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    
-    farmer = forms.ModelChoiceField(
-        queryset=Farmer.objects.all(),
+    province = forms.CharField(
+        label=_('Province'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    district = forms.CharField(
+        label=_('District'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    sector = forms.CharField(
+        label=_('Sector'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    cell = forms.CharField(
+        label=_('Cell'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    village = forms.CharField(
+        label=_('Village'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    latitude = forms.DecimalField(
+        label=_('Latitude'),
+        max_digits=9, decimal_places=6,
         required=False,
-        label=_('Filter by Farmer'),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
+    )
+    longitude = forms.DecimalField(
+        label=_('Longitude'),
+        max_digits=9, decimal_places=6,
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
+    )
+    planting_date = forms.DateField(
+        label=_('Planting Date'),
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+    )
+    contribution_type = forms.ChoiceField(
+        choices=CONTRIBUTION_TYPE_CHOICES,
+        label=_('Contribution Type'),
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'})
+    )
+    full_name = forms.CharField(
+        label=_('Your Full Name'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    contact = forms.CharField(
+        label=_('Email Address / Phone Number'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    reason = forms.CharField(
+        label=_('Reason for Planting (Optional)'),
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': _('Why are you participating?')})
+    )
+    photo = forms.ImageField(
+        label=_('Upload a Photo (Optional)'),
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file', 'accept': 'image/*'})
+    )
+    agreement = forms.BooleanField(
+        label=_('I commit to ensuring the planted trees are cared for and maintained.'),
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )

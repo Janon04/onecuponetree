@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from .models import Tree
-from .forms import TreeTrackingForm, PlantTreeForm
+from .forms import TreeTrackingForm, PlantTreeForm, TreePlantingInitiativeForm
 
 def track_tree(request):
     if request.method == 'POST':
@@ -20,17 +20,36 @@ def track_tree(request):
     return render(request, 'trees/track.html', {'form': form})
 
 def plant_tree(request):
+    from .models import TreePlantingSubmission
     if request.method == 'POST':
-        form = PlantTreeForm(request.POST, request.FILES)
+        form = TreePlantingInitiativeForm(request.POST, request.FILES)
         if form.is_valid():
-            tree = form.save(commit=False)
-            if request.user.is_authenticated:
-                tree.planted_by = request.user
-            tree.save()
-            messages.success(request, _("Thank you for planting a tree!"))
-            return redirect('trees:detail', pk=tree.pk)
+            data = form.cleaned_data
+            submission = TreePlantingSubmission(
+                tree_type=data['tree_type'],
+                quantity=data['quantity'],
+                country=data['country'],
+                province=data['province'],
+                district=data['district'],
+                sector=data['sector'],
+                cell=data['cell'],
+                village=data['village'],
+                latitude=data.get('latitude'),
+                longitude=data.get('longitude'),
+                planting_date=data['planting_date'],
+                contribution_type=data['contribution_type'],
+                full_name=data['full_name'],
+                contact=data['contact'],
+                reason=data.get('reason', ''),
+                agreement=data['agreement']
+            )
+            if form.cleaned_data.get('photo'):
+                submission.photo = form.cleaned_data['photo']
+            submission.save()
+            messages.success(request, _("Thank you for joining the green movement! Your submission has been received."))
+            return redirect('trees:plant_tree')
     else:
-        form = PlantTreeForm()
+        form = TreePlantingInitiativeForm()
     return render(request, 'trees/plant.html', {'form': form})
 
 class TreeListView(ListView):

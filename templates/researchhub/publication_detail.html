@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ publication.title }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow border-0 rounded-4">
+                {% if publication.image %}
+                    <img src="{{ publication.image.url }}" class="card-img-top rounded-top-4" alt="{{ publication.title }}" style="max-height:340px;object-fit:cover;">
+                {% endif %}
+                <div class="card-body p-4 p-md-5" style="color:#4b2e1a;">
+                    <div class="d-flex align-items-center mb-2">
+                        {% if publication.category %}
+                            <span class="badge" style="background:#ffe0b2; color:#b85c00; border:1px solid #b85c00;">{{ publication.category.name }}</span>
+                        {% endif %}
+                        <span class="text-muted small ms-auto"><i class="bi bi-calendar-event"></i> {{ publication.publication_date|date:"M d, Y" }}</span>
+                    </div>
+                    <h1 class="mb-2 fw-bold" style="color:#b85c00; letter-spacing:-1px;">{{ publication.title }}</h1>
+                    <div class="mb-3" style="color:#7a5a3a; font-size:0.95em;">{{ publication.author }}</div>
+                    <p class="lead mb-4" style="color:#4b2e1a;">{{ publication.summary }}</p>
+                    {% if publication.document %}
+                        <div class="mb-4">
+                            <div class="alert alert-secondary mb-2 d-flex align-items-center" style="background:#fff7ef; color:#4b2e1a; border:1px solid #b85c00;">
+                                <i class="bi bi-file-earmark-text me-2" style="color:#b85c00;"></i>
+                                <span class="fw-semibold">{% trans "Attached Document:" %}</span>
+                                <a href="{{ publication.document.url }}" target="_blank" class="ms-2 fw-semibold text-decoration-underline" style="color:#b85c00;">{% trans "View Document" %}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'researchhub:publication_list' %}" class="btn mt-2" style="background:#b85c00; color:#fff;">{% trans "Back to Research" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

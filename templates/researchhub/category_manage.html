@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Manage Research Categories" %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4" style="color:#d2700d;">{% trans "Manage Research Categories" %}</h1>
+    <div class="mb-4">
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6 col-lg-4">
+                <input type="text" name="name" class="form-control" placeholder="{% trans 'Category Name' %}" required>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <input type="text" name="description" class="form-control" placeholder="{% trans 'Description (optional)' %}">
+            </div>
+            <div class="col-md-12 col-lg-2">
+                <button type="submit" class="btn btn-primary w-100">{% trans "Add Category" %}</button>
+            </div>
+        </form>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Description" %}</th>
+                <th>{% trans "Active" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in categories %}
+            <tr>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.description }}</td>
+                <td>{{ cat.is_active|yesno:_('Yes,No') }}</td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="toggle_id" value="{{ cat.id }}">
+                        <button type="submit" class="btn btn-sm {% if cat.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                            {% if cat.is_active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

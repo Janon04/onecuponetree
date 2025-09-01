@@ -26,7 +26,23 @@
                     <li><a href="{% url 'farmers:farmer_support_list' %}" class="text-light text-decoration-none small">{% trans "Farmer Support" %}</a></li>
                     <li><a href="{% url 'volunteers:barista_training' %}" class="text-light text-decoration-none small">{% trans "Barista Academy" %}</a></li>
                     <li><a href="{% url 'programs:program_list' %}" class="text-light text-decoration-none small">{% trans "Programs" %}</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">{% trans "Tree Campaign" %}</a></li>
+                    <li>
+                        {% with campaign_trees=None %}
+                        {% if campaign_trees %}
+                            <div class="alert alert-success p-2 mb-2" style="background:#e6ffe6; color:#267326; border:1px solid #b85c00;">
+                                <strong>{% trans "Active Tree Campaign:" %}</strong><br>
+                                {% for tree in campaign_trees %}
+                                    <span class="fw-semibold">{{ tree.campaign_name }}</span><br>
+                                    <span class="small">{{ tree.campaign_description }}</span><br>
+                                    <span class="text-muted small">{% trans "From" %} {{ tree.campaign_start_date }} {% trans "to" %} {{ tree.campaign_end_date }}</span><br>
+                                {% endfor %}
+                                <a href="{% url 'trees:plant_tree' %}" class="btn btn-sm btn-success mt-2">{% trans "Join Campaign" %}</a>
+                            </div>
+                        {% else %}
+                                <a href="{% url 'trees:plant_tree' %}" class="text-light text-decoration-none small">{% trans "Tree Campaign" %}</a>
+                        {% endif %}
+                        {% endwith %}
+                    </li>
                     <li><a href="{% url 'newsletter:newsletter_list' %}" class="text-light text-decoration-none small">{% trans "Newsletters" %}</a></li>
                 </ul>
             </div>
@@ -44,6 +60,7 @@
                     <li><a href="{% url 'blog:post_list' %}" class="text-light text-decoration-none small">{% trans "Blog" %}</a></li>
                     <li><a href="{% url 'events:event_list' %}" class="text-light text-decoration-none small">{% trans "Events" %}</a></li>
                     <li><a href="{% url 'gallery:gallery_list' %}" class="text-light text-decoration-none small">{% trans "Gallery" %}</a></li>
+                       <li><a href="{% url 'researchhub:publication_list' %}" class="text-light text-decoration-none small">{% trans "Research" %}</a></li>
                     <li><a href="{% url 'farmers:story_list' %}" class="text-light text-decoration-none small">{% trans "Farmer Stories" %}</a></li>
                 </ul>
             </div>
@@ -55,7 +72,7 @@
                     <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
                     <li>
                         <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
-                            <i class="fas fa-map me-2"></i>{% trans "View on Google Maps" %}
+                            <i class="fas fa-map me-2"></i>{% trans "Google Maps" %}
                         </a>
                     </li>
                 </ul>

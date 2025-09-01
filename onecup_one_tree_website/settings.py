@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'newsletter',
     'get_involved',
     'trees',
+    'researchhub',
 ]
 # django-modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
