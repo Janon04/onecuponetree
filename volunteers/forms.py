@@ -22,8 +22,8 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
         self.fields['age'].widget.attrs['readonly'] = True
     def clean_id_number(self):
         id_number = self.cleaned_data.get('id_number', '')
-        if not id_number.isdigit() or len(id_number) != 16:
-            raise forms.ValidationError(_('National ID must be exactly 16 digits.'))
+        if not id_number.isdigit() or len(id_number) > 16:
+            raise forms.ValidationError(_('National ID must be up to 16 digits.'))
         return id_number
 
     def clean(self):
@@ -93,6 +93,17 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
             'signature_name': forms.TextInput(attrs={'class': 'form-control'}),
             'signature_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
+
+    special_needs = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label=_('Special Needs (Optional)')
+    )
+    languages_spoken = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label=_('Languages Spoken (Optional)')
+    )
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import VolunteerOpportunity, VolunteerApplication

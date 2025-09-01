@@ -421,7 +421,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
-                <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:40px; margin-right:10px; vertical-align:middle;"> One Cup Initiative
+                <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:40px; margin-right:10px; vertical-align:middle;">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -444,7 +444,7 @@
                             {# Removed admin-only Farmer Support link from public navigation #}
                             <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">{% trans "Youth Barista Academy" %}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">{% trans "One Cup, One Tree Campaign" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">{% trans "OCI Campaign" %}</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -559,7 +559,7 @@
             <hr class="bg-secondary">
             <div class="row justify-content-center footer-small">
                 <div class="col-12 text-center footer-small">
-                    <p class="mb-2 footer-small">&copy; 2025 One Cup Initiative. All rights reserved.</p>
+                    <p class="mb-2 footer-small">&copy; 2025 <a href="/" class="text-reset text-decoration-none">One Cup Initiative</a>. All rights reserved.</p>
                 </div>
             </div>
         </div>
