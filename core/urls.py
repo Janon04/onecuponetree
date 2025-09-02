@@ -10,5 +10,6 @@ urlpatterns = [
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('donate/', views.donate, name='donate'),
     path('donations/', views.donation_list, name='donation_list'),
+    path('subscribe/', views.unified_subscribe, name='unified_subscribe'),
 ]
 

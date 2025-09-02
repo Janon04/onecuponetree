@@ -1,4 +1,3 @@
-
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
@@ -9,6 +8,59 @@ from django.urls import reverse
 import os
 from .forms import PublicationDownloadRequestForm
 from .models import PublicationDownloadRequest, ResearchPublication, ResearchCategory
+from .models import ResearchSubscriber
+
+# Research & Publications email subscription view
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
+from .models import ResearchSubscriber
+
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+from .models import ResearchPublication, ResearchCategory
+
+
+def subscribe(request):
+	if request.method == 'POST':
+		email = request.POST.get('email', '').strip()
+		if not email:
+			messages.error(request, 'Please enter a valid email address.')
+			return redirect(request.META.get('HTTP_REFERER', '/'))
+		if ResearchSubscriber.objects.filter(email__iexact=email).exists():
+			messages.info(request, 'You are already subscribed to Research & Publications updates.')
+		else:
+			ResearchSubscriber.objects.create(email=email)
+			messages.success(request, 'Thank you for subscribing to Research & Publications updates!')
+		return redirect(request.META.get('HTTP_REFERER', '/'))
+	return redirect('/')
+
+def subscribe(request):
+	if request.method == 'POST':
+		email = request.POST.get('email', '').strip()
+		try:
+			validate_email(email)
+		except ValidationError:
+			messages.error(request, "Please enter a valid email address.")
+			return redirect(request.META.get('HTTP_REFERER', '/'))
+		if ResearchSubscriber.objects.filter(email__iexact=email).exists():
+			messages.info(request, "You are already subscribed to Research & Publications updates.")
+		else:
+			ResearchSubscriber.objects.create(email=email)
+			messages.success(request, "Thank you for subscribing to Research & Publications updates!")
+		return redirect(request.META.get('HTTP_REFERER', '/'))
+	return redirect('/')
+
+
 
 # List and approve publication download requests (staff only)
 @staff_member_required
@@ -25,15 +77,6 @@ def publication_download_requests(request):
 			messages.success(request, f"Request for '{req.publication.title}' by {req.name} approved.")
 		return HttpResponseRedirect(reverse('researchhub:publication_download_requests'))
 	return render(request, 'researchhub/publication_download_requests.html', {'requests': requests_qs})
-from django.contrib import messages
-
-
-from django.shortcuts import render, get_object_or_404
-from django.views.decorators.csrf import csrf_protect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-from .models import ResearchPublication, ResearchCategory
 
 def publication_list(request):
 	categories = ResearchCategory.objects.filter(is_active=True).order_by('name')

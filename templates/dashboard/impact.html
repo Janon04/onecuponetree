@@ -30,126 +30,140 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="text-center mb-5">{% trans "Impact Dashboard" %}</h1>
-    
-    <div class="dashboard-chart mb-5">
-        <h4 class="mb-4">{% trans "Trees Planted Per Month" %}</h4>
-        <canvas id="treesPlantedChart" height="100"></canvas>
+<div class="container py-4">
+    <h1 class="text-center mb-4" style="font-weight:700;letter-spacing:-1px;">Impact Dashboard</h1>
+    <div class="row g-3 mb-3">
+        <div class="col-lg-6">
+            <div class="dashboard-chart h-100">
+                <h5 class="mb-3"><i class="fas fa-tree me-2 text-success"></i>Trees Planted Per Month</h5>
+                <canvas id="treesPlantedChart" height="120"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="dashboard-chart h-100">
+                <h5 class="mb-3"><i class="fas fa-donate me-2 text-warning"></i>Donations Per Month</h5>
+                <canvas id="donationsPerMonthChart" height="120"></canvas>
+            </div>
+        </div>
     </div>
-    <div class="dashboard-chart mb-5">
-        <h4 class="mb-4">{% trans "Donations Per Month" %}</h4>
-        <canvas id="donationsPerMonthChart" height="100"></canvas>
-    </div>
-    <div class="row mb-5">
-        <div class="col-md-3">
+    <div class="row g-2 mb-3 text-center">
+        <div class="col-6 col-md-2">
             <div class="stat-card bg-success text-white">
-                <div class="stat-value">{{ stats.trees_planted }}</div>
-                <div class="stat-label">{% trans "Trees Planted" %}</div>
+                <div class="stat-value"><i class="fas fa-tree"></i><br>{{ stats.trees_planted }}</div>
+                <div class="stat-label small">Trees Planted</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-2">
             <div class="stat-card bg-primary text-white">
-                <div class="stat-value">{{ stats.farmers_supported }}</div>
-                <div class="stat-label">{% trans "Farmers Supported" %}</div>
+                <div class="stat-value"><i class="fas fa-user-friends"></i><br>{{ stats.farmers_supported }}</div>
+                <div class="stat-label small">Farmers Supported</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-2">
             <div class="stat-card bg-warning text-white">
-                <div class="stat-value">{{ stats.youth_trained }}</div>
-                <div class="stat-label">{% trans "Youth Trained" %}</div>
+                <div class="stat-value"><i class="fas fa-user-graduate"></i><br>{{ stats.youth_trained }}</div>
+                <div class="stat-label small">Youth Trained</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-2">
             <div class="stat-card bg-info text-white">
-                <div class="stat-value">{{ stats.reusable_cups }}</div>
-                <div class="stat-label">{% trans "Reusable Cups" %}</div>
+                <div class="stat-value"><i class="fas fa-mug-hot"></i><br>{{ stats.reusable_cups }}</div>
+                <div class="stat-label small">Reusable Cups</div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-2">
             <div class="stat-card bg-danger text-white">
-                <div class="stat-value">{{ stats.total_donations|floatformat:0 }}</div>
-                <div class="stat-label">{% trans "Total Donations (RWF)" %}</div>
+                <div class="stat-value"><i class="fas fa-coins"></i><br>{{ stats.total_donations|floatformat:0 }}</div>
+                <div class="stat-label small">Total Donations (RWF)</div>
             </div>
         </div>
     </div>
-    
-    <!-- CO₂ Offset card removed as requested -->
+    <div class="row g-3 mb-3">
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-secondary text-white">
-                    {% trans "Recent Trees Planted" %}
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">Recent Trees Planted</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush small">
                         {% for tree in recent_trees %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ tree.species }}
-                            <span class="badge badge-primary badge-pill">{{ tree.planted_date }}</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                            <span><i class="fas fa-seedling text-success me-1"></i>{{ tree.species }}</span>
+                            <span class="badge bg-primary">{{ tree.planted_date }}</span>
                             {% if tree.latitude and tree.longitude %}
-                                <span class="badge badge-info ms-2">{{ tree.latitude }}, {{ tree.longitude }}</span>
+                                <span class="badge bg-info ms-2">{{ tree.latitude }}, {{ tree.longitude }}</span>
                             {% else %}
                                 <span class="badge bg-warning text-dark ms-2">No coordinates</span>
                             {% endif %}
                         </li>
-<!-- Admin note: To display trees on the map, make sure each tree has latitude and longitude set in the admin panel. -->
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">Recent Donations</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush small">
+                        {% for donation in recent_donations %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                            <span><i class="fas fa-user text-secondary me-1"></i>{{ donation.donor_name|default:'Anonymous' }} ({{ donation.amount|floatformat:0 }} RWF)</span>
+                            <span class="badge bg-primary">{{ donation.get_donation_type_display }}</span>
+                            <span class="text-muted small">{{ donation.created_at|date:'Y-m-d H:i' }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">No donations yet.</li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="card mb-5">
-        <div class="card-header bg-secondary text-white">
-            {% trans "Tree Planting Locations" %}
-        </div>
-        <div class="card-body p-0">
-            <div id="impact-map"></div>
-        <script id="map-trees-data" type="application/json">{{ map_trees|safe }}</script>
-        </div>
-    </div>
-    
-    <h2 class="text-center mb-4">{% trans "Success Stories" %}</h2>
-    <div class="row">
-        {% for testimonial in testimonials %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if testimonial.video %}
-                <video class="card-img-top" controls style="width:100%;height:auto;max-height:220px;object-fit:cover;">
-                    <source src="{{ testimonial.video.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                {% elif testimonial.photo %}
-                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="Testimonial photo">
-                {% endif %}
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>{{ testimonial.content }}</p>
-                        <footer class="blockquote-footer"><cite>{{ testimonial.role }}</cite></footer>
-                    </blockquote>
+    <div class="accordion mb-3" id="dashboardAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMap">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMap" aria-expanded="false" aria-controls="collapseMap">
+                    <i class="fas fa-map-marker-alt me-2 text-success"></i>Tree Planting Locations
+                </button>
+            </h2>
+            <div id="collapseMap" class="accordion-collapse collapse show" aria-labelledby="headingMap" data-bs-parent="#dashboardAccordion">
+                <div class="accordion-body p-0">
+                    <div id="impact-map"></div>
+                    <script id="map-trees-data" type="application/json">{{ map_trees|safe }}</script>
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
-
-    <div class="card mb-5">
-        <div class="card-header bg-success text-white">
-            {% trans "Recent Donations" %}
-        </div>
-        <div class="card-body p-0">
-            <ul class="list-group">
-                {% for donation in recent_donations %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ donation.donor_name|default:'Anonymous' }} ({{ donation.amount|floatformat:0 }} RWF)</span>
-                    <span class="badge bg-primary">{{ donation.get_donation_type_display }}</span>
-                    <span class="text-muted small">{{ donation.created_at|date:'Y-m-d H:i' }}</span>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No donations yet.</li>
-                {% endfor %}
-            </ul>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingStories">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStories" aria-expanded="false" aria-controls="collapseStories">
+                    <i class="fas fa-star me-2 text-warning"></i>Success Stories
+                </button>
+            </h2>
+            <div id="collapseStories" class="accordion-collapse collapse show" aria-labelledby="headingStories" data-bs-parent="#dashboardAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        {% for testimonial in testimonials %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                {% if testimonial.video %}
+                                <video class="card-img-top" controls style="width:100%;height:auto;max-height:180px;object-fit:cover;">
+                                    <source src="{{ testimonial.video.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                {% elif testimonial.photo %}
+                                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="Testimonial photo">
+                                {% endif %}
+                                <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                        <p>{{ testimonial.content }}</p>
+                                        <footer class="blockquote-footer"><cite>{{ testimonial.role }}</cite></footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

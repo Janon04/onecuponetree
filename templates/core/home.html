@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-{% load i18n %}
 
-{% block title %}{{ SITE_NAME }} - {% trans "Every Cup Counts. Every Tree Matters." %}{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}{{ SITE_NAME }} - Every Cup Counts. Every Tree Matters.{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -129,22 +129,22 @@
         <div class="row align-items-center">
             <div class="col-lg-8">
                 <h1 class="display-3 fw-bold mb-4" style="color:#e0ddd8; text-shadow: 1px 2px 8px #000503;">
-                    {% trans "Every Cup Counts." %}<br>
-                    <span style="color:#fdfdfd;">{% trans "Every Tree Matters." %}</span>
+                    Every Cup Counts.<br>
+                    <span style="color:#fdfdfd;">Every Tree Matters.</span>
                 </h1>
                 <p class="lead mb-5" style="color:#fdfdfd;">
-                    {% trans "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time." %}
+                    A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time.
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
-                        <i class="fas fa-hands-helping me-2"></i>{% trans "Join the Initiative" %}
+                        <i class="fas fa-hands-helping me-2"></i>Join the Initiative
                     </a>
                     <div class="btn-group">
                         <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3" style="background:#fdfdfd;color:#110906;">
-                            <i class="fas fa-envelope me-2"></i>{% trans "Newsletters" %}
+                            <i class="fas fa-envelope me-2"></i>Newsletters
                         </a>
                         <a href="#newsletter-signup" class="btn btn-primary btn-lg px-4 py-3">
-                            <i class="fas fa-paper-plane me-2"></i>{% trans "Subscribe" %}
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
                         </a>
                     </div>
                 </div>
@@ -158,9 +158,9 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-3">{% trans "Our Impact So Far" %}</h2>
+                <h2 class="display-5 fw-bold mb-3">Our Impact So Far</h2>
                 <p class="lead">
-                    {% trans "Together, we're making a real difference in communities and the environment." %}
+                    Together, we're making a real difference in communities and the environment.
                 </p>
             </div>
         </div>
@@ -168,15 +168,15 @@
         <div class="impact-cards-row">
             <div class="impact-card">
                 <div class="impact-number" data-target="{{ trees_planted }}">0</div>
-                <div class="impact-label">{% trans "Trees Planted" %}</div>
+                <div class="impact-label">Trees Planted</div>
             </div>
             <div class="impact-card">
                 <div class="impact-number" data-target="{{ youth_trained }}">0</div>
-                <div class="impact-label">{% trans "Youth Trained" %}</div>
+                <div class="impact-label">Youth Trained</div>
             </div>
             <div class="impact-card">
                 <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
-                <div class="impact-label">{% trans "Coffee Cups Sold" %}</div>
+                <div class="impact-label">Coffee Cups Sold</div>
             </div>
         </div>
     </div>
@@ -187,9 +187,9 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">{% trans "Get Started Today" %}</h2>
+                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">Get Started Today</h2>
                 <p class="lead" style="color:#000503;">
-                    {% trans "Choose how you'd like to be part of our sustainable movement." %}
+                    Choose how you'd like to be part of our sustainable movement.
                 </p>
             </div>
         </div>
@@ -260,12 +260,38 @@
                 <p class="mb-4" style="color:#000503;">
                     Get the latest news about our programs, impact stories, and upcoming events.
                 </p>
-                <form class="d-flex gap-2">
-                    <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" required style="background:#e0ddd8;color:#110906;">
+                <form class="d-flex gap-2" method="POST" action="{% url 'core:unified_subscribe' %}">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email address" required style="background:#e0ddd8;color:#110906;">
                     <button type="submit" class="btn btn-primary btn-lg px-4">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
+{% block extra_js %}
+{{ block.super }}
+<div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast align-items-center text-bg-{{ message.tags }} border-0 show mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.forEach(function(toastEl) {
+            new bootstrap.Toast(toastEl, { delay: 5000 }).show();
+        });
+    });
+</script>
+{% endblock %}
                 <small class="mt-2 d-block" style="color:#000503;">
                     We respect your privacy. Unsubscribe at any time.
                 </small>

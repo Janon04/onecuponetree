@@ -1,3 +1,34 @@
+from newsletter.models import NewsletterSubscriber
+from researchhub.models import ResearchSubscriber
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.shortcuts import redirect
+
+def unified_subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request, "Please enter a valid email address.")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        # Newsletter
+        newsletter_created = False
+        if not NewsletterSubscriber.objects.filter(email__iexact=email).exists():
+            NewsletterSubscriber.objects.create(email=email)
+            newsletter_created = True
+        # Research
+        research_created = False
+        if not ResearchSubscriber.objects.filter(email__iexact=email).exists():
+            ResearchSubscriber.objects.create(email=email)
+            research_created = True
+        if newsletter_created or research_created:
+            messages.success(request, "Thank you for subscribing! You'll receive updates from both our Newsletter and Research & Publications.")
+        else:
+            messages.info(request, "You are already subscribed to both our Newsletter and Research & Publications updates.")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect('/')
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 from .forms import ContactForm, DonationForm

@@ -1,22 +1,22 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Newsletters" %}{% endblock %}
+{% block title %}Newsletters{% endblock %}
 
 {% block content %}
-<div class="container section-padding">
-    <h2 class="section-title">{% trans "Newsletters" %}</h2>
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 text-center" style="color:#110906; letter-spacing:-1px;">Newsletters</h2>
     {% if newsletters %}
-        <div class="row">
+        <div class="row justify-content-center">
             {% for newsletter in newsletters %}
-                <div class="col-md-8 offset-md-2 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ newsletter.subject }}</h4>
-                            <div class="mb-2 text-muted" style="font-size:0.95em;">
-                                {{ newsletter.created_at|date:"F j, Y, g:i a" }}
+                <div class="col-lg-8 mb-5">
+                    <div class="card shadow border-0 rounded-4" style="background:#fff7ef;">
+                        <div class="card-body p-4 p-md-5">
+                            <h4 class="card-title mb-2" style="color:#b85c00;">{{ newsletter.subject }}</h4>
+                            <div class="mb-3 text-muted small">
+                                <i class="fa-regular fa-calendar-alt me-1"></i> {{ newsletter.created_at|date:"F j, Y, g:i a" }}
                             </div>
                             {% if newsletter.media.all %}
+                                <div class="mb-3">
                                 {% for media in newsletter.media.all %}
                                     {% if media.video %}
                                         <video class="img-fluid rounded mb-3" controls style="width:100%;height:auto;max-height:320px;object-fit:cover;">
@@ -27,15 +27,16 @@
                                         <img src="{{ media.image.url }}" class="img-fluid rounded mb-3" alt="Newsletter image">
                                     {% endif %}
                                 {% endfor %}
+                                </div>
                             {% endif %}
-                            <div class="card-text">{{ newsletter.content|safe }}</div>
+                            <div class="card-text" style="color:#4b2e1a;">{{ newsletter.content|safe }}</div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>{% trans "No newsletters have been published yet." %}</p>
+        <div class="alert alert-info text-center mt-5" style="background:#e0ddd8; color:#110906; border:none;">No newsletters have been published yet.</div>
     {% endif %}
 </div>
 {% endblock %}

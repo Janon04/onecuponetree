@@ -1,9 +1,20 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
-from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+
+class ResearchSubscriber(models.Model):
+	email = models.EmailField(unique=True)
+	subscribed_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		verbose_name = 'Research Subscriber'
+		verbose_name_plural = 'Research Subscribers'
+		ordering = ['-subscribed_at']
+
+	def __str__(self):
+		return self.email
 
 class PublicationDownloadRequest(models.Model):
 	publication = models.ForeignKey('ResearchPublication', on_delete=models.CASCADE, related_name='download_requests')
