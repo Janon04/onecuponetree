@@ -75,7 +75,28 @@ class AboutView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+        from dashboard.models import ImpactStat
+        from farmers.models import Farmer
+        from trees.models import Tree
+        # Try to get stats from ImpactStat, fallback to model counts
+        impact_stats = ImpactStat.objects.filter(is_active=True)
+        stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
+        context['trees_planted'] = stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count()
+        context['farmers_supported'] = stats_dict.get('farmers_supported', None) or Farmer.objects.count()
+        # Count youth trained from BaristaTrainingApplication if ImpactStat not set
+        if stats_dict.get('youth_trained', None):
+            context['youth_trained'] = stats_dict['youth_trained'].stat_value
+        else:
+            try:
+                from volunteers.models import BaristaTrainingApplication
+                context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
+            except Exception:
+                context['youth_trained'] = 0
+        # Count total community members: Farmer (head) + all household members
+        from farmers.models import HouseholdMember
+        total_farmers = Farmer.objects.count()
+        total_household_members = HouseholdMember.objects.count()
+        context['communities'] = stats_dict.get('communities', None) or (total_farmers + total_household_members)
         context.update({
             'mission': "To create a sustainable coffee ecosystem that empowers farmers, trains youth, and restores our environment through innovative tree planting initiatives.",
             'vision': "A world where every cup of coffee contributes to environmental restoration and economic empowerment of local communities.",
@@ -98,7 +119,6 @@ class AboutView(TemplateView):
                 }
             ]
         })
-        
         return context
 
 

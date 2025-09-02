@@ -206,25 +206,25 @@
         <div class="row">
             <div class="col-md-3 col-6">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="12500">0</div>
+                    <div class="stat-number" data-target="{{ trees_planted|default:'0' }}">{{ trees_planted|default:'0' }}</div>
                     <div class="stat-label">{% trans "Trees Planted" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="350">0</div>
+                    <div class="stat-number" data-target="{{ farmers_supported|default:'0' }}">{{ farmers_supported|default:'0' }}</div>
                     <div class="stat-label">{% trans "Farmers Supported" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="12">0</div>
+                    <div class="stat-number" data-target="{{ communities|default:'0' }}">{{ communities|default:'0' }}</div>
                     <div class="stat-label">{% trans "Communities" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="85">0</div>
+                    <div class="stat-number" data-target="{{ youth_trained|default:'0' }}">{{ youth_trained|default:'0' }}</div>
                     <div class="stat-label">{% trans "Youth Trained" %}</div>
                 </div>
             </div>

@@ -12,11 +12,15 @@ def impact_dashboard(request):
     from django.db.models.functions import TruncMonth
     import json
 
+    # Use ImpactStat for all key stats, fallback to calculated if missing
+    impact_stats = ImpactStat.objects.filter(is_active=True)
+    stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
     stats = {
-        'trees_planted': Tree.objects.filter(is_active=True).count(),
-        'farmers_supported': Farmer.objects.count(),
-        # 'youth_trained': BaristaTrainee.objects.filter(graduated=True).count(),
-        'total_donations': Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0,
+        'trees_planted': stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count(),
+        'youth_trained': stats_dict.get('youth_trained', None) or 0,
+        'coffee_cups_sold': stats_dict.get('coffee_cups_sold', None) or 0,
+        'farmers_supported': stats_dict.get('farmers_supported', None) or Farmer.objects.count(),
+        'total_donations': stats_dict.get('total_donations', None) or Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0,
         'recent_donations': Donation.objects.filter(payment_status='paid').order_by('-created_at')[:5],
     }
 
@@ -52,8 +56,9 @@ def impact_dashboard(request):
         for t in recent_trees
     ]
     testimonials = Testimonial.objects.filter(is_featured=True)
-    impact_stats = ImpactStat.objects.filter(is_active=True)
-
+    # Farmer stories count for success stories card
+    from farmers.models import FarmerStory
+    total_success_stories = FarmerStory.objects.filter(is_published=True).count()
     return render(request, 'dashboard/impact.html', {
         'stats': stats,
         'recent_trees': recent_trees,
@@ -62,6 +67,7 @@ def impact_dashboard(request):
         'impact_stats': impact_stats,
         'recent_donations': stats['recent_donations'],
         'total_donations': stats['total_donations'],
+        'total_success_stories': total_success_stories,
         'month_labels': json.dumps(month_labels),
         'trees_month_data': json.dumps(trees_month_data),
         'donations_month_data': json.dumps(donations_month_data),

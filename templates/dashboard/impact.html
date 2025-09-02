@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n static %}
+{% load i18n static humanize %}
 
 {% block extra_css %}
 <!-- Leaflet CSS CDN -->
@@ -46,38 +46,40 @@
             </div>
         </div>
     </div>
-    <div class="row g-2 mb-3 text-center">
-        <div class="col-6 col-md-2">
-            <div class="stat-card bg-success text-white">
-                <div class="stat-value"><i class="fas fa-tree"></i><br>{{ stats.trees_planted }}</div>
-                <div class="stat-label small">Trees Planted</div>
+        <div class="row g-2 mb-3 text-center">
+            {% for stat in impact_stats %}
+                <div class="col-6 col-md-2">
+                    <div class="stat-card text-white"
+                        style="background: {% cycle 'var(--primary-color)' 'var(--secondary-color)' 'var(--accent-color)' '#b85c00' '#43a047' '#1976d2' %}; color: {% cycle '#fff' '#110906' '#fff' '#fff' '#fff' '#fff' %};">
+                        <div class="stat-value">
+                            {% if stat.stat_icon %}<i class="{{ stat.stat_icon }}"></i><br>{% endif %}
+                                {{ stat.stat_value|intcomma|default:'0' }}
+                        </div>
+                        <div class="stat-label small">{{ stat.stat_name }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- Success Stories Stat Card -->
+            <div class="col-6 col-md-2">
+                <div class="stat-card text-white" style="background: linear-gradient(135deg, #ffd700 60%, var(--secondary-color) 100%); color: #110906; box-shadow: 0 2px 12px rgba(255,215,0,0.15);">
+                    <div class="stat-value">
+                        <i class="fas fa-star"></i><br>
+                            {{ total_success_stories|intcomma|default:'0' }}
+                    </div>
+                    <div class="stat-label small">Success Stories</div>
+                </div>
             </div>
+            <!-- Total Donations Stat Card -->
+                <div class="col-12 col-md-3">
+                    <div class="stat-card text-white py-4" style="background: linear-gradient(135deg, #43a047 60%, var(--accent-color) 100%); color: #fff; box-shadow: 0 2px 12px rgba(67,160,71,0.15); min-height: 140px; font-size: 1.15rem;">
+                        <div class="stat-value" style="font-size:2.7rem;">
+                            <i class="fas fa-donate"></i><br>
+                            {{ total_donations|floatformat:0|intcomma|default:'0' }} RWF
+                        </div>
+                        <div class="stat-label small">Total Donations</div>
+                    </div>
+                </div>
         </div>
-        <div class="col-6 col-md-2">
-            <div class="stat-card bg-primary text-white">
-                <div class="stat-value"><i class="fas fa-user-friends"></i><br>{{ stats.farmers_supported }}</div>
-                <div class="stat-label small">Farmers Supported</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="stat-card bg-warning text-white">
-                <div class="stat-value"><i class="fas fa-user-graduate"></i><br>{{ stats.youth_trained }}</div>
-                <div class="stat-label small">Youth Trained</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="stat-card bg-info text-white">
-                <div class="stat-value"><i class="fas fa-mug-hot"></i><br>{{ stats.reusable_cups }}</div>
-                <div class="stat-label small">Reusable Cups</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="stat-card bg-danger text-white">
-                <div class="stat-value"><i class="fas fa-coins"></i><br>{{ stats.total_donations|floatformat:0 }}</div>
-                <div class="stat-label small">Total Donations (RWF)</div>
-            </div>
-        </div>
-    </div>
     <div class="row g-3 mb-3">
         <div class="col-md-6">
             <div class="card h-100">
@@ -132,39 +134,7 @@
                 </div>
             </div>
         </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingStories">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStories" aria-expanded="false" aria-controls="collapseStories">
-                    <i class="fas fa-star me-2 text-warning"></i>Success Stories
-                </button>
-            </h2>
-            <div id="collapseStories" class="accordion-collapse collapse show" aria-labelledby="headingStories" data-bs-parent="#dashboardAccordion">
-                <div class="accordion-body">
-                    <div class="row">
-                        {% for testimonial in testimonials %}
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                {% if testimonial.video %}
-                                <video class="card-img-top" controls style="width:100%;height:auto;max-height:180px;object-fit:cover;">
-                                    <source src="{{ testimonial.video.url }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                                {% elif testimonial.photo %}
-                                <img src="{{ testimonial.photo.url }}" class="card-img-top" alt="Testimonial photo">
-                                {% endif %}
-                                <div class="card-body">
-                                    <blockquote class="blockquote mb-0">
-                                        <p>{{ testimonial.content }}</p>
-                                        <footer class="blockquote-footer"><cite>{{ testimonial.role }}</cite></footer>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Success Stories accordion removed as per request -->
     </div>
 </div>
 {% endblock %}

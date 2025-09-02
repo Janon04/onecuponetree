@@ -36,4 +36,11 @@ class BaristaTrainingAdmin(admin.ModelAdmin):
 			return format_html('<img src="{}" width="120" style="object-fit:cover;" />', obj.banner.url)
 		return ""
 	media_preview.short_description = 'Media Preview'
-admin.site.register(BaristaTrainingApplication)
+@admin.register(BaristaTrainingApplication)
+class BaristaTrainingApplicationAdmin(admin.ModelAdmin):
+	list_display = [
+		'id', 'full_name', 'email', 'phone', 'selected_for_training',
+	]
+	list_editable = ['selected_for_training']
+	list_filter = ['selected_for_training']
+	search_fields = ['full_name', 'email', 'phone']

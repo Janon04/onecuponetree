@@ -51,6 +51,8 @@ class BaristaTraining(models.Model):
 
 
 class BaristaTrainingApplication(models.Model):
+    # Selection status
+    selected_for_training = models.BooleanField('Selected for Training', default=False, help_text='Mark as selected to start training')
     training = models.ForeignKey(
         BaristaTraining,
         on_delete=models.CASCADE,
