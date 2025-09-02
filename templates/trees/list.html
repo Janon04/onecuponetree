@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Tree List" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="background-color: #f6ecd9; border-radius: 16px;">
+  <div class="mb-4 p-3 rounded-3" style="background-color: #b97715;">
+    <h2 class="mb-0" style="font-family: var(--font-heading); color: #fff; text-shadow: 1px 1px 2px #de961a;">🌳 {% trans "Planted Trees" %}</h2>
+  </div>
+  {% if object_list %}
+    <div class="table-responsive">
+      <table class="table align-middle" style="background-color: #f6ecd9; border-radius: 12px; overflow: hidden;">
+        <thead style="background-color: #b97715; color: #fff;">
+          <tr>
+            <th>{% trans "Tree ID" %}</th>
+            <th>{% trans "Species" %}</th>
+            <th>{% trans "Planted Date" %}</th>
+            <th>{% trans "Location" %}</th>
+            <th>{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tree in object_list %}
+            <tr style="border-bottom: 1px solid #e0ddd8;">
+              <td>{{ tree.tree_id }}</td>
+              <td>{{ tree.get_species_display }}</td>
+              <td>{{ tree.planted_date }}</td>
+              <td>{{ tree.location|default:_('N/A') }}</td>
+              <td>
+                <a href="{{ tree.get_absolute_url }}" class="btn btn-sm" style="background-color: #b97715; color: #fff; border-radius: 6px;">{% trans "View Details" %}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center" style="background-color: #e0ddd8; color: #4b2e1a;">{% trans "No trees found." %}</div>
+  {% endif %}
+</div>
+{% endblock %}

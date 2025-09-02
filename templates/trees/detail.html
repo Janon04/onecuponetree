@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ object.get_species_display }} - {{ object.tree_id }}{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="background-color: #f6ecd9; border-radius: 16px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header" style="background-color: #b97715; color: #fff;">
+                    <h2 class="mb-0" style="font-family: var(--font-heading); text-shadow: 1px 1px 2px #de961a;">🌳 {{ object.get_species_display }} ({{ object.tree_id }})</h2>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Tree ID" %}</dt>
+                        <dd class="col-sm-8">{{ object.tree_id }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Species" %}</dt>
+                        <dd class="col-sm-8">{{ object.get_species_display }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Planted Date" %}</dt>
+                        <dd class="col-sm-8">{{ object.planted_date }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Location" %}</dt>
+                        <dd class="col-sm-8">{{ object.location|default:_('N/A') }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Planted By" %}</dt>
+                        <dd class="col-sm-8">{{ object.planted_by.get_full_name|default:_('N/A') }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "Farmer" %}</dt>
+                        <dd class="col-sm-8">{{ object.farmer.full_name|default:_('N/A') }}</dd>
+                        <dt class="col-sm-4" style="color:#388e3c;">{% trans "CO₂ Offset (kg)" %}</dt>
+                        <dd class="col-sm-8">{{ object.co2_offset }}</dd>
+                    </dl>
+                    {% if object.photo %}
+                        <div class="mb-3 text-center">
+                            <img src="{{ object.photo.url }}" alt="{{ object }}" class="img-fluid rounded" style="max-height:300px; border: 2px solid #388e3c;">
+                        </div>
+                    {% endif %}
+                    {% if object.video %}
+                        <div class="mb-3 text-center">
+                            <video controls style="max-width:100%; max-height:300px; border: 2px solid #4b2e1a;">
+                                <source src="{{ object.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'trees:list' %}" class="btn" style="background-color: #388e3c; color: #d6ae2b; border-radius: 6px;">&larr; {% trans "Back to Tree List" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
