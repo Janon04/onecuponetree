@@ -25,7 +25,7 @@
         <div class="card-body d-flex flex-column p-4">
           <h5 class="card-title mb-1" style="color:#ffb366; font-weight:700; font-size:1.35rem; letter-spacing:0.5px;">{{ farm.name }}</h5>
           <p class="card-text small mb-2" style="color:#ffe0b3;"><i class="fas fa-map-marker-alt me-1"></i> {{ farm.location }}</p>
-          <p class="card-text mb-3" style="min-height:3.5em;">{{ farm.description|truncatewords:20 }}</p>
+          <p class="card-text mb-3" style="min-height:3.5em;">{{ farm.description|truncatewords:20|safe }}</p>
           <div class="mb-3">
             <div class="progress" style="height: 20px; background:#ffe0b3; border-radius:10px;">
               <div class="progress-bar bg-success" role="progressbar" style="width: {{ farm.sponsorship_progress|default:0 }}%; background-color: #d2691e; font-weight:600; font-size:1rem; border-radius:10px;" aria-valuenow="{{ farm.sponsorship_progress|default:0 }}" aria-valuemin="0" aria-valuemax="100">

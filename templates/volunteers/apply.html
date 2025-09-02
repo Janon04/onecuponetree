@@ -8,6 +8,12 @@
         <div class="col-lg-9 col-md-11">
             <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff; min-height: 720px; min-width: 520px;">
                 <div class="card-body p-5" style="min-height: 600px;">
+                    {% if application.motivation %}
+                        <div class="mb-3"><strong>{% trans "Motivation" %}:</strong> {{ application.motivation|safe }}</div>
+                    {% endif %}
+                    {% if application.skills_experience %}
+                        <div class="mb-3"><strong>{% trans "Skills & Experience" %}:</strong> {{ application.skills_experience|safe }}</div>
+                    {% endif %}
                     <!-- Header -->
                     <h2 class="mb-2 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810; font-size: 1.6rem; font-weight:700; letter-spacing:0.5px;">
                         👐 {% trans "COMMUNITY VOLUNTEER APPLICATION" %}

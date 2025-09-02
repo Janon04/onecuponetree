@@ -28,7 +28,7 @@
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
-                            <div class="card-text">{{ newsletter.content|linebreaks }}</div>
+                            <div class="card-text">{{ newsletter.content|safe }}</div>
                         </div>
                     </div>
                 </div>

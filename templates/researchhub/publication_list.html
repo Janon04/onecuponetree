@@ -34,7 +34,7 @@
                     </div>
                     <h5 class="mb-1 fw-semibold" style="color:#b85c00;">{{ pub.title }}</h5>
                     <div class="mb-1" style="color:#7a5a3a; font-size:0.95em;">{{ pub.author }}</div>
-                    <p class="mb-2 small" style="color:#4b2e1a;">{{ pub.summary|truncatewords:30 }}</p>
+                    <p class="mb-2 small" style="color:#4b2e1a;">{{ pub.summary|safe }}</p>
                     <a href="{% url 'researchhub:publication_detail' pub.pk %}" class="btn btn-sm fw-semibold" style="background:#b85c00; color:#fff;">{% trans "Read More" %}</a>
                 </div>
             </div>

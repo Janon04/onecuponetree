@@ -1,11 +1,12 @@
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
 
 
 class Newsletter(models.Model):
     subject = models.CharField(_('subject'), max_length=255)
-    content = models.TextField(_('content'))
+    content = RichTextField(_('content'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     published = models.BooleanField(_('published'), default=False)
     sent_at = models.DateTimeField(_('sent at'), null=True, blank=True)

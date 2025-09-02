@@ -1,5 +1,6 @@
 # --- All imports at the top ---
 from django.db import models
+from ckeditor.fields import RichTextField
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
@@ -21,12 +22,12 @@ class FarmerSupportActivity(models.Model):
     ]
     activity_type = models.CharField(_('Activity Type'), max_length=20, choices=ACTIVITY_TYPE_CHOICES)
     title = models.CharField(_('Title'), max_length=200)
-    description = models.TextField(_('Description'))
+    description = RichTextField(_('Description'))
     date = models.DateField(_('Date'))
     location = models.CharField(_('Location'), max_length=100, blank=True)
     staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='support_activities')
     farmers = models.ManyToManyField('Farmer', blank=True, related_name='support_activities')
-    outcome = models.TextField(_('Outcome/Notes'), blank=True)
+    outcome = RichTextField(_('Outcome/Notes'), blank=True)
     attachment = models.FileField(_('Attachment (photo, doc, etc.)'), upload_to='support_activities/', blank=True, null=True)
     is_public = models.BooleanField(_('Show on public site'), default=True)
     created_at = models.DateTimeField(auto_now_add=True)

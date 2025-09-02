@@ -30,7 +30,7 @@
                             <i class="fa fa-user me-1"></i> {{ story.farmer.full_name }}
                             &nbsp; <i class="fa fa-calendar-alt me-1"></i> {{ story.created_at|date:"M d, Y" }}
                         </p>
-                        <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ story.content|truncatewords:30 }}</p>
+                        <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ story.content|truncatewords:30|safe }}</p>
                     </div>
                 </div>
             </div>

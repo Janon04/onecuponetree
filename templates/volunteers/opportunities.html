@@ -27,7 +27,7 @@
                             <i class="fa fa-calendar-alt me-1"></i> {{ opportunity.start_date }} - {{ opportunity.end_date }}
                             {% if opportunity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ opportunity.location }}{% endif %}
                         </p>
-                        <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ opportunity.description|truncatewords:20 }}</p>
+                        <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ opportunity.description|safe }}</p>
                     </div>
                     <a href="{% url 'volunteers:opportunity_detail' opportunity.pk %}" class="btn mt-3 align-self-end" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:140px;">{% trans "View Details" %}</a>
                 </div>

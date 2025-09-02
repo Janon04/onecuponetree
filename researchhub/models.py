@@ -1,6 +1,7 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
+from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -8,7 +9,7 @@ class PublicationDownloadRequest(models.Model):
 	publication = models.ForeignKey('ResearchPublication', on_delete=models.CASCADE, related_name='download_requests')
 	name = models.CharField(max_length=100)
 	email = models.EmailField()
-	reason = models.TextField(blank=True)
+	reason = RichTextField(blank=True)
 	approved = models.BooleanField(default=False)
 	requested_at = models.DateTimeField(auto_now_add=True)
 	approved_at = models.DateTimeField(null=True, blank=True)

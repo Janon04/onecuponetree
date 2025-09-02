@@ -46,9 +46,9 @@
                                                 {{ post.created_at|date:"M d, Y" }}
                                         </p>
                     {% if post.description %}
-                        <p class="lead mb-4" style="color:#000; opacity:1;">{{ post.description }}</p>
+                        <p class="lead mb-4" style="color:#000; opacity:1;">{{ post.description|safe }}</p>
                     {% endif %}
-                                        <div class="mb-4" style="color:#4b2e1a;">{{ post.content|linebreaks }}</div>
+                                        <div class="mb-4" style="color:#4b2e1a;">{{ post.content|safe }}</div>
                                 </div>
                         </div>
 </div>

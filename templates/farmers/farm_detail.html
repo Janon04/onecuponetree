@@ -14,7 +14,7 @@
         <video src="{{ farm.video.url }}" class="w-100 rounded" controls style="max-height:320px;"></video>
       </div>
       {% endif %}
-  <p style="color:#222;">{{ farm.description }}</p>
+  <p style="color:#222;">{{ farm.description|safe }}</p>
       <div class="mb-3">
         <div class="progress" style="height: 22px; background:#ffe0b3; border-radius:10px;">
           <div class="progress-bar" role="progressbar" style="width: {{ sponsorship_progress|default:0 }}%; background-color: #d2691e; font-weight:600; font-size:1rem; border-radius:10px; color:#fff;" aria-valuenow="{{ sponsorship_progress|default:0 }}" aria-valuemin="0" aria-valuemax="100">

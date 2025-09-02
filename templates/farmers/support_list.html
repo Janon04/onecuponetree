@@ -14,11 +14,14 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ activity.title }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ activity.farmer.user.get_full_name }}</h6>
-                            <p class="card-text">{{ activity.description|default:_('No description') }}</p>
+                            <p class="card-text">{{ activity.description|default:_('No description')|safe }}</p>
                             <ul class="list-unstyled mb-0">
                                 <li><strong>{% trans "Date:" %}</strong> {{ activity.date }}</li>
                                 <li><strong>{% trans "Type:" %}</strong> {{ activity.support_type }}</li>
                                 <li><strong>{% trans "Successful:" %}</strong> {{ activity.is_successful|yesno:_('Yes,No') }}</li>
+                                {% if activity.outcome %}
+                                    <li><strong>{% trans "Outcome:" %}</strong> {{ activity.outcome|safe }}</li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

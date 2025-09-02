@@ -1,5 +1,6 @@
 from django import forms
 from .models import Farmer
+from ckeditor.widgets import CKEditorWidget
 
 class FarmSponsorshipForm(forms.Form):
     sponsor_name = forms.CharField(max_length=255, required=False, label="Your Name (optional)")
@@ -12,6 +13,10 @@ class FarmerForm(forms.ModelForm):
     class Meta:
         model = Farmer
         fields = '__all__'
+        widgets = {
+            'sponsorship_description': CKEditorWidget(),
+            'bio': CKEditorWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

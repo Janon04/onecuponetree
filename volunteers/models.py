@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from django.utils import timezone
@@ -15,7 +16,7 @@ def today_date():
 # -------------------------------
 class BaristaTraining(models.Model):
     title = models.CharField(_('title'), max_length=200)
-    description = models.TextField(_('description'))
+    description = RichTextField(_('description'))
     date = models.DateField(_('training date'))
     location = models.CharField(_('location'), max_length=100)
     banner = models.ImageField(
@@ -89,11 +90,11 @@ class BaristaTrainingApplication(models.Model):
     # 3. Educational & Professional Background
     education_level = models.CharField(_('Highest Level of Education Completed'), max_length=100)
     occupation = models.CharField(_('Current Occupation / Employment Status'), max_length=100)
-    skills_experience = models.TextField(_('Relevant Skills or Experience'), blank=True)
+    skills_experience = RichTextField(_('Relevant Skills or Experience'), blank=True)
 
     # 4. Training-Specific Information
-    motivation = models.TextField(_('Why do you want to attend this training?'))
-    expected_skills = models.TextField(_('What skills or knowledge do you expect to gain?'), blank=True)
+    motivation = RichTextField(_('Why do you want to attend this training?'))
+    expected_skills = RichTextField(_('What skills or knowledge do you expect to gain?'), blank=True)
     attended_similar = models.BooleanField(_('Have you attended a similar training before?'), default=False)
     attended_similar_details = models.CharField(_('If yes, please specify'), max_length=200, blank=True)
     preferred_location = models.CharField(_('Preferred Training Location'), max_length=100, blank=True)
@@ -128,11 +129,11 @@ class BaristaTrainingApplication(models.Model):
 # -------------------------------
 class VolunteerOpportunity(models.Model):
     title = models.CharField(_('title'), max_length=200)
-    description = models.TextField(_('description'))
+    description = RichTextField(_('description'))
     location = models.CharField(_('location'), max_length=100)
     start_date = models.DateField(_('start date'))
     end_date = models.DateField(_('end date'))
-    skills_required = models.TextField(_('skills required'), blank=True)
+    skills_required = RichTextField(_('skills required'), blank=True)
     image = models.ImageField(
         _('image'),
         upload_to='volunteer_opportunities/images/',
@@ -183,10 +184,10 @@ class VolunteerApplication(models.Model):
     sector_cell_village = models.CharField(_('Sector/Cell/Village'), max_length=100)
 
     # 2. Motivation Letter
-    motivation = models.TextField(_('Motivation Letter'))
+    motivation = RichTextField(_('Motivation Letter'))
 
     # 3. Relevant Skills & Experience
-    skills = models.TextField(_('Relevant Skills & Experience'))
+    skills = RichTextField(_('Relevant Skills & Experience'))
 
     # 4. Availability
     availability_weekdays = models.CharField(_('Weekdays (specify times)'), max_length=100, blank=True)
@@ -221,7 +222,7 @@ class VolunteerApplication(models.Model):
 
     application_date = models.DateTimeField(_('application date'), auto_now_add=True)
     status = models.CharField(_('status'), max_length=10, choices=STATUS_CHOICES, default='pending')
-    notes = models.TextField(_('notes'), blank=True)
+    notes = RichTextField(_('notes'), blank=True)
 
     class Meta:
         verbose_name = _('Volunteer Application')

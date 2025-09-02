@@ -46,7 +46,7 @@
                         {% if event.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ event.location }}{% endif %}
                     </p>
                     {% if event.description %}
-                        <p class="lead mb-4" style="color:#000; opacity:1;">{{ event.description }}</p>
+                        <p class="lead mb-4" style="color:#000; opacity:1;">{{ event.description|safe }}</p>
                     {% endif %}
                     <p class="mb-1"><strong>{% trans "Status:" %}</strong> {{ event.get_status_display }}</p>
                     {% if event.organizer %}

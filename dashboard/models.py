@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -19,7 +20,7 @@ class ImpactStat(models.Model):
 class Testimonial(models.Model):
     author = models.CharField(_('author'), max_length=100)
     role = models.CharField(_('role'), max_length=100, blank=True)
-    content = models.TextField(_('content'))
+    content = RichTextField(_('content'))
     photo = models.ImageField(_('photo'), upload_to='testimonials/', blank=True, null=True)
     video = models.FileField(_('video'), upload_to='testimonials/videos/', blank=True, null=True, help_text=_('Upload a short video testimonial (mp4, mov, webm, max 50MB)'))
     is_featured = models.BooleanField(_('is featured'), default=False)

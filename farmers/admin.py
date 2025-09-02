@@ -46,9 +46,38 @@ class FarmerSupportActivityAdmin(admin.ModelAdmin):
 	readonly_fields = ("created_at", "updated_at")
 
 from django.utils.html import format_html
+from django import forms
+from ckeditor.widgets import CKEditorWidget
+from .models import FarmerStory, Farm, FarmSponsorship
+
+# Custom admin forms for CKEditor fields
+class FarmerStoryAdminForm(forms.ModelForm):
+	class Meta:
+		model = FarmerStory
+		fields = '__all__'
+		widgets = {
+			'content': CKEditorWidget(),
+		}
+
+class FarmAdminForm(forms.ModelForm):
+	class Meta:
+		model = Farm
+		fields = '__all__'
+		widgets = {
+			'description': CKEditorWidget(),
+		}
+
+class FarmSponsorshipAdminForm(forms.ModelForm):
+	class Meta:
+		model = FarmSponsorship
+		fields = '__all__'
+		widgets = {
+			'message': CKEditorWidget(),
+		}
 
 @admin.register(FarmerStory)
 class FarmerStoryAdmin(admin.ModelAdmin):
+	form = FarmerStoryAdminForm
 	list_display = ("title", "farmer", "created_at", "is_published", "media_preview")
 	search_fields = ("title", "farmer__full_name")
 	readonly_fields = ("media_preview",)
@@ -64,6 +93,8 @@ class FarmerStoryAdmin(admin.ModelAdmin):
 			return format_html('<img src="{}" width="120" />', obj.photo.url)
 		return ""
 	media_preview.short_description = 'Preview'
+
+
 
 # --- Sponsor a Farm admin ---
 @admin.register(Farm)
