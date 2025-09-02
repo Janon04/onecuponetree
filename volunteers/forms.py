@@ -1,5 +1,4 @@
 import datetime
-from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models import BaristaTraining, BaristaTrainingApplication
 
@@ -23,7 +22,7 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
     def clean_id_number(self):
         id_number = self.cleaned_data.get('id_number', '')
         if not id_number.isdigit() or len(id_number) > 16:
-            raise forms.ValidationError(_('National ID must be up to 16 digits.'))
+            raise forms.ValidationError('National ID must be up to 16 digits.')
         return id_number
 
     def clean(self):
@@ -77,8 +76,8 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
             'education_level': forms.TextInput(attrs={'class': 'form-control'}),
             'occupation': forms.TextInput(attrs={'class': 'form-control'}),
             'skills_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Why do you want to attend this training?')}),
-            'expected_skills': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': _('What skills or knowledge do you expect to gain?')}),
+            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Why do you want to attend this training?'}),
+            'expected_skills': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'What skills or knowledge do you expect to gain?'}),
             'attended_similar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'attended_similar_details': forms.TextInput(attrs={'class': 'form-control'}),
             'preferred_location': forms.TextInput(attrs={'class': 'form-control'}),
@@ -97,12 +96,12 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
     special_needs = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Special Needs (Optional)')
+        label='Special Needs (Optional)'
     )
     languages_spoken = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Languages Spoken (Optional)')
+        label='Languages Spoken (Optional)'
     )
 from django import forms
 from django.utils.translation import gettext_lazy as _
@@ -113,23 +112,23 @@ class VolunteerApplicationForm(forms.ModelForm):
     def clean_id_number(self):
         id_number = self.cleaned_data.get('id_number', '')
         if len(id_number) > 16:
-            raise forms.ValidationError(_('National ID should not exceed 16 digits.'))
+            raise forms.ValidationError('National ID should not exceed 16 digits.')
         if not id_number.isdigit():
-            raise forms.ValidationError(_('National ID should contain only digits.'))
+            raise forms.ValidationError('National ID should contain only digits.')
         return id_number
     # 1. Personal Information
     full_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Full Name')
+        label='Full Name'
     )
     date_of_birth = forms.DateField(
         widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-        label=_('Date of Birth')
+        label='Date of Birth'
     )
     gender = forms.ChoiceField(
-        choices=[('male', _('Male')), ('female', _('Female')), ('other', _('Other'))],
+        choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')],
         widget=forms.Select(attrs={'class': 'form-control'}),
-        label=_('Gender')
+        label='Gender'
     )
     id_number = forms.CharField(
         widget=forms.TextInput(attrs={
@@ -137,90 +136,90 @@ class VolunteerApplicationForm(forms.ModelForm):
             'maxlength': '16',
             'inputmode': 'numeric',
             'pattern': '[0-9]{1,16}',
-            'placeholder': _('16 digits max')
+            'placeholder': '16 digits max'
         }),
-        label=_('National ID/Passport No.')
+        label='National ID/Passport No.'
     )
     phone = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Phone Number')
+        label='Phone Number'
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control'}),
-        label=_('Email Address')
+        label='Email Address'
     )
     country = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Country')
+        label='Country'
     )
     province = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Province/District')
+        label='Province/District'
     )
     sector_cell_village = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label=_('Sector/Cell/Village')
+        label='Sector/Cell/Village'
     )
 
     # 2. Motivation Letter
     motivation = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': _('Why do you want to volunteer with us?')}),
-        label=_('Motivation Letter')
+        widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control', 'placeholder': 'Why do you want to volunteer with us?'}),
+        label='Motivation Letter'
     )
 
     # 3. Relevant Skills & Experience
     skills = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': _('List any relevant skills or experience')}),
-        label=_('Relevant Skills & Experience')
+        widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'List any relevant skills or experience'}),
+        label='Relevant Skills & Experience'
     )
 
     # 4. Availability
     availability_weekdays = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Specify times')}),
-        label=_('Weekdays (specify times)')
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Specify times'}),
+        label='Weekdays (specify times)'
     )
     availability_weekends = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        label=_('Weekends')
+        label='Weekends'
     )
     availability_full_time = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        label=_('Full-time')
+        label='Full-time'
     )
     availability_part_time = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        label=_('Part-time')
+        label='Part-time'
     )
     availability_specific_dates = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Specific dates')}),
-        label=_('Specific dates')
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Specific dates'}),
+        label='Specific dates'
     )
 
     # 5. Areas of Interest
-    interest_community_outreach = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Community Outreach'))
-    interest_event_support = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Event Support'))
-    interest_training_mentorship = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Training & Mentorship'))
-    interest_environmental = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Environmental Activities (tree planting, farming, etc.)'))
-    interest_fundraising = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Fundraising & Campaigns'))
-    interest_admin_support = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('Administrative Support'))
-    interest_other = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Other')}), label=_('Other'))
+    interest_community_outreach = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Community Outreach')
+    interest_event_support = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Event Support')
+    interest_training_mentorship = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Training & Mentorship')
+    interest_environmental = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Environmental Activities (tree planting, farming, etc.)')
+    interest_fundraising = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Fundraising & Campaigns')
+    interest_admin_support = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='Administrative Support')
+    interest_other = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Other'}), label='Other')
 
     # 6. Emergency Contact
-    emergency_contact_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Emergency Contact Name'))
-    emergency_contact_relationship = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Relationship'))
-    emergency_contact_phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Emergency Contact Phone'))
+    emergency_contact_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label='Emergency Contact Name')
+    emergency_contact_relationship = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label='Relationship')
+    emergency_contact_phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label='Emergency Contact Phone')
 
     # 7. References (Optional)
 
     # 8. Declaration & Signature
-    declaration = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label=_('I confirm that the above information is true and complete.'))
-    signature_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label=_('Signature (Full Name)'))
-    signature_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label=_('Date'))
+    declaration = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='I confirm that the above information is true and complete.')
+    signature_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), label='Signature (Full Name)')
+    signature_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}), label='Date')
 
     class Meta:
         model = VolunteerApplication
@@ -238,7 +237,7 @@ class VolunteerOpportunityForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'rows': 5,
             'class': 'form-control',
-            'placeholder': _('Detailed description of the opportunity')
+            'placeholder': 'Detailed description of the opportunity'
         })
     )
     
@@ -246,7 +245,7 @@ class VolunteerOpportunityForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'rows': 3,
             'class': 'form-control',
-            'placeholder': _('Skills or qualifications needed')
+            'placeholder': 'Skills or qualifications needed'
         }),
         required=False
     )
@@ -269,12 +268,12 @@ class VolunteerOpportunityForm(forms.ModelForm):
     image = forms.ImageField(
         required=False,
         widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
-        label=_('Image (jpg, png, webp, max 5MB)')
+        label='Image (jpg, png, webp, max 5MB)'
     )
     video = forms.FileField(
         required=False,
         widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
-        label=_('Video (mp4, mov, webm, max 50MB)')
+        label='Video (mp4, mov, webm, max 50MB)'
     )
 
     class Meta:
@@ -288,33 +287,33 @@ class VolunteerOpportunityForm(forms.ModelForm):
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
         labels = {
-            'max_volunteers': _('Maximum number of volunteers'),
-            'is_active': _('Is this opportunity currently available?')
+            'max_volunteers': 'Maximum number of volunteers',
+            'is_active': 'Is this opportunity currently available?'
         }
 
 
 
 class VolunteerFilterForm(forms.Form):
     STATUS_CHOICES = [
-        ('', _('All Statuses')),
-        ('pending', _('Pending')),
-        ('reviewed', _('Reviewed')),
-        ('accepted', _('Accepted')),
-        ('rejected', _('Rejected'))
+        ('', 'All Statuses'),
+        ('pending', 'Pending'),
+        ('reviewed', 'Reviewed'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected')
     ]
     
     status = forms.ChoiceField(
         choices=STATUS_CHOICES,
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
-        label=_('Application Status')
+        label='Application Status'
     )
     
     opportunity = forms.ModelChoiceField(
         queryset=VolunteerOpportunity.objects.all(),
         required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
-        label=_('Filter by Opportunity')
+        label='Filter by Opportunity'
     )
     
     date_from = forms.DateField(
@@ -323,7 +322,7 @@ class VolunteerFilterForm(forms.Form):
             'class': 'form-control',
             'type': 'date'
         }),
-        label=_('From Date')
+        label='From Date'
     )
     
     date_to = forms.DateField(
@@ -332,5 +331,5 @@ class VolunteerFilterForm(forms.Form):
             'class': 'form-control',
             'type': 'date'
         }),
-        label=_('To Date')
+        label='To Date'
     )

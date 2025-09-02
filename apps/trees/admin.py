@@ -5,11 +5,11 @@ from .models import Tree, TreePlantingSubmission
 class TreePlantingSubmissionAdmin(admin.ModelAdmin):
     list_display = (
         'full_name', 'tree_type', 'quantity', 'country', 'province', 'district',
-        'planting_date', 'contribution_type', 'submitted_at'
+        'planting_date', 'contribution_type'
     )
-    list_filter = ('tree_type', 'country', 'province', 'district', 'contribution_type', 'planting_date', 'submitted_at')
+    list_filter = ('tree_type', 'country', 'province', 'district', 'contribution_type', 'planting_date')
     search_fields = ('full_name', 'contact', 'country', 'province', 'district', 'village', 'reason')
-    readonly_fields = ('submitted_at',)
+    # readonly_fields removed: no submitted_at field
 
 @admin.register(Tree)
 class TreeAdmin(admin.ModelAdmin):

@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Our Partners" %}{% endblock %}
+{% block title %}Our Partners{% endblock %}
 {% block content %}
 <div class="container py-5">
-    <h1 class="section-title">{% trans "Our Partners" %}</h1>
+    <h1 class="section-title">Our Partners</h1>
     <div class="row justify-content-center align-items-center" style="gap: 0.5rem;">
         {% for partner in partners %}
             {% if partner.logo %}
@@ -13,7 +12,7 @@
             {% endif %}
         {% empty %}
             <div class="col-12">
-                <div class="alert alert-info">{% trans "No partners found." %}</div>
+                <div class="alert alert-info">No partners found.</div>
             </div>
         {% endfor %}
     </div>

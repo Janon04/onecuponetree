@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load i18n %}
+ 
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %}{% trans "Volunteer Signup" %}{% endblock %}
+{% block title %}Volunteer Signup{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -178,9 +178,9 @@
                         <div class="signup-icon">
                             <i class="fas fa-hands-helping"></i>
                         </div>
-                        <h1 class="h2 mb-2">{% trans "Join Our Volunteer Community" %}</h1>
+                        <h1 class="h2 mb-2">Join Our Volunteer Community</h1>
                         <p class="mb-0 opacity-75">
-                            {% trans "Make a difference with One Cup One Tree" %}
+                            Make a difference with One Cup One Tree
                         </p>
                     </div>
                     
@@ -195,18 +195,18 @@
                         </div>
                         
                         <div class="benefits-list">
-                            <h6 class="mb-3"><i class="fas fa-gift me-2 text-primary"></i>{% trans "Volunteer Benefits" %}</h6>
+                            <h6 class="mb-3"><i class="fas fa-gift me-2 text-primary"></i>Volunteer Benefits</h6>
                             <div class="benefit-item">
                                 <span class="benefit-icon"><i class="fas fa-seedling"></i></span>
-                                <span>{% trans "Help plant trees in coffee-growing communities" %}</span>
+                                <span>Help plant trees in coffee-growing communities</span>
                             </div>
                             <div class="benefit-item">
                                 <span class="benefit-icon"><i class="fas fa-users"></i></span>
-                                <span>{% trans "Join a community of like-minded environmentalists" %}</span>
+                                <span>Join a community of like-minded environmentalists</span>
                             </div>
                             <div class="benefit-item">
                                 <span class="benefit-icon"><i class="fas fa-award"></i></span>
-                                <span>{% trans "Receive training and certification opportunities" %}</span>
+                                <span>Receive training and certification opportunities</span>
                             </div>
                         </div>
 
@@ -252,26 +252,26 @@
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="termsAgree" required>
                                 <label class="form-check-label" for="termsAgree">
-                                    {% trans "I agree to the" %} <a href="#" class="text-primary">{% trans "Terms of Service" %}</a> {% trans "and" %} <a href="#" class="text-primary">{% trans "Privacy Policy" %}</a>
+                                    I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
                                 </label>
                             </div>
                             
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="newsletterSubscribe">
                                 <label class="form-check-label" for="newsletterSubscribe">
-                                    {% trans "Subscribe to our newsletter for updates and opportunities" %}
+                                    Subscribe to our newsletter for updates and opportunities
                                 </label>
                             </div>
 
                             <button type="submit" class="btn btn-signup w-100 py-3">
-                                <i class="fas fa-user-plus me-2"></i>{% trans "Complete Sign Up" %}
+                                <i class="fas fa-user-plus me-2"></i>Complete Sign Up
                             </button>
                         </form>
 
                         <div class="login-redirect">
                             <p class="mb-0">
-                                {% trans "Already part of our community?" %}
-                                <a href="{% url 'accounts:login' %}" class="text-primary fw-semibold">{% trans "Login here" %}</a>
+                                Already part of our community?
+                                <a href="{% url 'accounts:login' %}" class="text-primary fw-semibold">Login here</a>
                             </p>
                         </div>
                     </div>
@@ -315,7 +315,7 @@
                     const errorDiv = document.createElement('div');
                     errorDiv.id = 'termsError';
                     errorDiv.className = 'invalid-feedback d-block';
-                    errorDiv.textContent = '{% trans "You must agree to the terms and conditions" %}';
+                    errorDiv.textContent = 'You must agree to the terms and conditions';
                     termsCheckbox.parentNode.appendChild(errorDiv);
                 }
             } else {

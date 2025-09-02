@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% block title %}Barista Trainings | {{ SITE_NAME }}{% endblock %}
 {% block content %}
 <div class="container py-5">
-  <h1 class="section-title">{% trans "Upcoming Barista Trainings" %}</h1>
+  <h1 class="section-title">Upcoming Barista Trainings</h1>
   {% if trainings %}
     <div class="blog-list-vertical">
       {% for training in trainings %}
@@ -33,7 +32,7 @@
             <p class="card-text small mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;"><i class="fa fa-calendar-alt me-1"></i> {{ training.date }} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ training.location }}</p>
             <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ training.description|safe }}</p>
           </div>
-          <a href="{% url 'volunteers:barista_training_detail' training.pk %}" class="btn mt-3 align-self-end" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:140px;">{% trans "View & Apply" %}</a>
+          <a href="{% url 'volunteers:barista_training_detail' training.pk %}" class="btn mt-3 align-self-end" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:140px;">View & Apply</a>
         </div>
       </div>
       {% endfor %}
@@ -77,7 +76,7 @@
     }
 </style>
   {% else %}
-    <div class="alert alert-info text-center">{% trans "No barista trainings are currently available. Please check back soon!" %}</div>
+  <div class="alert alert-info text-center">No barista trainings are currently available. Please check back soon!</div>
   {% endif %}
 </div>
 {% endblock %}

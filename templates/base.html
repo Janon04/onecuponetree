@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -418,63 +418,53 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: #fff;">
         <div class="container">
-            <a class="navbar-brand text-primary" href="{% url 'core:home' %}">
+            <a class="navbar-brand d-flex align-items-center text-primary fw-bold" href="{% url 'core:home' %}" style="font-size:1.4rem;">
                 <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:40px; margin-right:10px; vertical-align:middle;">
+                One Cup Initiative
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">{% trans "Home" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">{% trans "About Us" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">About Us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if 'farmers' in request.path or 'volunteers' in request.path or 'programs' in request.path %}active{% endif %}" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
-                            {% trans "Programs" %}
+                            Programs
                         </a>
                         <ul class="dropdown-menu">
-                            {# Removed admin-only Farmer Support link from public navigation #}
-                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support" %}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">{% trans "Youth Barista Academy" %}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">{% trans "OCI Campaign" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">Farmer Support</a></li>
+                            <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">Youth Barista Academy</a></li>
+                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">OCI Campaign</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{% trans "Shop" %}</a>
+                        <a class="nav-link" href="#">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'gallery' in request.path %}active{% endif %}" href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a>
+                        <a class="nav-link {% if 'gallery' in request.path %}active{% endif %}" href="{% url 'gallery:gallery_list' %}">Gallery</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a>
+                        <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog:post_list' %}">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'core:contact' %}">{% trans "Contact" %}</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'core:contact' %}">Contact</a>
                     </li>
                 </ul>
-                
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item me-2">
-                        <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center" style="margin-bottom:0;">
-                            {% csrf_token %}
-                            <select name="language" class="form-select form-select-sm me-2" onchange="this.form.submit()">
-                                {% get_current_language as LANGUAGE_CODE %}
-                                {% get_available_languages as LANGUAGES %}
-                                {% for lang in LANGUAGES %}
-                                    <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>{{ lang.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </form>
-                    </li>
-                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{% url 'core:donate' %}" class="btn px-4 fw-semibold me-3 d-none d-lg-inline-block" style="border-radius: 30px; background: var(--accent-color,#000503); color: #fff;">Donate</a>
+                    <a href="https://www.facebook.com/share/r/1Cn4fDMwRs/?mibextid=wwXIfr" target="_blank" class="fs-5 me-2" style="color:#1877f3;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/onecuprwanda?s=21" target="_blank" class="fs-5 me-2" style="color:#1da1f2;"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/onecuproasters?igsh=MWRqaG0yY3Z0OGU5eQ==" target="_blank" class="fs-5 me-2" style="color:#e4405f;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ" target="_blank" class="fs-5" style="color:#ff0000;"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
         </div>
     </nav>
@@ -495,63 +485,36 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5>
-                        <img src="{% static 'images/ONE CUP INITIATIVE_Logo.jpg' %}" alt="One Cup Initiative Logo" style="height:32px; margin-right:8px; vertical-align:middle;">{% trans "One Cup Initiative" %}
-                    </h5>
-                    <p class="mb-3">Empowering coffee farming communities through sustainable practices, fair trade, and education.</p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/share/r/1Cn4fDMwRs/?mibextid=wwXIfr" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/onecuprwanda?s=21" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/onecuproasters?igsh=MWRqaG0yY3Z0OGU5eQ==" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Our Programs" %}</h6>
-                    <ul class="list-unstyled">
-                        {# Removed admin-only Farmer Support link from public footer #}
-                        <li><a href="{% url 'farmers:support_activities_public' %}">{% trans "Farmer Support" %}</a></li>
-                        <li><a href="{% url 'volunteers:barista_training_list' %}">{% trans "Barista Academy" %}</a></li>
-                        <li><a href="{% url 'programs:program_list' %}">{% trans "Sustainability" %}</a></li>
-                        <li><a href="{% url 'trees:plant_tree' %}">{% trans "Tree Campaign" %}</a></li>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'core:home' %}" class="text-decoration-none">Home</a></li>
+                        <li><a href="{% url 'core:about' %}" class="text-decoration-none">About Us</a></li>
+                        <li><a href="{% url 'core:donate' %}" class="text-decoration-none">Donate</a></li>
+                        <li><a href="{% url 'core:contact' %}" class="text-decoration-none">Contact</a></li>
                     </ul>
                 </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Get Involved" %}</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'volunteers:opportunities' %}">{% trans "Volunteer" %}</a></li>
-                        <li><a href="{% url 'partners:partner_list' %}">{% trans "Partnership" %}</a></li>
-                        <li><a href="{% url 'core:donate' %}">{% trans "Donate" %}</a></li>
-                        <li><a href="{% url 'farmers:farm_list' %}">{% trans "Sponsor a Farm" %}</a></li>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Resources</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'blog:post_list' %}" class="text-decoration-none">Blog</a></li>
+                        <li><a href="{% url 'researchhub:publication_list' %}" class="text-decoration-none">Research</a></li>
+                        <li><a href="{% url 'events:event_list' %}" class="text-decoration-none">Events</a></li>
+                        <li><a href="{% url 'gallery:gallery_list' %}" class="text-decoration-none">Gallery</a></li>
+                        <li><a href="{% url 'farmers:story_list' %}" class="text-decoration-none">Farmer Stories</a></li>
                     </ul>
                 </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Resources" %}</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a></li>
-                        <li><a href="{% url 'researchhub:publication_list' %}">{% trans "Research" %}</a></li>
-                        <li><a href="{% url 'events:event_list' %}">{% trans "Events" %}</a></li>
-                        <li><a href="{% url 'gallery:gallery_list' %}">{% trans "Gallery" %}</a></li>
-                        <li><a href="{% url 'farmers:story_list' %}">{% trans "Farmer Stories" %}</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>{% trans "Contact Us" %}</h6>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope me-2"></i>info@onecupinitiative.org</li>
-                        <li><i class="fas fa-phone me-2"></i>+250 788 354 403</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
-                            <li>
-                                <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
-                                    <i class="fas fa-map me-2"></i>{% trans "Google Maps" %}
-                                </a>
-                            </li>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Contact Us</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-1"><i class="fas fa-envelope me-2"></i>info@onecupinitiative.org</li>
+                        <li class="mb-1"><i class="fas fa-phone me-2"></i>+250 788 354 403</li>
+                        <li class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
+                        <li>
+                            <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-decoration-underline">
+                                <i class="fas fa-map me-2"></i>Google Maps
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

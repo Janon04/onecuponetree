@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Volunteer Opportunities" %}{% endblock %}
+{% block title %}Volunteer Opportunities{% endblock %}
 {% block content %}
 <div class="container py-5">
-    <h1 class="section-title">{% trans "Volunteer Opportunities" %}</h1>
+    <h1 class="section-title">Volunteer Opportunities</h1>
     {% if opportunities %}
         <div class="blog-list-vertical">
             {% for opportunity in opportunities %}
@@ -29,7 +28,7 @@
                         </p>
                         <p class="card-text" style="min-height:3.2em;color:#000;opacity:1;">{{ opportunity.description|safe }}</p>
                     </div>
-                    <a href="{% url 'volunteers:opportunity_detail' opportunity.pk %}" class="btn mt-3 align-self-end" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:140px;">{% trans "View Details" %}</a>
+                    <a href="{% url 'volunteers:opportunity_detail' opportunity.pk %}" class="btn mt-3 align-self-end" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:140px;">View Details</a>
                 </div>
             </div>
             {% endfor %}
@@ -104,7 +103,7 @@
     }
 </style>
     {% else %}
-    <div class="alert alert-info">{% trans "No volunteer opportunities available at the moment." %}</div>
+    <div class="alert alert-info">No volunteer opportunities available at the moment.</div>
     {% endif %}
 </div>
 {% endblock %}
