@@ -285,6 +285,28 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Animate impact numbers
+        document.querySelectorAll('.impact-number').forEach(function(el) {
+            var target = parseInt(el.getAttribute('data-target')) || 0;
+            var duration = 1200;
+            var frameRate = 30;
+            var frame = 0;
+            var totalFrames = Math.round(duration / (1000 / frameRate));
+            var count = 0;
+            var increment = target / totalFrames;
+            function animate() {
+                count += increment;
+                if (count < target) {
+                    el.textContent = Math.floor(count);
+                    frame++;
+                    requestAnimationFrame(animate);
+                } else {
+                    el.textContent = target;
+                }
+            }
+            animate();
+        });
+        // Toasts
         var toastElList = [].slice.call(document.querySelectorAll('.toast'));
         toastElList.forEach(function(toastEl) {
             new bootstrap.Toast(toastEl, { delay: 5000 }).show();

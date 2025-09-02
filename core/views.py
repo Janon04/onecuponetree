@@ -57,15 +57,24 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Mock impact statistics (in production, these would come from the database)
-        context.update({
-            'trees_planted': 15420,
-            'youth_trained': 342,
-            'coffee_cups_sold': 8750,
-            'co2_saved': 2340,  # in kg
-        })
-        
+        from dashboard.models import ImpactStat
+        from farmers.models import Farmer
+        from trees.models import Tree
+        # Try to get stats from ImpactStat, fallback to model counts
+        impact_stats = ImpactStat.objects.filter(is_active=True)
+        stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
+        context['trees_planted'] = stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count()
+        # Count youth trained from BaristaTrainingApplication if ImpactStat not set
+        if stats_dict.get('youth_trained', None):
+            context['youth_trained'] = stats_dict['youth_trained'].stat_value
+        else:
+            try:
+                from volunteers.models import BaristaTrainingApplication
+                context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
+            except Exception:
+                context['youth_trained'] = 0
+        context['coffee_cups_sold'] = stats_dict.get('coffee_cups_sold', None) or 0
+        context['co2_saved'] = stats_dict.get('co2_saved', None) or 0
         return context
 
 
