@@ -4,6 +4,12 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView, View
+from .forms import ContactForm, DonationForm
+from django.contrib import messages
+from .utils import send_donation_thank_you
+from .models import Donation
 
 def unified_subscribe(request):
     if request.method == 'POST':
@@ -29,13 +35,6 @@ def unified_subscribe(request):
             messages.info(request, "You are already subscribed to both our Newsletter and Research & Publications updates.")
         return redirect(request.META.get('HTTP_REFERER', '/'))
     return redirect('/')
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, View
-from .forms import ContactForm, DonationForm
-from django.contrib import messages
-from .utils import send_donation_thank_you
-from .models import Donation
-
 class ContactView(View):
     template_name = 'core/contact.html'
 
@@ -101,11 +100,9 @@ class AboutView(TemplateView):
                 context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
             except Exception:
                 context['youth_trained'] = 0
-        # Count total community members: Farmer (head) + all household members
-        from farmers.models import HouseholdMember
-        total_farmers = Farmer.objects.count()
-        total_household_members = HouseholdMember.objects.count()
-        context['communities'] = stats_dict.get('communities', None) or (total_farmers + total_household_members)
+        # Count unique sectors as communities (updated field name)
+        unique_sectors = Farmer.objects.values_list('sector', flat=True).distinct()
+        context['communities'] = stats_dict.get('communities', None) or unique_sectors.count()
         context.update({
             'mission': "To create a sustainable coffee ecosystem that empowers farmers, trains youth, and restores our environment through innovative tree planting initiatives.",
             'vision': "A world where every cup of coffee contributes to environmental restoration and economic empowerment of local communities.",

@@ -21,8 +21,8 @@ class FarmerStoryInline(admin.TabularInline):
 
 @admin.register(Farmer)
 class FarmerAdmin(admin.ModelAdmin):
-	list_display = ("full_name", "household_id", "village_cell", "sector_district", "phone_number", "main_income_source", "is_coop_member")
-	search_fields = ("full_name", "household_id", "phone_number", "village_cell", "sector_district")
+	list_display = ("full_name", "household_id", "district", "sector", "cell", "village", "phone_number", "main_income_source", "is_coop_member")
+	search_fields = ("full_name", "household_id", "phone_number", "district", "sector", "cell", "village")
 	inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerStoryInline]
 	from .forms import FarmerForm
 	form = FarmerForm

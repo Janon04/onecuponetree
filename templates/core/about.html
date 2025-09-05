@@ -17,19 +17,23 @@
         padding: 5rem 0;
     }
     
-    .value-card {
-        background: #fdfdfd;
+        .value-card {
+            background: #7b3f00;
         border-radius: var(--border-radius);
         padding: 2rem;
         text-align: center;
         box-shadow: var(--box-shadow);
-        transition: var(--transition);
+        transition: box-shadow 0.2s, transform 0.2s, background 0.3s;
         height: 100%;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
     }
-    
-    .value-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    .value-card:hover, .value-card:active, .value-card:focus {
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1), 0 8px 32px rgba(75,46,26,0.18);
+        transform: translateY(-5px) scale(1.03);
+        background: linear-gradient(135deg, #e0ddd8 0%, #8a6c40 100%);
+        z-index: 2;
     }
     
     .value-icon {
@@ -42,12 +46,11 @@
         line-height: 80px;
         background: #e0ddd8;
         border-radius: 50%;
-        transition: var(--transition);
+        transition: color 0.2s, background 0.3s;
     }
-    
-    .value-card:hover .value-icon {
+    .value-card:hover .value-icon, .value-card:active .value-icon, .value-card:focus .value-icon {
         background: #110906;
-        color: #fdfdfd;
+        color: #e8a94a;
     }
     
     .timeline {

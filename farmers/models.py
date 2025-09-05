@@ -71,18 +71,10 @@ class Farmer(models.Model):
         blank=True,
         help_text='16 digit household ID',
     )
-    VILLAGE_CELL_CHOICES = [
-        ('village1', 'Village 1'),
-        ('village2', 'Village 2'),
-        ('village3', 'Village 3'),
-    ]
-    SECTOR_DISTRICT_CHOICES = [
-        ('sector1', 'Sector 1'),
-        ('sector2', 'Sector 2'),
-        ('sector3', 'Sector 3'),
-    ]
-    village_cell = models.CharField('Village/Cell', max_length=100, choices=VILLAGE_CELL_CHOICES)
-    sector_district = models.CharField('Sector/District', max_length=100, choices=SECTOR_DISTRICT_CHOICES)
+    district = models.CharField('District', max_length=100, blank=True)
+    sector = models.CharField('Sector', max_length=100, blank=True)
+    cell = models.CharField('Cell', max_length=100, blank=True)
+    village = models.CharField('Village', max_length=100, blank=True)
     interview_date = models.DateField(
         'Date of interview',
         default=today_utc_plus_2,  # ✅ default today UTC+2
