@@ -7,7 +7,7 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0 rounded-4 blog-detail-pro" style="background-color: #fff7ef; color: #4b2e1a;">
                 <div class="card-body p-5">
-                                        <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ opportunity.title }}</h1>
+                                        <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ opportunity.title|striptags }}</h1>
                                         {% if opportunity.image or opportunity.video %}
                                         <div class="mb-4 d-flex justify-content-center align-items-center">
                                                 {% if opportunity.video %}
@@ -24,8 +24,8 @@
                                                 <i class="fa fa-calendar-alt me-1"></i> {{ opportunity.start_date }} - {{ opportunity.end_date }}
                                                 {% if opportunity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ opportunity.location }}{% endif %}
                                         </p>
-                                        <p class="mb-4" style="color:#000;opacity:1;">{{ opportunity.description }}</p>
-                                        <p class="mb-1"><strong>{% trans "Skills Required:" %}</strong> {{ opportunity.skills_required }}</p>
+                                        <p class="mb-4" style="color:#000;opacity:1;">{{ opportunity.description|striptags }}</p>
+                                        <p class="mb-1"><strong>{% trans "Skills Required:" %}</strong> {{ opportunity.skills_required|striptags }}</p>
                                         <p class="mb-1"><strong>{% trans "Max Volunteers:" %}</strong> {{ opportunity.max_volunteers }}</p>
                                         <a href="{% url 'volunteers:apply' opportunity.pk %}" class="btn mt-3 align-self-start" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:180px;">{% trans "Apply Now" %}</a>
                                         <!-- Modal for image/video zoom -->
