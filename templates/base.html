@@ -433,7 +433,7 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">About</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">About Us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {% if 'farmers' in request.path or 'volunteers' in request.path or 'programs' in request.path %}active{% endif %}" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
@@ -459,11 +459,7 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
-                    <a href="{% url 'core:donate' %}" class="btn px-4 fw-semibold me-3 d-none d-lg-inline-block" style="border-radius: 30px; background: var(--accent-color,#000503); color: #fff;">Donate</a>
-                    <a href="https://www.facebook.com/share/r/1Cn4fDMwRs/?mibextid=wwXIfr" target="_blank" class="fs-5 me-2" style="color:#1877f3;"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://x.com/onecuprwanda?s=21" target="_blank" class="fs-5 me-2" style="color:#1da1f2;"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/onecuproasters?igsh=MWRqaG0yY3Z0OGU5eQ==" target="_blank" class="fs-5 me-2" style="color:#e4405f;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ" target="_blank" class="fs-5" style="color:#ff0000;"><i class="fab fa-youtube"></i></a>
+                    <a href="{% url 'core:donate' %}" class="btn px-4 fw-semibold me-3 d-none d-lg-inline-block" style="border-radius: 30px; background: linear-gradient(90deg, #009688 0%, #4b2e1a 100%); color: #fff; box-shadow: 0 4px 16px rgba(0,150,136,0.15); border: none;">Donate</a>
                 </div>
             </div>
         </div>
@@ -523,6 +519,16 @@
             <div class="row justify-content-center footer-small">
                 <div class="col-12 text-center footer-small">
                     <p class="mb-2 footer-small">&copy; 2025 <a href="/" class="text-reset text-decoration-none">One Cup Initiative</a>. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+                <div class="social-links">
+                    <a href="https://www.facebook.com/share/r/1Cn4fDMwRs/?mibextid=wwXIfr" target="_blank" class="fs-5 me-2" style="color:#1877f3;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/onecuprwanda?s=21" target="_blank" class="fs-5 me-2" style="color:#1da1f2;"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/onecuproasters?igsh=MWRqaG0yY3Z0OGU5eQ==" target="_blank" class="fs-5 me-2" style="color:#e4405f;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ" target="_blank" class="fs-5" style="color:#ff0000;"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
