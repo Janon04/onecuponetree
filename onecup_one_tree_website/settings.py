@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'farmers',
     'newsletter',
     'get_involved',
-    'trees',
+    'apps.trees',
     'researchhub',
     'ckeditor',
 ]

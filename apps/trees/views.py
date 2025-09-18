@@ -1,8 +1,35 @@
+from django.views.decorators.csrf import csrf_exempt
+# --- New view for recording planted trees ---
+@csrf_exempt
+def record_tree(request):
+    from apps.trees.models import TreePlantingSubmission
+    from .forms import PlantTreeForm
+    if request.method == 'POST':
+        form = PlantTreeForm(request.POST, request.FILES)
+        if form.is_valid():
+            tree = form.save(commit=False)
+            # Get lat/lon from POST, not cleaned_data (since not in ModelForm fields)
+            # Set latitude/longitude to 0 by default, or use captured values
+            tree.latitude = request.POST.get('latitude') or 0
+            tree.longitude = request.POST.get('longitude') or 0
+            tree.planted_date = form.cleaned_data.get('planted_date')
+            tree.planted_by = form.cleaned_data.get('planted_by')
+            # Auto-generate tree_id using highest existing ID plus one
+            from apps.trees.models import Tree
+            last_tree = Tree.objects.order_by('-id').first()
+            next_id = (last_tree.id + 1) if last_tree else 1
+            tree.tree_id = f"TREE-{next_id:05d}"
+            tree.save()
+            messages.success(request, "Tree planting recorded successfully!")
+            return redirect('trees:record_tree')
+    else:
+        form = PlantTreeForm()
+    return render(request, 'trees/record_tree.html', {'form': form})
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
-from .models import Tree
+from apps.trees.models import Tree
 from .forms import TreeTrackingForm, PlantTreeForm, TreePlantingInitiativeForm
 
 def track_tree(request):
@@ -20,7 +47,7 @@ def track_tree(request):
     return render(request, 'trees/track.html', {'form': form})
 
 def plant_tree(request):
-    from .models import TreePlantingSubmission
+    from apps.trees.models import TreePlantingSubmission
     if request.method == 'POST':
         form = TreePlantingInitiativeForm(request.POST, request.FILES)
         if form.is_valid():

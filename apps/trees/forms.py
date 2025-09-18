@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 #from django.contrib.gis.forms import PointField
-from .models import Tree
+from apps.trees.models import Tree
 from farmers.models import Farmer
 
 class TreeTrackingForm(forms.Form):
@@ -16,31 +16,58 @@ class TreeTrackingForm(forms.Form):
     )
 
 class PlantTreeForm(forms.ModelForm):
+    latitude = forms.DecimalField(
+        label=_('Latitude'),
+        required=False,
+        initial=-0.0000,
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '0.000001', 'value': '-0.0000', 'readonly': 'readonly'}),
+        help_text=_('Latitude will be captured automatically (max 6 decimal places).')
+    )
+    longitude = forms.DecimalField(
+        label=_('Longitude'),
+        required=False,
+        initial=00.000,
+        max_digits=9,
+        decimal_places=6,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '0.000001', 'value': '00.000', 'readonly': 'readonly'}),
+        help_text=_('Longitude will be captured automatically (max 6 decimal places).')
+    )
     species = forms.ChoiceField(
         choices=Tree.TREE_SPECIES,
         label=_('Tree Species'),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text=_('Select the species of the tree planted.')
     )
-    
-    """ location = PointField(
-        label=_('Planting Location'),
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Latitude, Longitude')
-        }) 
-    
-    ) """
-    
+    planted_date = forms.DateField(
+        label=_('Planted Date'),
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        help_text=_('Enter the date the tree was planted.')
+    )
+    location = forms.ChoiceField(
+        choices=[('', 'None')] + list(Tree.RWANDA_DISTRICTS),
+        label=_('Location (District)'),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text=_('Select the district where the tree was planted.')
+    )
     farmer = forms.ModelChoiceField(
         queryset=Farmer.objects.all(),
         required=False,
         label=_('Associated Farmer'),
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text=_('Select the farmer associated with this tree (optional).')
     )
-    
+    planted_by = forms.CharField(
+        label=_('Planted By'),
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Name of person who planted')}),
+        help_text=_('Enter the name of the person who planted the tree.')
+    )
+
     class Meta:
         model = Tree
-        fields = ['species', 'location', 'farmer', 'photo']
+        fields = ['species', 'planted_date', 'location', 'latitude', 'longitude', 'farmer', 'planted_by', 'photo']
         widgets = {
             'photo': forms.FileInput(attrs={
                 'class': 'form-control-file',
@@ -48,10 +75,10 @@ class PlantTreeForm(forms.ModelForm):
             })
         }
         labels = {
-            'photo': _('Tree Photo')
+            'photo': _('Tree Photo'),
         }
         help_texts = {
-            'photo': _('Upload a photo of the planted tree')
+            'photo': _('Upload a photo of the planted tree'),
         }
 
 class TreeUpdateForm(forms.ModelForm):
@@ -83,6 +110,18 @@ class TreeUpdateForm(forms.ModelForm):
 
 # --- New Form for Tree Planting Initiative ---
 class TreePlantingInitiativeForm(forms.Form):
+    latitude = forms.DecimalField(
+        label=_('Latitude'),
+        max_digits=9, decimal_places=6,
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
+    )
+    longitude = forms.DecimalField(
+        label=_('Longitude'),
+        max_digits=9, decimal_places=6,
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
+    )
     TREE_TYPE_CHOICES = [
         ('mango', _('Mango')),
         ('coffee', _('Coffee')),
@@ -129,18 +168,6 @@ class TreePlantingInitiativeForm(forms.Form):
     village = forms.CharField(
         label=_('Village'),
         widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    latitude = forms.DecimalField(
-        label=_('Latitude'),
-        max_digits=9, decimal_places=6,
-        required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
-    )
-    longitude = forms.DecimalField(
-        label=_('Longitude'),
-        max_digits=9, decimal_places=6,
-        required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'})
     )
     planting_date = forms.DateField(
         label=_('Planting Date'),

@@ -58,7 +58,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         from dashboard.models import ImpactStat
         from farmers.models import Farmer
-        from trees.models import Tree
+        from apps.trees.models import Tree
         # Try to get stats from ImpactStat, fallback to model counts
         impact_stats = ImpactStat.objects.filter(is_active=True)
         stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
@@ -85,7 +85,7 @@ class AboutView(TemplateView):
         context = super().get_context_data(**kwargs)
         from dashboard.models import ImpactStat
         from farmers.models import Farmer
-        from trees.models import Tree
+        from apps.trees.models import Tree
         # Try to get stats from ImpactStat, fallback to model counts
         impact_stats = ImpactStat.objects.filter(is_active=True)
         stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}

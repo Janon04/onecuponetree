@@ -3,7 +3,7 @@ from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 from farmers.models import Farmer
-from trees.models import Tree
+from apps.trees.models import Tree
 
 class Contact(models.Model):
 	name = models.CharField(_('name'), max_length=100)

@@ -2,11 +2,23 @@ from django.shortcuts import render, redirect
 from django.db import models
 from django.db.models import Sum  
 from .models import ImpactStat, Testimonial
-from trees.models import Tree
+from apps.trees.models import Tree
 from farmers.models import Farmer
 from core.models import Donation
 
 def impact_dashboard(request):
+    from datetime import datetime
+    # Get year from GET param, default to current year
+    selected_year = request.GET.get('year')
+    try:
+        selected_year = int(selected_year)
+    except (TypeError, ValueError):
+        selected_year = datetime.now().year
+
+    # Trees planted by district (all years)
+    district_counts = Tree.objects.values('location').annotate(count=models.Count('id')).order_by('-count')
+    district_labels = [d['location'] for d in district_counts]
+    district_data = [d['count'] for d in district_counts]
     if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('core:home')
     from django.db.models.functions import TruncMonth
@@ -27,24 +39,37 @@ def impact_dashboard(request):
     # Monthly trees planted
     from datetime import datetime
     from collections import OrderedDict
-    this_year = datetime.now().year
-    months = [f"{m:02d}" for m in range(1, 13)]
-    month_labels = [datetime(2000, m, 1).strftime('%b') for m in range(1, 13)]
-    trees_monthly = Tree.objects.filter(planted_date__year=this_year).extra({
+    import calendar
+    # Get year from GET param, default to current year
+    selected_year = request.GET.get('year')
+    try:
+        selected_year = int(selected_year)
+    except (TypeError, ValueError):
+        selected_year = datetime.now().year
+    months = [str(m) for m in range(1, 13)]
+    month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    # Trees per month (all years)
+    trees_monthly = Tree.objects.extra({
         'month': "strftime('%%m', planted_date)"
     }).values('month').annotate(count=models.Count('id')).order_by('month')
-    trees_month_dict = {m['month']: m['count'] for m in trees_monthly}
+    trees_month_dict = {str(int(m['month'])): m['count'] for m in trees_monthly}
     trees_month_data = [trees_month_dict.get(m, 0) for m in months]
 
-    # Monthly donations
-    donations_monthly = Donation.objects.filter(payment_status='paid', created_at__year=this_year).extra({
+    # Donations per month (all years)
+    donations_monthly = Donation.objects.filter(payment_status='paid').extra({
         'month': "strftime('%%m', created_at)"
     }).values('month').annotate(total=models.Sum('amount')).order_by('month')
-    donations_month_dict = {m['month']: float(m['total']) for m in donations_monthly}
+    donations_month_dict = {str(int(m['month'])): float(m['total']) for m in donations_monthly}
     donations_month_data = [donations_month_dict.get(m, 0) for m in months]
 
-    recent_trees = Tree.objects.filter(latitude__isnull=False, longitude__isnull=False).order_by('-planted_date')[:5]
-    # Prepare tree data for map (id, species, planted_date, lat, lon)
+    # Get all years with data for dropdown
+    tree_years = Tree.objects.dates('planted_date', 'year').distinct()
+    donation_years = Donation.objects.filter(payment_status='paid').dates('created_at', 'year').distinct()
+    all_years = sorted(set([y.year for y in tree_years] + [y.year for y in donation_years]), reverse=True)
+
+    recent_trees = Tree.objects.filter(latitude__isnull=False, longitude__isnull=False).order_by('-planted_date')
+    # Show ALL trees with coordinates on the map
+    all_trees = Tree.objects.filter(latitude__isnull=False, longitude__isnull=False)
     map_trees = [
         {
             'tree_id': t.tree_id,
@@ -53,7 +78,7 @@ def impact_dashboard(request):
             'latitude': float(t.latitude),
             'longitude': float(t.longitude),
         }
-        for t in recent_trees
+        for t in all_trees
     ]
     testimonials = Testimonial.objects.filter(is_featured=True)
     # Farmer stories count for success stories card
@@ -71,4 +96,8 @@ def impact_dashboard(request):
         'month_labels': json.dumps(month_labels),
         'trees_month_data': json.dumps(trees_month_data),
         'donations_month_data': json.dumps(donations_month_data),
+        'district_labels': json.dumps(district_labels),
+        'district_data': json.dumps(district_data),
+        'selected_year': selected_year,
+        'all_years': all_years,
     })

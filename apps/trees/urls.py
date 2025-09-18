@@ -7,4 +7,5 @@ urlpatterns = [
     path("<int:pk>/", views.TreeDetailView.as_view(), name="detail"),
     path('track/', views.track_tree, name='track'),
     path('plant/', views.plant_tree, name='plant_tree'),
+    path('record/', views.record_tree, name='record_tree'),
 ]

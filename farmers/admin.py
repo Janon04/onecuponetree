@@ -90,7 +90,10 @@ class FarmerStoryAdmin(admin.ModelAdmin):
 		if obj.video:
 			return format_html('<video width="180" controls><source src="{}" type="video/mp4">Your browser does not support the video tag.</video>', obj.video.url)
 		elif obj.photo:
-			return format_html('<img src="{}" width="120" />', obj.photo.url)
+			return format_html('''
+				<a href=\"#\" onclick=\"var img=this.nextElementSibling; img.style.display='block'; this.style.display='none'; return false;\">Show Photo</a>
+				<img src=\"{}\" width=\"120\" style=\"display:none; margin-top:8px;\" />
+			''', obj.photo.url)
 		return ""
 	media_preview.short_description = 'Preview'
 

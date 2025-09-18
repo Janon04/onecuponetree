@@ -1,116 +1,147 @@
 {% extends "base.html" %}
-{% load i18n static humanize %}
-
-{% block extra_css %}
-<!-- Leaflet CSS CDN -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+e2H1LG2/2l9LkA4QbF6YwQJbQ1r6tG2R3lA/2Q6A=" crossorigin=""/>
-<style>
-    #impact-map {
-        height: 500px;
-        width: 100%;
-    }
-    .stat-card {
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-    .stat-value {
-        font-size: 2.5rem;
-        font-weight: bold;
-    }
-    .dashboard-chart {
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-</style>
-{% endblock %}
+{% load humanize %}
 
 {% block content %}
-<div class="container py-4">
-    <h1 class="text-center mb-4" style="font-weight:700;letter-spacing:-1px;">Impact Dashboard</h1>
-    <div class="row g-3 mb-3">
-        <div class="col-lg-6">
-            <div class="dashboard-chart h-100">
-                <h5 class="mb-3"><i class="fas fa-tree me-2 text-success"></i>Trees Planted Per Month</h5>
-                <canvas id="treesPlantedChart" height="120"></canvas>
+<div class="dashboard container-fluid py-4" style="background: #f7f6f3; min-height: 100vh;">
+
+    <!-- Quick Links Section -->
+    <div class="row mb-4">
+        <div class="col-auto">
+            <a href="{% url 'trees:record_tree' %}" class="btn btn-success btn-lg shadow-sm px-4 py-2">
+                <i class="fas fa-clipboard-list me-2"></i> Record Tree
+            </a>
+        </div>
+    </div>
+
+    <!-- Charts Data -->
+    {{ month_labels|json_script:"monthLabels" }}
+    {{ trees_month_data|json_script:"treesMonthData" }}
+    {{ donations_month_data|json_script:"donationsMonthData" }}
+    {{ district_labels|json_script:"districtLabels" }}
+    {{ district_data|json_script:"districtData" }}
+
+    <!-- Charts Section -->
+    <!-- Charts Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-3 h-100" style="background: linear-gradient(135deg, #e8f5e9 60%, #43a047 100%);">
+                <h5 class="mb-3 text-success">
+                    <i class="fas fa-tree me-2"></i>Trees Planted Per Month
+                </h5>
+                <canvas id="treesPlantedChart" height="220"></canvas>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="dashboard-chart h-100">
-                <h5 class="mb-3"><i class="fas fa-donate me-2 text-warning"></i>Donations Per Month</h5>
-                <canvas id="donationsPerMonthChart" height="120"></canvas>
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-3 h-100" style="background: linear-gradient(135deg, #fffde7 60%, #a0944f 100%);">
+                <h5 class="mb-3 text-warning">
+                    <i class="fas fa-donate me-2"></i>Donations Per Month
+                </h5>
+                <canvas id="donationsPerMonthChart" height="220"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-3 h-100" style="background: linear-gradient(135deg, #fbeee6 60%, #7b3f00 100%);">
+                <h5 class="mb-3 text-brown">
+                    <i class="fas fa-map-pin me-2"></i>Trees Planted by District
+                </h5>
+                <canvas id="treesByDistrictChart" height="220"></canvas>
             </div>
         </div>
     </div>
-        <div class="row g-2 mb-3 text-center">
-            {% for stat in impact_stats %}
-                <div class="col-6 col-md-2">
-                    <div class="stat-card text-white"
-                        style="background: {% cycle 'var(--primary-color)' 'var(--secondary-color)' 'var(--accent-color)' '#b85c00' '#43a047' '#1976d2' %}; color: {% cycle '#fff' '#110906' '#fff' '#fff' '#fff' '#fff' %};">
-                        <div class="stat-value">
-                            {% if stat.stat_icon %}<i class="{{ stat.stat_icon }}"></i><br>{% endif %}
-                                {{ stat.stat_value|intcomma|default:'0' }}
-                        </div>
-                        <div class="stat-label small">{{ stat.stat_name }}</div>
-                    </div>
-                </div>
+
+    <!-- Year Filter -->
+    <form id="year-select-form" class="d-flex align-items-center gap-2 mb-4" method="get" action="">
+        <label for="year-select" class="form-label mb-0 fw-bold">Year:</label>
+        <select id="year-select" name="year" class="form-select w-auto">
+            {% for year in all_years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
             {% endfor %}
-            <!-- Success Stories Stat Card -->
-            <div class="col-6 col-md-2">
-                <div class="stat-card text-white" style="background: linear-gradient(135deg, #ffd700 60%, var(--secondary-color) 100%); color: #110906; box-shadow: 0 2px 12px rgba(255,215,0,0.15);">
-                    <div class="stat-value">
-                        <i class="fas fa-star"></i><br>
-                            {{ total_success_stories|intcomma|default:'0' }}
-                    </div>
-                    <div class="stat-label small">Success Stories</div>
+        </select>
+    </form>
+
+    <!-- Stats Section -->
+    <!-- Stats Section -->
+    <div class="row g-3 mb-4 text-center">
+        {% for stat in impact_stats %}
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card card shadow-sm p-3 h-100" style="background: linear-gradient(135deg, #f7f6f3 60%, #e8f5e9 100%);">
+                <div class="stat-value fs-5 fw-bold">
+                    {% if stat.stat_icon %}
+                        <i class="{{ stat.stat_icon }} mb-2"></i><br>
+                    {% endif %}
+                    {{ stat.stat_value|intcomma|default:'0' }}
                 </div>
+                <div class="stat-label small text-muted">{{ stat.stat_name }}</div>
             </div>
-            <!-- Total Donations Stat Card -->
-                <div class="col-12 col-md-3">
-                    <div class="stat-card text-white py-4" style="background: linear-gradient(135deg, #43a047 60%, var(--accent-color) 100%); color: #fff; box-shadow: 0 2px 12px rgba(67,160,71,0.15); min-height: 140px; font-size: 1.15rem;">
-                        <div class="stat-value" style="font-size:2.7rem;">
-                            <i class="fas fa-donate"></i><br>
-                            {{ total_donations|floatformat:0|intcomma|default:'0' }} RWF
-                        </div>
-                        <div class="stat-label small">Total Donations</div>
-                    </div>
-                </div>
         </div>
-    <div class="row g-3 mb-3">
+        {% endfor %}
+
+        <!-- Success Stories -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="stat-card card shadow-sm p-4 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #ffe082 60%, #ff9800 100%);">
+                <div class="stat-value display-4 fw-bold mb-2">
+                    <i class="fas fa-star mb-3" style="font-size:2.5rem;color:#fff200;"></i><br>
+                    {{ total_success_stories|intcomma|default:'0' }}
+                </div>
+                <div class="stat-label fs-5 fw-semibold text-white">Success Stories</div>
+            </div>
+        </div>
+
+        <!-- Total Donations -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="stat-card card shadow-sm p-4 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #b2dfdb 60%, #009688 100%);">
+                <div class="stat-value display-4 fw-bold mb-2">
+                    <i class="fas fa-donate mb-3" style="font-size:2.5rem;color:#fff;"></i><br>
+                    {{ total_donations|floatformat:0|intcomma|default:'0' }} RWF
+                </div>
+                <div class="stat-label fs-5 fw-semibold text-white">Total Donations</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="row g-4 mb-4">
+        <!-- Recent Trees -->
         <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-header bg-secondary text-white">Recent Trees Planted</div>
-                <div class="card-body p-2">
+            <div class="card h-100 shadow-sm" style="background: linear-gradient(135deg, #e8f5e9 60%, #43a047 100%);">
+                <div class="card-header bg-success text-white text-center fs-5 fw-bold py-3">
+                    <i class="fas fa-seedling me-2"></i>Recent Trees Planted
+                </div>
+                <div class="card-body p-0">
                     <ul class="list-group list-group-flush small">
                         {% for tree in recent_trees %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <span><i class="fas fa-seedling text-success me-1"></i>{{ tree.species }}</span>
-                            <span class="badge bg-primary">{{ tree.planted_date }}</span>
-                            {% if tree.latitude and tree.longitude %}
-                                <span class="badge bg-info ms-2">{{ tree.latitude }}, {{ tree.longitude }}</span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark ms-2">No coordinates</span>
-                            {% endif %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" style="background:rgba(67,160,71,0.07);">
+                            <span class="fw-semibold"><i class="fas fa-seedling text-success me-2"></i>{{ tree.species }}</span>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-success text-white">{{ tree.planted_date }}</span>
+                                {% if tree.latitude and tree.longitude %}
+                                    <span class="badge bg-info text-dark">{{ tree.latitude }}, {{ tree.longitude }}</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">No coordinates</span>
+                                {% endif %}
+                            </div>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
+
+        <!-- Recent Donations -->
         <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-header bg-success text-white">Recent Donations</div>
-                <div class="card-body p-2">
+            <div class="card h-100 shadow-sm" style="background: linear-gradient(135deg, #b2dfdb 60%, #009688 100%);">
+                <div class="card-header bg-info text-white text-center fs-5 fw-bold py-3">
+                    <i class="fas fa-donate me-2"></i>Recent Donations
+                </div>
+                <div class="card-body p-0">
                     <ul class="list-group list-group-flush small">
                         {% for donation in recent_donations %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center py-1">
-                            <span><i class="fas fa-user text-secondary me-1"></i>{{ donation.donor_name|default:'Anonymous' }} ({{ donation.amount|floatformat:0 }} RWF)</span>
-                            <span class="badge bg-primary">{{ donation.get_donation_type_display }}</span>
-                            <span class="text-muted small">{{ donation.created_at|date:'Y-m-d H:i' }}</span>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" style="background:rgba(0,150,136,0.07);">
+                            <span class="fw-semibold"><i class="fas fa-user text-info me-2"></i>{{ donation.donor_name|default:'Anonymous' }} ({{ donation.amount|floatformat:0 }} RWF)</span>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-info text-white">{{ donation.get_donation_type_display }}</span>
+                                <span class="text-muted small">{{ donation.created_at|date:'Y-m-d H:i' }}</span>
+                            </div>
                         </li>
                         {% empty %}
                         <li class="list-group-item">No donations yet.</li>
@@ -120,106 +151,105 @@
             </div>
         </div>
     </div>
-    <div class="accordion mb-3" id="dashboardAccordion">
-        <div class="accordion-item">
+
+    <!-- Map Section -->
+    <div class="accordion mb-4" id="dashboardAccordion">
+    <div class="accordion-item shadow-sm" style="background: linear-gradient(135deg, #e3f2fd 60%, #f7f6f3 100%);">
             <h2 class="accordion-header" id="headingMap">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMap" aria-expanded="false" aria-controls="collapseMap">
-                    <i class="fas fa-map-marker-alt me-2 text-success"></i>Tree Planting Locations
+                <button class="accordion-button fw-bold" type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseMap" 
+                        aria-expanded="true" 
+                        aria-controls="collapseMap">
+                    <i class="fas fa-map-marker-alt me-2 text-success"></i>
+                    Tree Planting Locations
                 </button>
             </h2>
-            <div id="collapseMap" class="accordion-collapse collapse show" aria-labelledby="headingMap" data-bs-parent="#dashboardAccordion">
-                <div class="accordion-body p-0">
-                    <div id="impact-map"></div>
-                    <script id="map-trees-data" type="application/json">{{ map_trees|safe }}</script>
+            <div id="collapseMap" class="accordion-collapse collapse show" 
+                 aria-labelledby="headingMap" 
+                 data-bs-parent="#dashboardAccordion">
+                <div class="accordion-body p-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="ratio ratio-16x9 shadow-sm" style="min-height: 500px; background: #e3f2fd;">
+                                <iframe src="https://www.google.com/maps/d/embed?mid=1wHos7U7dnwhn_WiGsGdY89PFAM6KgWs&ehbc=2E312F"
+                                        width="100%" height="100%" 
+                                        style="border:0;" allowfullscreen loading="lazy"></iframe>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="impact-map" class="border rounded shadow-sm" style="min-height: 500px; background: #e3f2fd;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    <!-- Success Stories accordion removed as per request -->
     </div>
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<!-- Leaflet JS CDN -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1jRVv6bQ8b+gk+g1Q9Q1Q9Q1Q9Q1Q9Q1Q9Q1Q9Q1Q=" crossorigin=""></script>
-<!-- Chart.js CDN -->
+</div>
+
+
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Map initialization
-function map_init(map, options) {
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    var markers = [];
-    var mapTrees = [];
-    try {
-        mapTrees = JSON.parse(document.getElementById('map-trees-data').textContent);
-    } catch (e) {}
-    mapTrees.forEach(function(tree) {
-        var marker = L.marker([tree.latitude, tree.longitude]).addTo(map)
-            .bindPopup(`<b>Tree ${tree.tree_id}</b><br>${tree.species}<br>Planted on ${tree.planted_date}`);
-        markers.push([tree.latitude, tree.longitude]);
-    });
-    if (markers.length > 0) {
-        map.fitBounds(markers);
-    }
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const monthLabels = JSON.parse(document.getElementById('monthLabels').textContent);
+    const treesMonthData = JSON.parse(document.getElementById('treesMonthData').textContent);
+    const donationsMonthData = JSON.parse(document.getElementById('donationsMonthData').textContent);
+    const districtLabels = JSON.parse(document.getElementById('districtLabels').textContent);
+    const districtData = JSON.parse(document.getElementById('districtData').textContent);
 
-// Chart.js: Trees Planted Per Month
-const treesPlantedData = {
-    labels: {{ month_labels|safe }},
-    datasets: [{
-        label: "Trees Planted",
-    data: {{ trees_month_data|safe }},
-        backgroundColor: "rgba(40, 167, 69, 0.5)",
-        borderColor: "#28a745",
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4
-    }]
-};
-const ctxTrees = document.getElementById('treesPlantedChart').getContext('2d');
-new Chart(ctxTrees, {
-    type: 'line',
-    data: treesPlantedData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false },
-            title: { display: false }
-        },
-        scales: {
-            y: { beginAtZero: true }
-        }
+    // Chart Config Helper
+    function createChart(ctx, type, labels, data, label, bgColor, yLabel) {
+        return new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    backgroundColor: bgColor,
+                    borderColor: '#111',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Month' } },
+                    y: { title: { display: true, text: yLabel }, beginAtZero: true }
+                }
+            }
+        });
     }
-});
 
-const donationsPerMonthData = {
-    labels: {{ month_labels|safe }},
-    datasets: [{
-        label: "Donations (RWF)",
-    data: {{ donations_month_data|safe }},
-        backgroundColor: "rgba(23, 162, 184, 0.5)",
-        borderColor: "#17a2b8",
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4
-    }]
-};
-const ctxDonations = document.getElementById('donationsPerMonthChart').getContext('2d');
-new Chart(ctxDonations, {
-    type: 'bar',
-    data: donationsPerMonthData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false },
-            title: { display: false }
-        },
-        scales: {
-            y: { beginAtZero: true }
-        }
-    }
+    createChart(document.getElementById('treesPlantedChart').getContext('2d'),
+                'bar', monthLabels, treesMonthData, 'Trees Planted', '#43a047', 'Trees Planted');
+
+    createChart(document.getElementById('donationsPerMonthChart').getContext('2d'),
+                'bar', monthLabels, donationsMonthData, 'Donations (RWF)', '#a0944f', 'Donations (RWF)');
+
+    createChart(document.getElementById('treesByDistrictChart').getContext('2d'),
+                'bar', districtLabels, districtData, 'Trees Planted', '#7b3f00', 'Trees Planted');
 });
 </script>
+
 {% endblock %}
+
+<!-- Custom CSS -->
+<style>
+.dashboard-chart h5 {
+    font-weight: 600;
+}
+.stat-card {
+    border-radius: 0.75rem;
+}
+.bg-gradient-gold {
+    background: linear-gradient(135deg, #d4af37 60%, #7b3f00 100%);
+    color: #fff;
+}
+.bg-gradient-success {
+    background: linear-gradient(135deg, #28a745 60%, #7b3f00 100%);
+    color: #fff;
+}
+</style>

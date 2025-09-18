@@ -2,6 +2,8 @@
 from django.db import models
 
 class TreePlantingSubmission(models.Model):
+    reason = models.TextField('Reason for Planting (Optional)', blank=True, null=True)
+    agreement = models.BooleanField('I commit to ensuring the planted trees are cared for and maintained.', default=False)
     TREE_TYPE_CHOICES = [
         ('mango', 'Mango'),
         ('coffee', 'Coffee'),
@@ -34,6 +36,7 @@ class TreePlantingSubmission(models.Model):
     class Meta:
         verbose_name = 'Tree Planting Submission'
         verbose_name_plural = 'Tree Planting Submissions'
+    # app_label removed
 
     def __str__(self):
         return f"{self.full_name} - {self.tree_type} ({self.quantity}) on {self.planting_date}"
@@ -56,17 +59,21 @@ class Tree(models.Model):
     tree_id = models.CharField('Tree ID', max_length=50, unique=True)
     species = models.CharField('Species', max_length=100, choices=TREE_SPECIES)
     planted_date = models.DateField('Planted Date')
-    location = models.CharField('Location', max_length=255, blank=True)
-    latitude = models.DecimalField('Latitude', max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField('Longitude', max_digits=9, decimal_places=6, null=True, blank=True)
-    planted_by = models.ForeignKey(
-        User, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True,
-        verbose_name='Planted By',
-        related_name='planted_trees'
-    )
+    RWANDA_DISTRICTS = [
+        ('Gasabo', 'Gasabo'), ('Kicukiro', 'Kicukiro'), ('Nyarugenge', 'Nyarugenge'),
+        ('Bugesera', 'Bugesera'), ('Gatsibo', 'Gatsibo'), ('Kayonza', 'Kayonza'),
+        ('Kirehe', 'Kirehe'), ('Ngoma', 'Ngoma'), ('Nyagatare', 'Nyagatare'),
+        ('Rwamagana', 'Rwamagana'), ('Burera', 'Burera'), ('Gakenke', 'Gakenke'),
+        ('Gicumbi', 'Gicumbi'), ('Musanze', 'Musanze'), ('Rulindo', 'Rulindo'),
+        ('Gisagara', 'Gisagara'), ('Huye', 'Huye'), ('Kamonyi', 'Kamonyi'),
+        ('Muhanga', 'Muhanga'), ('Nyamagabe', 'Nyamagabe'), ('Nyanza', 'Nyanza'),
+        ('Ruhango', 'Ruhango'), ('Karongi', 'Karongi'), ('Ngororero', 'Ngororero'),
+        ('Nyabihu', 'Nyabihu'), ('Rubavu', 'Rubavu'), ('Rusizi', 'Rusizi'), ('Rutsiro', 'Rutsiro')
+    ]
+    location = models.CharField('Location', max_length=255, choices=RWANDA_DISTRICTS, blank=True)
+    latitude = models.DecimalField('Latitude', max_digits=9, decimal_places=6, default=0)
+    longitude = models.DecimalField('Longitude', max_digits=9, decimal_places=6, default=0)
+    planted_by = models.CharField('Planted By', max_length=128, blank=True)
     farmer = models.ForeignKey(
         'farmers.Farmer', 
         on_delete=models.SET_NULL, 
@@ -102,6 +109,7 @@ class Tree(models.Model):
         verbose_name = _('Tree')
         verbose_name_plural = _('Trees')
         ordering = ['-planted_date']
+    # app_label removed
     
     def __str__(self):
         return f"Tree {self.tree_id} ({self.get_species_display()})"

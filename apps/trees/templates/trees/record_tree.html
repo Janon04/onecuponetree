@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4" style="background: linear-gradient(135deg, #f7e9d7 0%, #d2b48c 100%); min-height: 100vh;">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 mb-4" style="background: #fffbe6;">
+        <div class="card-header" style="background: #a67c52; color: #fff;">
+          <h3 class="mb-0">📋 RECORD PLANTED TREE</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data" id="record-tree-form">
+            {% csrf_token %}
+            <h5 class="mb-3 mt-2 text-secondary">1. Tree Information</h5>
+            <div class="mb-3">{{ form.species.label_tag }}{{ form.species }}<small class="form-text text-muted">{{ form.species.help_text }}</small></div>
+            <div class="mb-3">{{ form.planted_date.label_tag }}{{ form.planted_date }}<small class="form-text text-muted">{{ form.planted_date.help_text }}</small></div>
+            <div class="mb-3">{{ form.location.label_tag }}{{ form.location }}<small class="form-text text-muted">{{ form.location.help_text }}</small></div>
+            <h5 class="mb-3 mt-4 text-secondary">2. Location Details</h5>
+            <div class="mb-3">{{ form.latitude.label_tag }}{{ form.latitude }}<small class="form-text text-muted">{{ form.latitude.help_text }}</small></div>
+            <div class="mb-3">{{ form.longitude.label_tag }}{{ form.longitude }}<small class="form-text text-muted">{{ form.longitude.help_text }}</small></div>
+            <div id="location-status" class="mb-2 text-primary"></div>
+            <button type="button" class="btn btn-outline-primary mb-3" onclick="captureLocation()">Capture Location</button>
+            <h5 class="mb-3 mt-4 text-secondary">3. Farmer & Planter</h5>
+            <div class="mb-3">{{ form.farmer.label_tag }}{{ form.farmer }}<small class="form-text text-muted">{{ form.farmer.help_text }}</small></div>
+            <div class="mb-3">{{ form.planted_by.label_tag }}{{ form.planted_by }}<small class="form-text text-muted">{{ form.planted_by.help_text }}</small></div>
+            <h5 class="mb-3 mt-4 text-secondary">4. Tree Photo</h5>
+            <div class="mb-3">{{ form.photo.label_tag }}{{ form.photo }}<small class="form-text text-muted">{{ form.photo.help_text }}</small></div>
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary px-4">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function fillLocationFields(lat, lon) {
+  var latInput = document.getElementById('id_latitude');
+  var lonInput = document.getElementById('id_longitude');
+  if (latInput && lonInput) {
+    latInput.value = lat;
+    lonInput.value = lon;
+    document.getElementById('location-status').textContent = "Location captured!";
+  }
+}
+function captureLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      fillLocationFields(position.coords.latitude, position.coords.longitude);
+    }, function(error) {
+      document.getElementById('location-status').textContent = "Unable to capture location.";
+    });
+  } else {
+    document.getElementById('location-status').textContent = "Geolocation is not supported by this browser.";
+  }
+}
+</script>
+{% endblock %}
