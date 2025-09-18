@@ -62,7 +62,7 @@ class Donation(models.Model):
     ]
     donor_name = models.CharField(_('Donor Name'), max_length=100, blank=True)
     donor_email = models.EmailField(_('Donor Email'), blank=True)
-    amount = models.DecimalField(_('Amount (RWF)'), max_digits=10, decimal_places=2)
+    amount = models.FloatField(_('Amount (RWF)'))
     donation_type = models.CharField(_('Donation Type'), max_length=10, choices=DONATION_TYPE_CHOICES)
     message = models.CharField(_('Message'), max_length=255, blank=True)
     tree = models.ForeignKey(Tree, on_delete=models.SET_NULL, null=True, blank=True, help_text=_('If sponsoring a tree'))

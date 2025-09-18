@@ -44,7 +44,7 @@ class InitiativeJoin(models.Model):
     interests = RichTextField(_('Areas of Interest'), blank=True)
     availability = models.CharField(_('Availability'), max_length=100, blank=True)
     motivation = RichTextField(_('Motivation/Why do you want to join?'), blank=True)
-    amount = models.DecimalField(_('Sponsorship Amount'), max_digits=10, decimal_places=2, null=True, blank=True)
+    amount = models.FloatField(_('Sponsorship Amount'), null=True, blank=True)
     preferred_location = models.CharField(_('Preferred Location'), max_length=100, blank=True)
     dedication_message = models.CharField(_('Dedication Message'), max_length=255, blank=True)
     area_of_expertise = models.CharField(_('Area of Expertise'), max_length=100, blank=True)
