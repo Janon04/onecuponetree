@@ -45,7 +45,18 @@ class ContactView(View):
     def post(self, request):
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            contact = form.save()
+            # Send notification email
+            from django.core.mail import send_mail
+            from django.conf import settings
+            subject = f"New Contact Message: {contact.subject}"
+            message = f"From: {contact.name} <{contact.email}>\n\nMessage:\n{contact.message}"
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.CONTACT_NOTIFICATION_EMAIL]
+            )
             return render(request, self.template_name, {'form': ContactForm(), 'success': True})
         return render(request, self.template_name, {'form': form})
 
@@ -138,6 +149,17 @@ def donate(request):
             donation.payment_status = 'paid'  # Mark as paid for testing/demo
             donation.save()
             send_donation_thank_you(donation)
+            # Send admin notification email
+            from django.core.mail import send_mail
+            from django.conf import settings
+            subject = f"New Donation Received: {donation.donor_name or 'Anonymous'}"
+            message = f"Amount: {donation.amount} {donation.currency}\nDonor: {donation.donor_name} <{donation.donor_email}>\nType: {donation.donation_type}\nMessage: {donation.message}"
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.CONTACT_NOTIFICATION_EMAIL]
+            )
             messages.success(request, 'Thank you for your donation!')
             return redirect('core:donate')
         else:

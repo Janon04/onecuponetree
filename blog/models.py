@@ -35,5 +35,3 @@ class BlogPost(models.Model):
     
     def __str__(self):
         return self.title
-
-# Translation registration will be handled in translation.py

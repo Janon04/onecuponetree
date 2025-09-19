@@ -1,3 +1,5 @@
+# Email address to receive contact notifications
+CONTACT_NOTIFICATION_EMAIL = 'info@onecupinitiative.org'
 import os
 import sys
 from pathlib import Path
@@ -176,7 +178,14 @@ REST_FRAMEWORK = {
 }
 
 # Email Configuration (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'janon3030@gmail.com'
+EMAIL_HOST_PASSWORD = 'bflu atpq mrhe wzvw'  # Gmail App Password
+DEFAULT_FROM_EMAIL = 'janon3030@gmail.com'
+CONTACT_NOTIFICATION_EMAIL = 'djanonelhard@gmail.com'
 
 # Security Settings
 SECURE_BROWSER_XSS_FILTER = True
