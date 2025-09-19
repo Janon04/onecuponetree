@@ -7,6 +7,7 @@ app_name = 'get_involved'
 urlpatterns = [
     path('', views.get_involved, name='get_involved'),
     path('join/', join_initiative, name='join'),
+    path('join/success/', views.join_initiative_success, name='join_initiative_success'),
     path('partners/', views.partners, name='partners'),
     # path('donate/', views.donate, name='donate'),  # Removed: use core donation system
     path('thank-you/', views.thank_you, name='thank_you'),

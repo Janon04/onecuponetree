@@ -50,10 +50,13 @@ Submitted At: {join.submitted_at}
                 settings.DEFAULT_FROM_EMAIL,
                 [settings.CONTACT_NOTIFICATION_EMAIL]
             )
-            return render(request, 'get_involved/join.html', {'form': InitiativeJoinForm(), 'success': True})
+            return redirect('get_involved:join_initiative_success')
     else:
         form = InitiativeJoinForm()
     return render(request, 'get_involved/join.html', {'form': form})
+
+def join_initiative_success(request):
+    return render(request, 'get_involved/join_success.html')
 
 def get_involved(request):
     return render(request, 'get_involved/get_involved.html')
