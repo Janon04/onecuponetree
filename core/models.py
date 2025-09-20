@@ -1,3 +1,26 @@
+from django.utils.translation import gettext_lazy as _
+from django.db import models
+
+class TeamMember(models.Model):
+    name = models.CharField(_('Full Name'), max_length=100)
+    title = models.CharField(_('Title/Role'), max_length=100)
+    photo = models.ImageField(_('Photo'), upload_to='team_photos/')
+    bio = models.TextField(_('Short Bio'), blank=True)
+    facebook = models.URLField(_('Facebook Link'), blank=True)
+    twitter = models.URLField(_('Twitter Link'), blank=True)
+    instagram = models.URLField(_('Instagram Link'), blank=True)
+    youtube = models.URLField(_('YouTube Link'), blank=True)
+    linkedin = models.URLField(_('LinkedIn Link'), blank=True)
+    order = models.PositiveIntegerField(_('Display Order'), default=0)
+    created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('Team Member')
+        verbose_name_plural = _('Team Members')
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.title}"
 from django.db import models
 
 

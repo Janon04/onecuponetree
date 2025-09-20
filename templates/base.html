@@ -14,6 +14,77 @@
     
     <!-- Internal CSS -->
     <style>
+        /* NIGHT MODE: Ensure all major elements are styled */
+        body.night-mode {
+            background-color: #181818 !important;
+        }
+        body.night-mode h1, body.night-mode h2, body.night-mode h3, body.night-mode h4, body.night-mode h5, body.night-mode h6 {
+            color: #ffe0b3 !important;
+        }
+        body.night-mode .bg-light-section,
+        body.night-mode .impact-card,
+        body.night-mode .quick-access-card,
+        body.night-mode .card,
+        body.night-mode .section-padding,
+        body.night-mode .dropdown-menu,
+        body.night-mode .navbar,
+        body.night-mode .footer,
+        body.night-mode .modal-content,
+        body.night-mode .table,
+        body.night-mode .form-control,
+        body.night-mode .alert {
+            background-color: #232323 !important;
+        }
+        body.night-mode .navbar-nav .nav-link,
+        body.night-mode .dropdown-item,
+        body.night-mode th,
+        body.night-mode td {
+            background-color: #232323 !important;
+        }
+        body.night-mode .btn-primary,
+        body.night-mode .btn-outline-primary {
+            background-color: #232323 !important;
+            border-color: #ffe0b3 !important;
+        }
+        body.night-mode {
+            background-color: #181818 !important;
+            color: #e0ddd8 !important;
+        }
+        body.night-mode h1, body.night-mode h2, body.night-mode h3, body.night-mode h4, body.night-mode h5, body.night-mode h6 {
+            color: #ffe0b3 !important;
+        }
+        body.night-mode .bg-light-section,
+        body.night-mode .impact-card,
+        body.night-mode .quick-access-card,
+        body.night-mode .card,
+        body.night-mode .section-padding,
+        body.night-mode .dropdown-menu,
+        body.night-mode .navbar,
+        body.night-mode .footer {
+            background-color: #232323 !important;
+            color: #e0ddd8 !important;
+        }
+        body.night-mode .navbar-nav .nav-link,
+        body.night-mode .dropdown-item {
+            color: #ffe0b3 !important;
+            background-color: #232323 !important;
+        }
+        body.night-mode .btn-primary,
+        body.night-mode .btn-outline-primary {
+            background-color: #232323 !important;
+            color: #ffe0b3 !important;
+            border-color: #ffe0b3 !important;
+        }
+        body.night-mode .form-control {
+            background-color: #232323 !important;
+            color: #ffe0b3 !important;
+            border-color: #ffe0b3 !important;
+        }
+        body.night-mode .alert {
+            background-color: #232323 !important;
+            color: #ffe0b3 !important;
+            border-color: #ffe0b3 !important;
+        }
         /* CSS Variables */
         :root {
             --primary-color: #110906;
@@ -417,6 +488,10 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Night/Day Mode Toggle -->
+    <button id="theme-toggle" class="btn btn-sm position-fixed end-0 top-0 m-3" style="z-index:9999; background:#4b2e1a; color:#ffe0b3; border-radius:50px; box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <i class="fas fa-moon"></i> <span class="d-none d-md-inline">Night Mode</span>
+    </button>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: #fff;">
         <div class="container">
@@ -536,6 +611,35 @@
     
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Night/Day Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        function setTheme(mode) {
+            if (mode === 'night') {
+                body.classList.add('night-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> <span class="d-none d-md-inline">Day Mode</span>';
+                localStorage.setItem('theme', 'night');
+            } else {
+                body.classList.remove('night-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> <span class="d-none d-md-inline">Night Mode</span>';
+                localStorage.setItem('theme', 'day');
+            }
+        }
+        themeToggle.addEventListener('click', function() {
+            if (body.classList.contains('night-mode')) {
+                setTheme('day');
+            } else {
+                setTheme('night');
+            }
+        });
+        // On page load, set theme from localStorage
+        if (localStorage.getItem('theme') === 'night') {
+            setTheme('night');
+        } else {
+            setTheme('day');
+        }
+    </script>
     
     <!-- Custom JavaScript -->
     <script>

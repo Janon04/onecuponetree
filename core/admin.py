@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Contact, Donation
+from .models import Contact, Donation, TeamMember
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(admin.ModelAdmin):
+	list_display = ('name', 'title', 'order', 'created_at')
+	search_fields = ('name', 'title')
+	list_editable = ('order',)
 import csv
 from django.http import HttpResponse
 
