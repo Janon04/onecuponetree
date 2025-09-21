@@ -1,0 +1,308 @@
+{% extends "shop/base_shop.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'shop/shop.css' %}">
+<style>
+    .cart-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .cart-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e0ddd8;
+    }
+    
+    .cart-title {
+        font-weight: 700;
+        color: #110906;
+        margin-bottom: 0.5rem;
+    }
+    
+    .cart-subtitle {
+        color: #7b3f00;
+        font-size: 1.1rem;
+    }
+    
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+        background: #fdfdfd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(17, 9, 6, 0.08);
+    }
+    
+    .cart-table th {
+        background: #110906;
+        color: #fdfdfd;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .cart-table td {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid #e0ddd8;
+        vertical-align: middle;
+    }
+    
+    .cart-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .product-name {
+        font-weight: 600;
+        color: #110906;
+    }
+    
+    .quantity-input {
+        width: 70px;
+        padding: 0.5rem;
+        border: 1px solid #e0ddd8;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 1rem;
+        background: #f8f9fa;
+    }
+    
+    .quantity-input:focus {
+        outline: none;
+        border-color: #7b3f00;
+        box-shadow: 0 0 0 2px rgba(123, 63, 0, 0.1);
+    }
+    
+    .price-amount {
+        font-weight: 600;
+        color: #7b3f00;
+    }
+    
+    .total-section {
+        background: #e9f7ef;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: right;
+    }
+    
+    .total-label {
+        font-weight: 600;
+        color: #28a745;
+        margin-right: 0.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .total-amount {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #28a745;
+    }
+    
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .continue-shopping-btn {
+        background: #e0ddd8;
+        color: #110906;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s ease;
+    }
+    
+    .continue-shopping-btn:hover {
+        background: #d0ccc5;
+        color: #110906;
+        text-decoration: none;
+    }
+    
+    .checkout-btn {
+        background: #7b3f00;
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s ease;
+    }
+    
+    .checkout-btn:hover {
+        background: #110906;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .empty-cart {
+        text-align: center;
+        padding: 3rem;
+        background: #fdfdfd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(17, 9, 6, 0.08);
+        margin: 2rem 0;
+    }
+    
+    .empty-cart-icon {
+        font-size: 3rem;
+        color: #e0ddd8;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-cart-message {
+        color: #000503;
+        margin-bottom: 1.5rem;
+    }
+    
+    .auto-submit-notice {
+        font-size: 0.85rem;
+        color: #7b3f00;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+        .cart-container {
+            padding: 1.5rem 0.75rem;
+        }
+        
+        .cart-table {
+            display: block;
+            overflow-x: auto;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .continue-shopping-btn,
+        .checkout-btn {
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .cart-table th,
+        .cart-table td {
+            padding: 0.75rem 0.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .cart-table {
+            font-size: 0.9rem;
+        }
+        
+        .quantity-input {
+            width: 60px;
+        }
+        
+        .total-label {
+            font-size: 1rem;
+        }
+        
+        .total-amount {
+            font-size: 1.25rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block shop_content %}
+<div class="cart-container">
+    <div class="cart-header">
+        <h1 class="cart-title">Your Shopping Cart</h1>
+        <p class="cart-subtitle">Review and manage your items</p>
+    </div>
+
+    {% if items and not request.GET.success %}
+    <form method="post" action="{% url 'shop:view_cart' %}" id="cart-form">
+        {% csrf_token %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <div class="product-name">{{ item.product.name }}</div>
+                    </td>
+                    <td>
+                        <input type="number" name="quantity_{{ item.id }}" 
+                               value="{{ item.quantity }}" min="1" 
+                               class="quantity-input"
+                               onchange="document.getElementById('cart-form').submit();">
+                        <div class="auto-submit-notice">Updates automatically</div>
+                    </td>
+                    <td class="price-amount">{{ item.product.price }} {{ item.product.currency }}</td>
+                    <td class="price-amount">{{ item.total_price|floatformat:2 }} {{ item.product.currency }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="total-section">
+            <span class="total-label">Cart Total:</span>
+            <span class="total-amount">{{ total }} RWF</span>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{% url 'shop:product_list' %}" class="continue-shopping-btn">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+            </a>
+            <a href="{% url 'shop:checkout' %}" class="checkout-btn">
+                <i class="fas fa-lock"></i> Proceed to Checkout
+            </a>
+        </div>
+    </form>
+    {% else %}
+    <div class="empty-cart">
+        <div class="empty-cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h3 class="empty-cart-message">Your cart is empty</h3>
+        <a href="{% url 'shop:product_list' %}" class="continue-shopping-btn">
+            <i class="fas fa-shopping-bag"></i> Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Add a small delay before submitting to show visual feedback
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                this.style.borderColor = '#7b3f00';
+                this.style.backgroundColor = '#fff8f0';
+                
+                setTimeout(function() {
+                    document.getElementById('cart-form').submit();
+                }, 300);
+            });
+        });
+    });
+</script>
+{% endblock %}

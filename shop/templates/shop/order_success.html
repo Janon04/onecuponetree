@@ -1,0 +1,8 @@
+{% extends "shop/base_shop.html" %}
+{% block shop_content %}
+<div class="alert alert-success text-center mt-5" style="max-width:500px; margin:auto;">
+    <h4>Thank you! Your order has been received.</h4>
+    <p>We will contact you soon regarding delivery or pickup.</p>
+    <a href="{% url 'shop:product_list' %}" class="btn btn-primary mt-3">Back to Shop</a>
+</div>
+{% endblock %}
