@@ -299,9 +299,16 @@
         <div class="payment-section">
             <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">Payment Method</h3>
             
+            {% if payment_error %}
+            <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #f5c6cb;">
+                <strong>Payment Error:</strong> {{ payment_error }}
+            </div>
+            {% endif %}
+            
             <div class="payment-methods">
                 <div class="payment-method selected" onclick="selectPaymentMethod('card')">
-                    <input type="radio" name="payment_method" value="card" id="payment_card" checked>
+                    <input type="radio" name="payment_method" value="card" id="payment_card" 
+                           {% if not payment_form.payment_method.value or payment_form.payment_method.value == 'card' %}checked{% endif %}>
                     <label class="payment-method-label" for="payment_card">
                         <i class="fas fa-credit-card" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
                         Credit/Debit Card
@@ -309,8 +316,9 @@
                     <div class="payment-method-desc">Visa, Mastercard, American Express</div>
                 </div>
                 
-                <div class="payment-method" onclick="selectPaymentMethod('mobile')">
-                    <input type="radio" name="payment_method" value="mobile" id="payment_mobile">
+                <div class="payment-method {% if payment_form.payment_method.value == 'mobile' %}selected{% endif %}" onclick="selectPaymentMethod('mobile')">
+                    <input type="radio" name="payment_method" value="mobile" id="payment_mobile"
+                           {% if payment_form.payment_method.value == 'mobile' %}checked{% endif %}>
                     <label class="payment-method-label" for="payment_mobile">
                         <i class="fas fa-mobile-alt" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
                         Mobile Money
@@ -318,8 +326,9 @@
                     <div class="payment-method-desc">MTN Mobile Money, Airtel Money</div>
                 </div>
                 
-                <div class="payment-method" onclick="selectPaymentMethod('bank')">
-                    <input type="radio" name="payment_method" value="bank" id="payment_bank">
+                <div class="payment-method {% if payment_form.payment_method.value == 'bank' %}selected{% endif %}" onclick="selectPaymentMethod('bank')">
+                    <input type="radio" name="payment_method" value="bank" id="payment_bank"
+                           {% if payment_form.payment_method.value == 'bank' %}checked{% endif %}>
                     <label class="payment-method-label" for="payment_bank">
                         <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
                         Bank Transfer
@@ -329,7 +338,7 @@
             </div>
             
             <!-- Card Details -->
-            <div class="card-details active" id="card-details">
+            <div class="card-details {% if not payment_form.payment_method.value or payment_form.payment_method.value == 'card' %}active{% endif %}" id="card-details">
                 <h4 style="color: #2c3e50; margin-bottom: 1rem;">Card Details</h4>
                 
                 <div class="form-group">
@@ -337,7 +346,11 @@
                         Card Number <span style="color: #dc3545;">*</span>
                     </label>
                     <input type="text" class="form-control" id="card_number" name="card_number" 
-                           placeholder="1234 5678 9012 3456" maxlength="19" required>
+                           value="{{ payment_form.card_number.value|default:'' }}"
+                           placeholder="1234 5678 9012 3456" maxlength="19">
+                    {% if payment_form.card_number.errors %}
+                    <span class="form-field-error">{{ payment_form.card_number.errors.0 }}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="form-group">
@@ -345,7 +358,11 @@
                         Cardholder Name <span style="color: #dc3545;">*</span>
                     </label>
                     <input type="text" class="form-control" id="card_name" name="card_name" 
-                           placeholder="John Doe" required>
+                           value="{{ payment_form.card_name.value|default:'' }}"
+                           placeholder="John Doe">
+                    {% if payment_form.card_name.errors %}
+                    <span class="form-field-error">{{ payment_form.card_name.errors.0 }}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="card-row">
@@ -354,7 +371,11 @@
                             Expiry Date <span style="color: #dc3545;">*</span>
                         </label>
                         <input type="text" class="form-control" id="card_expiry" name="card_expiry" 
-                               placeholder="MM/YY" maxlength="5" required>
+                               value="{{ payment_form.card_expiry.value|default:'' }}"
+                               placeholder="MM/YY" maxlength="5">
+                        {% if payment_form.card_expiry.errors %}
+                        <span class="form-field-error">{{ payment_form.card_expiry.errors.0 }}</span>
+                        {% endif %}
                     </div>
                     
                     <div class="form-group">
@@ -362,13 +383,17 @@
                             CVV <span style="color: #dc3545;">*</span>
                         </label>
                         <input type="text" class="form-control" id="card_cvv" name="card_cvv" 
-                               placeholder="123" maxlength="4" required>
+                               value="{{ payment_form.card_cvv.value|default:'' }}"
+                               placeholder="123" maxlength="4">
+                        {% if payment_form.card_cvv.errors %}
+                        <span class="form-field-error">{{ payment_form.card_cvv.errors.0 }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             
             <!-- Mobile Money Details -->
-            <div class="card-details" id="mobile-details">
+            <div class="card-details {% if payment_form.payment_method.value == 'mobile' %}active{% endif %}" id="mobile-details">
                 <h4 style="color: #2c3e50; margin-bottom: 1rem;">Mobile Money Details</h4>
                 
                 <div class="form-group">
@@ -377,9 +402,12 @@
                     </label>
                     <select class="form-control" id="mobile_provider" name="mobile_provider">
                         <option value="">Select Provider</option>
-                        <option value="mtn">MTN Mobile Money</option>
-                        <option value="airtel">Airtel Money</option>
+                        <option value="mtn" {% if payment_form.mobile_provider.value == 'mtn' %}selected{% endif %}>MTN Mobile Money</option>
+                        <option value="airtel" {% if payment_form.mobile_provider.value == 'airtel' %}selected{% endif %}>Airtel Money</option>
                     </select>
+                    {% if payment_form.mobile_provider.errors %}
+                    <span class="form-field-error">{{ payment_form.mobile_provider.errors.0 }}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="form-group">
@@ -387,12 +415,16 @@
                         Phone Number <span style="color: #dc3545;">*</span>
                     </label>
                     <input type="tel" class="form-control" id="mobile_number" name="mobile_number" 
+                           value="{{ payment_form.mobile_number.value|default:'' }}"
                            placeholder="+250 XXX XXX XXX">
+                    {% if payment_form.mobile_number.errors %}
+                    <span class="form-field-error">{{ payment_form.mobile_number.errors.0 }}</span>
+                    {% endif %}
                 </div>
             </div>
             
             <!-- Bank Transfer Details -->
-            <div class="card-details" id="bank-details">
+            <div class="card-details {% if payment_form.payment_method.value == 'bank' %}active{% endif %}" id="bank-details">
                 <h4 style="color: #2c3e50; margin-bottom: 1rem;">Bank Transfer Instructions</h4>
                 <div style="background: #fff; padding: 1rem; border-radius: 4px; border: 1px solid #dee2e6;">
                     <p><strong>Bank:</strong> Bank of Kigali</p>
@@ -400,7 +432,7 @@
                     <p><strong>Account Number:</strong> 123456789</p>
                     <p><strong>Swift Code:</strong> BKIGFRKA</p>
                     <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 0;">
-                        Please use your order number as the transfer reference.
+                        Please use your order number as the transfer reference. Your order will be processed once we receive the payment.
                     </p>
                 </div>
             </div>
@@ -410,6 +442,14 @@
                 <strong>Secure Payment:</strong> Your payment information is encrypted and secure. 
                 We do not store your card details on our servers.
             </div>
+            
+            {% if payment_form.non_field_errors %}
+            <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-top: 1rem; border: 1px solid #f5c6cb;">
+                {% for error in payment_form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         
         <!-- Order Summary -->
