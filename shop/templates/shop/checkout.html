@@ -149,6 +149,87 @@
         display: block;
     }
     
+    .payment-section {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border: 1px solid #dee2e6;
+    }
+    
+    .payment-methods {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .payment-method {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #dee2e6;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.15s ease-in-out;
+        background: white;
+    }
+    
+    .payment-method:hover {
+        border-color: #80bdff;
+    }
+    
+    .payment-method.selected {
+        border-color: #28a745;
+        background: #e9f7ef;
+    }
+    
+    .payment-method input[type="radio"] {
+        display: none;
+    }
+    
+    .payment-method-label {
+        font-weight: 500;
+        color: #2c3e50;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .payment-method-desc {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .card-details {
+        display: none;
+        margin-top: 1.5rem;
+    }
+    
+    .card-details.active {
+        display: block;
+    }
+    
+    .card-row {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .card-row .form-group {
+        flex: 1;
+    }
+    
+    .security-info {
+        background: #e7f3ff;
+        border-left: 4px solid #007bff;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0 4px 4px 0;
+    }
+    
+    .security-info i {
+        color: #007bff;
+        margin-right: 0.5rem;
+    }
+    
     @media (max-width: 768px) {
         .checkout-container {
             padding: 1rem 0.5rem;
@@ -166,6 +247,18 @@
         .item-price {
             margin-top: 0.5rem;
             align-self: flex-end;
+        }
+        
+        .payment-methods {
+            flex-direction: column;
+        }
+        
+        .card-row {
+            flex-direction: column;
+        }
+        
+        .payment-section {
+            padding: 1rem;
         }
     }
 </style>
@@ -202,6 +295,123 @@
             {% endfor %}
         </div>
         
+        <!-- Payment Information -->
+        <div class="payment-section">
+            <h3 style="color: #2c3e50; margin-bottom: 1.5rem;">Payment Method</h3>
+            
+            <div class="payment-methods">
+                <div class="payment-method selected" onclick="selectPaymentMethod('card')">
+                    <input type="radio" name="payment_method" value="card" id="payment_card" checked>
+                    <label class="payment-method-label" for="payment_card">
+                        <i class="fas fa-credit-card" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                        Credit/Debit Card
+                    </label>
+                    <div class="payment-method-desc">Visa, Mastercard, American Express</div>
+                </div>
+                
+                <div class="payment-method" onclick="selectPaymentMethod('mobile')">
+                    <input type="radio" name="payment_method" value="mobile" id="payment_mobile">
+                    <label class="payment-method-label" for="payment_mobile">
+                        <i class="fas fa-mobile-alt" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                        Mobile Money
+                    </label>
+                    <div class="payment-method-desc">MTN Mobile Money, Airtel Money</div>
+                </div>
+                
+                <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                    <input type="radio" name="payment_method" value="bank" id="payment_bank">
+                    <label class="payment-method-label" for="payment_bank">
+                        <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                        Bank Transfer
+                    </label>
+                    <div class="payment-method-desc">Direct bank transfer</div>
+                </div>
+            </div>
+            
+            <!-- Card Details -->
+            <div class="card-details active" id="card-details">
+                <h4 style="color: #2c3e50; margin-bottom: 1rem;">Card Details</h4>
+                
+                <div class="form-group">
+                    <label class="form-label" for="card_number">
+                        Card Number <span style="color: #dc3545;">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="card_number" name="card_number" 
+                           placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="card_name">
+                        Cardholder Name <span style="color: #dc3545;">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="card_name" name="card_name" 
+                           placeholder="John Doe" required>
+                </div>
+                
+                <div class="card-row">
+                    <div class="form-group">
+                        <label class="form-label" for="card_expiry">
+                            Expiry Date <span style="color: #dc3545;">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="card_expiry" name="card_expiry" 
+                               placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="card_cvv">
+                            CVV <span style="color: #dc3545;">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="card_cvv" name="card_cvv" 
+                               placeholder="123" maxlength="4" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Money Details -->
+            <div class="card-details" id="mobile-details">
+                <h4 style="color: #2c3e50; margin-bottom: 1rem;">Mobile Money Details</h4>
+                
+                <div class="form-group">
+                    <label class="form-label" for="mobile_provider">
+                        Provider <span style="color: #dc3545;">*</span>
+                    </label>
+                    <select class="form-control" id="mobile_provider" name="mobile_provider">
+                        <option value="">Select Provider</option>
+                        <option value="mtn">MTN Mobile Money</option>
+                        <option value="airtel">Airtel Money</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="mobile_number">
+                        Phone Number <span style="color: #dc3545;">*</span>
+                    </label>
+                    <input type="tel" class="form-control" id="mobile_number" name="mobile_number" 
+                           placeholder="+250 XXX XXX XXX">
+                </div>
+            </div>
+            
+            <!-- Bank Transfer Details -->
+            <div class="card-details" id="bank-details">
+                <h4 style="color: #2c3e50; margin-bottom: 1rem;">Bank Transfer Instructions</h4>
+                <div style="background: #fff; padding: 1rem; border-radius: 4px; border: 1px solid #dee2e6;">
+                    <p><strong>Bank:</strong> Bank of Kigali</p>
+                    <p><strong>Account Name:</strong> One Cup One Tree</p>
+                    <p><strong>Account Number:</strong> 123456789</p>
+                    <p><strong>Swift Code:</strong> BKIGFRKA</p>
+                    <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 0;">
+                        Please use your order number as the transfer reference.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="security-info">
+                <i class="fas fa-shield-alt"></i>
+                <strong>Secure Payment:</strong> Your payment information is encrypted and secure. 
+                We do not store your card details on our servers.
+            </div>
+        </div>
+        
         <!-- Order Summary -->
         <div class="cart-summary">
             <h4 class="cart-title">Order Summary</h4>
@@ -233,12 +443,78 @@
 
 {% block extra_js %}
 <script>
+    // Payment method selection
+    function selectPaymentMethod(method) {
+        // Remove selected class from all payment methods
+        document.querySelectorAll('.payment-method').forEach(el => {
+            el.classList.remove('selected');
+        });
+        
+        // Hide all payment details
+        document.querySelectorAll('.card-details').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // Select the clicked payment method
+        document.querySelector(`#payment_${method}`).checked = true;
+        document.querySelector(`#payment_${method}`).closest('.payment-method').classList.add('selected');
+        
+        // Show corresponding payment details
+        if (method === 'card') {
+            document.getElementById('card-details').classList.add('active');
+        } else if (method === 'mobile') {
+            document.getElementById('mobile-details').classList.add('active');
+        } else if (method === 'bank') {
+            document.getElementById('bank-details').classList.add('active');
+        }
+    }
+    
+    // Card number formatting
+    function formatCardNumber(input) {
+        let value = input.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+        input.value = formattedValue;
+    }
+    
+    // Expiry date formatting
+    function formatExpiryDate(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        input.value = value;
+    }
+    
     // Add Bootstrap classes to form elements for better styling
     document.addEventListener('DOMContentLoaded', function() {
         const formInputs = document.querySelectorAll('.checkout-form input, .checkout-form select, .checkout-form textarea');
         formInputs.forEach(input => {
             input.classList.add('form-control');
         });
+        
+        // Add card number formatting
+        const cardNumberInput = document.getElementById('card_number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function() {
+                formatCardNumber(this);
+            });
+        }
+        
+        // Add expiry date formatting
+        const cardExpiryInput = document.getElementById('card_expiry');
+        if (cardExpiryInput) {
+            cardExpiryInput.addEventListener('input', function() {
+                formatExpiryDate(this);
+            });
+        }
+        
+        // Restrict CVV to numbers only
+        const cardCvvInput = document.getElementById('card_cvv');
+        if (cardCvvInput) {
+            cardCvvInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        }
         
         // Add formatting to price displays
         const priceElements = document.querySelectorAll('.item-price');
