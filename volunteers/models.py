@@ -12,6 +12,20 @@ def today_date():
 
 # -------------------------------
 # Barista Training Models
+class Motivation(models.Model):
+    label = models.CharField('Motivation', max_length=100, unique=True)
+    def __str__(self):
+        return self.label
+
+class ExpectedSkill(models.Model):
+    label = models.CharField('Expected Skill', max_length=100, unique=True)
+    def __str__(self):
+        return self.label
+
+class Skill(models.Model):
+    label = models.CharField('Skill', max_length=100, unique=True)
+    def __str__(self):
+        return self.label
 # -------------------------------
 class BaristaTraining(models.Model):
     title = models.CharField('Title', max_length=200)
@@ -51,6 +65,20 @@ class BaristaTraining(models.Model):
 
 
 class BaristaTrainingApplication(models.Model):
+    def display_selected_languages(self):
+        val = self.languages_spoken
+        if not val:
+            return "-"
+        if isinstance(val, str):
+            if val.startswith('[') and val.endswith(']'):
+                import ast
+                try:
+                    arr = ast.literal_eval(val)
+                    return ', '.join(arr)
+                except Exception:
+                    return val
+            return ', '.join([v.strip() for v in val.split(',') if v.strip()])
+        return str(val)
     # Selection status
     selected_for_training = models.BooleanField('Selected for Training', default=False, help_text='Mark as selected to start training')
     training = models.ForeignKey(
@@ -90,12 +118,26 @@ class BaristaTrainingApplication(models.Model):
 
     # 3. Educational & Professional Background
     education_level = models.CharField('Highest Level of Education Completed', max_length=100)
-    occupation = models.CharField('Current Occupation / Employment Status', max_length=100)
-    skills_experience = RichTextField('Relevant Skills or Experience', blank=True)
+    EMPLOYMENT_STATUS_CHOICES = [
+        ('employed', 'Employed'),
+        ('unemployed', 'Unemployed'),
+    ]
+    occupation = models.CharField('Current Occupation / Employment Status', max_length=20, choices=EMPLOYMENT_STATUS_CHOICES)
+    SKILLS_CHOICES = [
+        ('customer_service', 'Customer Service'),
+        ('teamwork', 'Teamwork'),
+        ('time_management', 'Time Management'),
+        ('attention_to_detail', 'Attention to Detail'),
+        ('adaptability', 'Adaptability'),
+        ('cleanliness_hygiene', 'Cleanliness & Hygiene'),
+        ('cash_handling_pos', 'Cash Handling & POS Operation'),
+        ('coffee_brewing', 'Coffee Brewing'),
+    ]
+    skills_experience = models.ManyToManyField(Skill, blank=True, related_name='applications', verbose_name='Relevant Skills or Experience')
 
     # 4. Training-Specific Information
-    motivation = RichTextField('Why do you want to attend this training?')
-    expected_skills = RichTextField('What skills or knowledge do you expect to gain?', blank=True)
+    motivation = models.ManyToManyField(Motivation, blank=True, related_name='applications', verbose_name='Why do you want to attend this training?')
+    expected_skills = models.ManyToManyField(ExpectedSkill, blank=True, related_name='applications', verbose_name='What skills or knowledge do you expect to gain?')
     attended_similar = models.BooleanField('Have you attended a similar training before?', default=False)
     attended_similar_details = models.CharField('If yes, please specify', max_length=200, blank=True)
     preferred_location = models.CharField('Preferred Training Location', max_length=100, blank=True)
@@ -106,7 +148,13 @@ class BaristaTrainingApplication(models.Model):
     emergency_contact_relationship = models.CharField('Relationship', max_length=50)
     emergency_contact_phone = models.CharField('Emergency Contact Phone', max_length=30)
     special_needs = models.CharField('Special Needs / Disabilities', max_length=200, blank=True)
-    languages_spoken = models.CharField('Languages Spoken', max_length=100, blank=True)
+    LANGUAGE_CHOICES = [
+        ('english', 'English'),
+        ('french', 'French'),
+        ('kinyarwanda', 'Kinyarwanda'),
+        ('kiswahili', 'Kiswahili'),
+    ]
+    languages_spoken = models.CharField('Languages Spoken', max_length=100, blank=True, help_text='Comma-separated list of languages')
 
     # 6. Declaration & Consent
     confirm_information = models.BooleanField('I confirm that the information provided is true and correct.')

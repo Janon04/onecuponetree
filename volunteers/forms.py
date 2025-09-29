@@ -16,6 +16,26 @@ class BaristaTrainingForm(forms.ModelForm):
         }
 
 class BaristaTrainingEventApplicationForm(forms.ModelForm):
+    from .models import Motivation, ExpectedSkill, Skill
+    motivation = forms.ModelMultipleChoiceField(
+        queryset=Motivation.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Why do you want to attend this training?',
+    )
+    expected_skills = forms.ModelMultipleChoiceField(
+        queryset=ExpectedSkill.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='What skills or knowledge do you expect to gain?',
+    )
+    skills_experience = forms.ModelMultipleChoiceField(
+        queryset=Skill.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Relevant Skills or Experience',
+    )
+    # ModelMultipleChoiceField handles saving ManyToMany relationships automatically
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['age'].widget.attrs['readonly'] = True
@@ -74,10 +94,7 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
             'cell': forms.TextInput(attrs={'class': 'form-control'}),
             'village': forms.TextInput(attrs={'class': 'form-control'}),
             'education_level': forms.TextInput(attrs={'class': 'form-control'}),
-            'occupation': forms.TextInput(attrs={'class': 'form-control'}),
-            'skills_experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-            'motivation': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Why do you want to attend this training?'}),
-            'expected_skills': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'What skills or knowledge do you expect to gain?'}),
+            'occupation': forms.Select(attrs={'class': 'form-select'}),
             'attended_similar': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'attended_similar_details': forms.TextInput(attrs={'class': 'form-control'}),
             'preferred_location': forms.TextInput(attrs={'class': 'form-control'}),
@@ -98,10 +115,16 @@ class BaristaTrainingEventApplicationForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         label='Special Needs (Optional)'
     )
-    languages_spoken = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        label='Languages Spoken (Optional)'
+    languages_spoken = forms.MultipleChoiceField(
+        required=True,
+        choices=[
+            ('english', 'English'),
+            ('french', 'French'),
+            ('kinyarwanda', 'Kinyarwanda'),
+            ('kiswahili', 'Kiswahili'),
+        ],
+        widget=forms.CheckboxSelectMultiple,
+        label='Languages Spoken'
     )
 from django import forms
 from django.utils.translation import gettext_lazy as _

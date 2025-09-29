@@ -4,6 +4,16 @@ from .models import InitiativeJoin, Partner
 from django.core.exceptions import ValidationError
 
 class InitiativeJoinForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .models import Motivation
+        self.fields['motivation'] = forms.ModelMultipleChoiceField(
+            queryset=Motivation.objects.all(),
+            widget=forms.CheckboxSelectMultiple,
+            label=_('Motivation/Why do you want to join?'),
+            help_text=_('Select all that apply.'),
+            required=False,
+        )
     class Meta:
         model = InitiativeJoin
         fields = [

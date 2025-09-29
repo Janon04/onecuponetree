@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Apply for {{ training.title }} | Barista Training{% endblock %}
 {% block content %}
-            <div class="container py-5" style="background-color: #fff;">
+            <div class="container py-5" style="background-color: #fff; font-family: 'Times New Roman', Times, serif; font-size: 1.05rem;">
               <div class="row justify-content-center">
-                <div class="col-lg-7 col-md-9">
+                <div class="col-lg-10 col-md-12">
                   <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
                     <div class="card-body p-5">
-                      <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
-                        📋 Training Application Form
+                      <h1 class="mb-3 text-center" style="font-family: 'Times New Roman', Times, serif; font-size: 2.2rem; color: #ffb366; text-shadow: 1px 1px 2px #2c1810; font-weight: bold; letter-spacing: 1px;">
+                        📋 Barista Training Application Form
                       </h1>
-                      <p class="lead text-center mb-4" style="color: #f5f5f5;">
+                      <p class="lead text-center mb-4" style="color: #f5f5f5; font-size: 1.15rem; font-family: 'Times New Roman', Times, serif;">
                         Please fill in all required details. All information will be kept confidential and used only for training purposes.
                       </p>
 
@@ -46,7 +46,7 @@
                         {% endif %}
 
                         <!-- 1. Personal Information -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">1. Personal Information</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">1. Personal Information</h4>
                         <div class="row g-2">
                           <div class="col-md-8">{{ form.full_name.label_tag }}{{ form.full_name }}</div>
                           <div class="col-md-4">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
@@ -54,6 +54,7 @@
                           <div class="col-md-4">{{ form.gender.label_tag }}{{ form.gender }}</div>
                           <div class="col-md-4">{{ form.nationality.label_tag }}{{ form.nationality }}</div>
                           <div class="col-md-6">{{ form.id_number.label_tag }}{{ form.id_number }}</div>
+                            <div class="col-md-6">{{ form.occupation.label_tag }}{{ form.occupation }}</div>
                         </div>
                         <script>
                         document.addEventListener('DOMContentLoaded', function() {
@@ -85,7 +86,7 @@
                         </script>
 
                         <!-- 2. Contact Information -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">2. Contact Information</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">2. Contact Information</h4>
                         <div class="row g-2">
                           <div class="col-md-6">{{ form.phone.label_tag }}{{ form.phone }}</div>
                           <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}</div>
@@ -98,18 +99,80 @@
                         </div>
 
                         <!-- 3. Educational & Professional Background -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">3. Educational & Professional Background</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">3. Educational & Professional Background</h4>
                         <div class="row g-2">
                           <div class="col-md-6">{{ form.education_level.label_tag }}{{ form.education_level }}</div>
                           <div class="col-md-6">{{ form.occupation.label_tag }}{{ form.occupation }}</div>
-                          <div class="col-12">{{ form.skills_experience.label_tag }}{{ form.skills_experience }}</div>
+                          <div class="card mb-3 border-0 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: 0.5rem 0.5rem 0 0; background: #713103; color: #fff;">
+                              <span class="fw-semibold"><i class="fas fa-tools me-2"></i>Select Relevant Skills</span>
+                              <button type="button" class="btn btn-sm" style="background: #a0522d; color: #fff; font-weight: 600; border-radius: 0.3rem;" data-bs-toggle="collapse" data-bs-target="#skills-experience-field" aria-expanded="false" aria-controls="skills-experience-field">Select Relevant Skills</button>
+                            </div>
+                            <div id="skills-experience-field" class="collapse">
+                              <div class="card-body py-3" style="background: #f5e6da; border-radius: 0 0 0.5rem 0.5rem;">
+                                <div class="row g-2">
+                                  {% for checkbox in form.skills_experience %}
+                                    <div class="col-md-6 col-12">
+                                      <div class="form-check">
+                                        {{ checkbox.tag }}
+                                        <label class="form-check-label ms-1" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                      </div>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
                         <!-- 4. Training-Specific Information -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">4. Training-Specific Information</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">4. Training-Specific Information</h4>
                         <div class="row g-2">
-                          <div class="col-12">{{ form.motivation.label_tag }}{{ form.motivation }}</div>
-                          <div class="col-12">{{ form.expected_skills.label_tag }}{{ form.expected_skills }}</div>
+                          <div class="card mb-3 border-0 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: 0.5rem 0.5rem 0 0; background: #713103; color: #fff;">
+                              <span class="fw-semibold"><i class="fas fa-question-circle me-2"></i>Why do you want to attend this training?</span>
+                              <button type="button" class="btn btn-sm" style="background: #a0522d; color: #fff; font-weight: 600; border-radius: 0.3rem;" data-bs-toggle="collapse" data-bs-target="#motivation-reason-field" aria-expanded="false" aria-controls="motivation-reason-field">Select Motivation</button>
+                            </div>
+                            <div id="motivation-reason-field" class="collapse">
+                              <div class="card-body py-3" style="background: #f5e6da; border-radius: 0 0 0.5rem 0.5rem;">
+                                <div class="row g-2">
+                                  <div class="col-12">
+                                    {{ form.motivation.label_tag }}
+                                    <div class="row g-2">
+                                      {% for checkbox in form.motivation %}
+                                        <div class="col-md-6 col-12">
+                                          <div class="form-check">
+                                            {{ checkbox.tag }}
+                                            <label class="form-check-label ms-1" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                          </div>
+                                        </div>
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card mb-3 border-0 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center" style="border-radius: 0.5rem 0.5rem 0 0; background: #713103; color: #fff;">
+                              <span class="fw-semibold"><i class="fas fa-lightbulb me-2"></i>What skills or knowledge do you expect to gain?</span>
+                              <button type="button" class="btn btn-sm" style="background: #a0522d; color: #fff; font-weight: 600; border-radius: 0.3rem;" data-bs-toggle="collapse" data-bs-target="#expected-skills-field" aria-expanded="false" aria-controls="expected-skills-field">Select Expected Skills</button>
+                            </div>
+                            <div id="expected-skills-field" class="collapse">
+                              <div class="card-body py-3" style="background: #f5e6da; border-radius: 0 0 0.5rem 0.5rem;">
+                                <div class="row g-2">
+                                  {% for checkbox in form.expected_skills %}
+                                    <div class="col-md-6 col-12">
+                                      <div class="form-check">
+                                        {{ checkbox.tag }}
+                                        <label class="form-check-label ms-1" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                      </div>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div class="col-md-6">{{ form.attended_similar.label_tag }} {{ form.attended_similar }}</div>
                           <div class="col-md-6">{{ form.attended_similar_details.label_tag }}{{ form.attended_similar_details }}</div>
                           <div class="col-md-6">{{ form.preferred_location.label_tag }}{{ form.preferred_location }}</div>
@@ -117,17 +180,38 @@
                         </div>
 
                         <!-- 5. Additional Information -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">5. Additional Information</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">5. Additional Information</h4>
                         <div class="row g-2">
                           <div class="col-md-6">{{ form.emergency_contact_name.label_tag }}{{ form.emergency_contact_name }}</div>
                           <div class="col-md-6">{{ form.emergency_contact_relationship.label_tag }}{{ form.emergency_contact_relationship }}</div>
                           <div class="col-md-6">{{ form.emergency_contact_phone.label_tag }}{{ form.emergency_contact_phone }}</div>
                           <div class="col-md-6">{{ form.special_needs.label_tag }}{{ form.special_needs }}</div>
-                          <div class="col-12">{{ form.languages_spoken.label_tag }}{{ form.languages_spoken }}</div>
+                          <div class="col-12">
+                            <div class="card mb-3 border-0 shadow-sm">
+                              <div class="card-header bg-warning bg-gradient d-flex justify-content-between align-items-center" style="cursor:pointer; border-radius: 0.5rem 0.5rem 0 0;" data-bs-toggle="collapse" data-bs-target="#languages-spoken-field" aria-expanded="false" aria-controls="languages-spoken-field">
+                                <span class="fw-semibold text-dark"><i class="fas fa-language me-2"></i>Languages Spoken</span>
+                                <span class="badge bg-light text-dark border border-warning">Select all that apply</span>
+                              </div>
+                              <div id="languages-spoken-field" class="collapse">
+                                <div class="card-body py-3" style="background: #fffbe6; border-radius: 0 0 0.5rem 0.5rem;">
+                                  <div class="row g-2">
+                                    {% for checkbox in form.languages_spoken %}
+                                      <div class="col-md-6 col-12">
+                                        <div class="form-check">
+                                          {{ checkbox.tag }}
+                                          <label class="form-check-label ms-1" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                        </div>
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
                         <!-- 6. Declaration & Consent -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">6. Declaration & Consent</h4>
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810; font-family: 'Times New Roman', Times, serif; font-size: 1.3rem; font-weight: bold;">6. Declaration & Consent</h4>
                         <div class="form-check mb-2">
                           {{ form.confirm_information }} {{ form.confirm_information.label_tag }}
                         </div>

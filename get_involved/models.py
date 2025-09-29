@@ -2,6 +2,11 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.utils.translation import gettext_lazy as _
 
+class Motivation(models.Model):
+    label = models.CharField(_('Motivation'), max_length=100, unique=True)
+    def __str__(self):
+        return self.label
+
 class InitiativeJoin(models.Model):
     JOIN_AS_CHOICES = [
         ('individual', 'Individual'),
@@ -43,7 +48,7 @@ class InitiativeJoin(models.Model):
     skills = RichTextField(_('Skills'), blank=True)
     interests = RichTextField(_('Areas of Interest'), blank=True)
     availability = models.CharField(_('Availability'), max_length=100, blank=True)
-    motivation = RichTextField(_('Motivation/Why do you want to join?'), blank=True)
+    motivation = models.ManyToManyField(Motivation, blank=True, related_name='initiative_joins', verbose_name=_('Motivation/Why do you want to join?'))
     amount = models.FloatField(_('Sponsorship Amount'), null=True, blank=True)
     preferred_location = models.CharField(_('Preferred Location'), max_length=100, blank=True)
     dedication_message = models.CharField(_('Dedication Message'), max_length=255, blank=True)
