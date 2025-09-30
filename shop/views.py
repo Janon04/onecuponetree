@@ -119,14 +119,13 @@ def process_payment(order, payment_data):
 			# Process card payment
 			return process_card_payment(order, payment_data)
 		elif payment_method == 'mobile':
-			# Process mobile money payment
+			
 			return process_mobile_payment(order, payment_data)
 		elif payment_method == 'bank':
-			# Bank transfer doesn't require immediate processing
-			# Just mark as pending for manual verification
+			
 			return True
 	except Exception as e:
-		# Log the error in production
+		
 		print(f"Payment processing error: {e}")
 		return False
 	

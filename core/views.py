@@ -83,7 +83,17 @@ class HomeView(TemplateView):
                 context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
             except Exception:
                 context['youth_trained'] = 0
-        context['coffee_cups_sold'] = stats_dict.get('coffee_cups_sold', None) or 0
+        # Count coffee cups sold from paid/confirmed shop orders
+        try:
+            from shop.models import Order, CartItem
+            paid_orders = Order.objects.filter(status__in=["paid", "confirmed"])
+            cups_sold = 0
+            for order in paid_orders:
+                if order.cart:
+                    cups_sold += sum(item.quantity for item in order.cart.items.all())
+            context['coffee_cups_sold'] = cups_sold
+        except Exception:
+            context['coffee_cups_sold'] = 0
         context['co2_saved'] = stats_dict.get('co2_saved', None) or 0
         return context
 
