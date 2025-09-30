@@ -18,7 +18,7 @@ class DonationForm(forms.ModelForm):
         model = Donation
         fields = [
             'donor_name', 'donor_email', 'phone', 'country', 'province_district',
-            'donation_frequency', 'amount', 'currency', 'donation_type', 'donation_mode',
+            'donation_frequency', 'amount', 'currency', 'donation_type',
             'transaction_reference', 'purpose', 'message', 'tree', 'farmer',
             'public_acknowledgement', 'communication_opt_in', 'declaration',
             'donor_signature', 'signature_date'
@@ -26,7 +26,6 @@ class DonationForm(forms.ModelForm):
         widgets = {
             'donation_type': forms.RadioSelect,
             'donation_frequency': forms.RadioSelect,
-            'donation_mode': forms.RadioSelect,
             'purpose': forms.RadioSelect,
             'public_acknowledgement': forms.RadioSelect(choices=[(True, 'Yes'), (False, 'No (Anonymous Donation)')]),
             'communication_opt_in': forms.RadioSelect(choices=[(True, 'I would like to receive updates'), (False, 'No updates, donation only')]),
