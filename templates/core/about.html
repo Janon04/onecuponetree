@@ -165,37 +165,43 @@
 <!-- Mission Section -->
 <section class="py-4" style="background:#fdfdfd;">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <span class="fw-bold" style="color:#110906;">{% trans "OUR MISSION" %}</span>
-                <h2 class="h3 fw-bold mb-3" style="color:#110906;">{% trans "Empowering Coffee Communities" %}</h2>
-                <p class="mb-3" style="color:#000503;">{{ mission }}</p>
-                <div class="d-flex align-items-center mb-2">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px; background:#110906;color:#fdfdfd;">
-                        <i class="fas fa-seedling"></i>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0 rounded-4 p-4" style="background:linear-gradient(135deg,#fdfdfd 80%,#e0ddd8 100%);">
+                    <div class="text-center mb-4">
+                        <span class="fw-bold text-uppercase" style="color:#8a6c40;letter-spacing:2px;font-size:1.1rem;">{% trans "OUR MISSION" %}</span>
+                        <h2 class="display-6 fw-bold mb-3" style="color:#110906;">{% trans "Empowering Coffee Communities" %}</h2>
+                        <p class="lead mb-0" style="color:#4b2e1a;max-width:700px;margin:auto;">
+                            {% trans "Our mission is to build a thriving, sustainable coffee ecosystem by empowering farmers, inspiring youth, and restoring the environment. Through innovative tree planting and community driven initiatives, we connect people, resources, and knowledge to create lasting impact." %}
+                        </p>
                     </div>
-                    <div>
-                        <h5 class="mb-1" style="color:#110906;">{% trans "Sustainable Farming" %}</h5>
-                        <p class="mb-0" style="color:#000503;">{% trans "Promoting eco-friendly practices that protect our planet." %}</p>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 48px; height: 48px; background:#110906;color:#fdfdfd;">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div>
-                        <h5 class="mb-1" style="color:#110906;">{% trans "Community Empowerment" %}</h5>
-                        <p class="mb-0" style="color:#000503;">{% trans "Empowering local communities through education and support." %}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="position-relative">
-                    <img src="{% static 'images/coffee-farmers-working.jpg' %}" 
-                         alt="Coffee farmers working together" class="img-fluid rounded-3 shadow">
-                    <div class="position-absolute bottom-0 start-0 p-3 m-3 rounded" style="background:#110906;color:#fdfdfd;">
-                        <h5 class="mb-0">{% trans "Since 2020" %}</h5>
-                        <small>{% trans "Making a difference in coffee communities" %}</small>
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="h-100 p-4 text-center rounded-3" style="background:#e0ddd8;box-shadow:0 2px 8px #e0ddd8;">
+                                <div class="mb-3">
+                                    <span class="d-inline-block rounded-circle" style="background:#110906;color:#e8a94a;width:56px;height:56px;line-height:56px;font-size:2rem;">
+                                        <i class="fas fa-seedling"></i>
+                                    </span>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color:#110906;">{% trans "Sustainable Farming" %}</h5>
+                                <p class="mb-0" style="color:#4b2e1a;">
+                                    {% trans "We champion eco-friendly farming by equipping farmers with expert training, practical resources, and ongoing support helping them nurture the land and secure their future." %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="h-100 p-4 text-center rounded-3" style="background:#e0ddd8;box-shadow:0 2px 8px #e0ddd8;">
+                                <div class="mb-3">
+                                    <span class="d-inline-block rounded-circle" style="background:#110906;color:#e8a94a;width:56px;height:56px;line-height:56px;font-size:2rem;">
+                                        <i class="fas fa-users"></i>
+                                    </span>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color:#110906;">{% trans "Community Empowerment" %}</h5>
+                                <p class="mb-0" style="color:#4b2e1a;">
+                                    {% trans "We uplift local communities through education, leadership development, and hands-on support fostering resilience, opportunity, and growth for generations to come." %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -238,24 +244,42 @@
 <!-- Vision Section -->
 <section class="mission-vision-section" style="background:#e0ddd8;">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 order-lg-2 mb-5 mb-lg-0">
-                <span class="fw-bold" style="color:#110906;">{% trans "OUR VISION" %}</span>
-                <h2 class="display-5 fw-bold mb-4" style="color:#110906;">{% trans "A Sustainable Future for Coffee" %}</h2>
-                <p class="lead mb-4" style="color:#000503;">{{ vision }}</p>
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px; background:#110906;color:#fdfdfd;">
-                        <i class="fas fa-globe-americas fa-lg"></i>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0 rounded-4 p-4" style="background:linear-gradient(135deg,#e0ddd8 80%,#fdfdfd 100%);">
+                    <div class="text-center mb-4">
+                        <span class="fw-bold text-uppercase" style="color:#8a6c40;letter-spacing:2px;font-size:1.1rem;">{% trans "OUR VISION" %}</span>
+                        <h2 class="display-6 fw-bold mb-3" style="color:#110906;">{% trans "A Sustainable Future for Coffee" %}</h2>
+                        <p class="lead mb-0" style="color:#4b2e1a;max-width:700px;margin:auto;">{{ vision }}</p>
                     </div>
-                    <div>
-                        <h5 class="mb-1" style="color:#110906;">{% trans "Global Impact" %}</h5>
-                        <p class="mb-0" style="color:#000503;">{% trans "Creating a worldwide network of sustainable coffee communities." %}</p>
+                    <div class="row g-4 mt-2 justify-content-center">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="h-100 p-4 text-center rounded-3" style="background:#fdfdfd;box-shadow:0 2px 8px #e0ddd8;">
+                                <div class="mb-3">
+                                    <span class="d-inline-block rounded-circle" style="background:#110906;color:#e8a94a;width:56px;height:56px;line-height:56px;font-size:2rem;">
+                                        <i class="fas fa-globe-americas"></i>
+                                    </span>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color:#110906;">{% trans "Global Impact" %}</h5>
+                                <p class="mb-0" style="color:#4b2e1a;">
+                                    {% trans "Creating a worldwide network of sustainable coffee communities, united by shared values and a commitment to environmental stewardship." %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="h-100 p-4 text-center rounded-3" style="background:#fdfdfd;box-shadow:0 2px 8px #e0ddd8;">
+                                <div class="mb-3">
+                                    <span class="d-inline-block rounded-circle" style="background:#110906;color:#e8a94a;width:56px;height:56px;line-height:56px;font-size:2rem;">
+                                        <i class="fas fa-seedling"></i>
+                                    </span>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color:#110906;">{% trans "Environmental Leadership" %}</h5>
+                                <p class="mb-0" style="color:#4b2e1a;">
+                                    {% trans "Leading the way in sustainable practices, innovation, and positive change for coffee-growing regions and the planet." %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6 order-lg-1">
-                <div class="rounded-3 p-2 shadow-sm" style="background:#fdfdfd;">
-                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=60" alt="Sustainable coffee plantation" class="img-fluid rounded-3" loading="lazy" style="max-height:220px;object-fit:cover;">
                 </div>
             </div>
         </div>
@@ -449,6 +473,8 @@
                     <a href="{% url 'partners:partner_list' %}" class="btn btn-primary btn-lg px-4">
                         <i class="fas fa-handshake me-2"></i>{% trans "Partner With Us" %}
                     </a>
+                    <a href="{% url 'get_involved:get_involved' %}" class="btn btn-primary me-2" style="background:#110906;border:none;">{% trans "Get Involved" %}</a>
+                    
                 </div>
             </div>
         </div>
