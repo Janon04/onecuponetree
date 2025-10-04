@@ -49,6 +49,7 @@ def today_utc_plus_2():
 # Section A & B: Household Identification & Head Information
 class Farmer(models.Model):
     # --- Sponsor a Farm fields ---
+    pinned = models.BooleanField('Pinned', default=False, help_text='Pin this farmer to keep them at the top')
     sponsorship_goal = models.DecimalField('Sponsorship Goal (USD)', max_digits=10, decimal_places=2, null=True, blank=True, help_text='Target amount for farm sponsorship')
     sponsorship_received = models.DecimalField('Sponsorship Received (USD)', max_digits=10, decimal_places=2, default=0, help_text='Total amount received for sponsorship')
     from ckeditor.fields import RichTextField
@@ -77,7 +78,7 @@ class Farmer(models.Model):
     village = models.CharField('Village', max_length=100, blank=True)
     interview_date = models.DateField(
         'Date of interview',
-        default=today_utc_plus_2,  # ✅ default today UTC+2
+        default=today_utc_plus_2,
     )
     interviewer_name = models.CharField('Interviewer name', max_length=100)
 
@@ -231,6 +232,7 @@ class Farmer(models.Model):
     class Meta:
         verbose_name = 'Farmer'
         verbose_name_plural = 'Farmers'
+        ordering = ['-pinned']
 
     def __str__(self):
         return f"{self.full_name}" if self.full_name else super().__str__()

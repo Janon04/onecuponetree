@@ -3,9 +3,6 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
-    """User profile view"""
-    template_name = 'accounts/profile.html'
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):

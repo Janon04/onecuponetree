@@ -1,7 +1,7 @@
 
+from ckeditor.widgets import CKEditorWidget
 from django.contrib import admin
-from .models import Farmer, HouseholdMember, HouseholdAsset, FarmerSupportActivity, FarmerStory
-from .models import Farm, FarmSponsorship
+from .models import Farmer, HouseholdMember, HouseholdAsset, FarmerSupportActivity, FarmerStory, Farm, FarmSponsorship
 
 class HouseholdMemberInline(admin.TabularInline):
 	model = HouseholdMember
@@ -18,14 +18,21 @@ class FarmerSupportActivityInline(admin.TabularInline):
 class FarmerStoryInline(admin.TabularInline):
 	model = FarmerStory
 	extra = 1
+	# No formfield_overrides, content will be shown as plain text
 
 @admin.register(Farmer)
 class FarmerAdmin(admin.ModelAdmin):
 	list_display = ("full_name", "household_id", "district", "sector", "cell", "village", "phone_number", "main_income_source", "is_coop_member")
+	list_display = ("full_name", "household_id", "district", "sector", "cell", "village", "phone_number", "main_income_source", "is_coop_member", "pinned")
 	search_fields = ("full_name", "household_id", "phone_number", "district", "sector", "cell", "village")
 	inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerStoryInline]
 	from .forms import FarmerForm
 	form = FarmerForm
+	fieldsets = (
+		(None, {
+			'fields': ('full_name', 'household_id', 'district', 'sector', 'cell', 'village', 'phone_number', 'main_income_source', 'is_coop_member', 'pinned')
+		}),
+	)
 
 @admin.register(HouseholdMember)
 class HouseholdMemberAdmin(admin.ModelAdmin):
@@ -47,8 +54,6 @@ class FarmerSupportActivityAdmin(admin.ModelAdmin):
 
 from django.utils.html import format_html
 from django import forms
-from ckeditor.widgets import CKEditorWidget
-from .models import FarmerStory, Farm, FarmSponsorship
 
 # Custom admin forms for CKEditor fields
 class FarmerStoryAdminForm(forms.ModelForm):
@@ -77,7 +82,7 @@ class FarmSponsorshipAdminForm(forms.ModelForm):
 
 @admin.register(FarmerStory)
 class FarmerStoryAdmin(admin.ModelAdmin):
-	form = FarmerStoryAdminForm
+	# form = FarmerStoryAdminForm
 	list_display = ("title", "farmer", "created_at", "is_published", "media_preview")
 	search_fields = ("title", "farmer__full_name")
 	readonly_fields = ("media_preview",)

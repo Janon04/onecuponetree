@@ -56,6 +56,7 @@ class Tree(models.Model):
         ('eucalyptus', 'Eucalyptus'),
     ]
     
+    pinned = models.BooleanField('Pinned', default=False, help_text='Pin this tree to keep it at the top')
     tree_id = models.CharField('Tree ID', max_length=50, unique=True)
     species = models.CharField('Species', max_length=100, choices=TREE_SPECIES)
     planted_date = models.DateField('Planted Date')
@@ -108,7 +109,7 @@ class Tree(models.Model):
     class Meta:
         verbose_name = _('Tree')
         verbose_name_plural = _('Trees')
-        ordering = ['-planted_date']
+    ordering = ['-pinned', '-planted_date']
     # app_label removed
     
     def __str__(self):

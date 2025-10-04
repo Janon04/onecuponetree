@@ -57,7 +57,7 @@
                 {% for image in images %}
                         <div class="gallery-item">
                                 {% if image.video %}
-                                        <video class="gallery-media" controls preload="none">
+                                        <video class="gallery-media" controls preload="none" muted autoplay loop>
                                                 <source src="{{ image.video.url }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                         </video>

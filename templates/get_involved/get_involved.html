@@ -4,67 +4,109 @@
 {% block title %}{% trans "Get Involved" %}{% endblock %}
 
 {% block content %}
+<style>
+    .feature-card {
+        border: none;
+        box-shadow: 0 4px 24px rgba(75, 46, 26, 0.08);
+        background: linear-gradient(135deg, #e8a94a 0%, #e0ddd8 100%);
+        color: #110906;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 8px 32px rgba(75,46,26,0.18);
+        background: linear-gradient(135deg, #fdfdfd 0%, #e8a94a 100%);
+    }
+    .feature-icon {
+        background: #110906;
+        color: #e8a94a;
+        width: 64px;
+        height: 64px;
+        line-height: 64px;
+        font-size: 2.5rem;
+        border-radius: 50%;
+        display: inline-block;
+        margin-bottom: 1.2rem;
+        box-shadow: 0 2px 8px #e0ddd8;
+    }
+    .feature-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #7b3f00;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .feature-desc {
+        color: #4b2e1a;
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+</style>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold">{% trans "Get Involved with One Cup Initiative" %}</h1>
-                <p class="lead mt-3">
+                <h1 class="display-4 fw-bold" style="color:#7b3f00;">{% trans "Get Involved with One Cup Initiative" %}</h1>
+                <p class="lead mt-3" style="color:#4b2e1a;">
                     {% trans "Join our mission to restore nature, empower communities, and create lasting impact. There are many ways you can get involved!" %}
                 </p>
             </div>
-            <div class="bg-light rounded-4 p-4 mb-5 shadow-sm">
-                <h2 class="h4 mb-4 text-success">{% trans "Ways to Participate" %}</h2>
+            <div class="mb-5">
+                <h2 class="h4 mb-4" style="color:#e8a94a;">{% trans "Ways to Participate" %}</h2>
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card feature-card h-100 text-center">
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <i class="bi bi-people-fill fs-1 text-success"></i>
+                                <div class="feature-icon">
+                                    <i class="bi bi-people-fill"></i>
                                 </div>
-                                <h5 class="card-title">{% trans "Volunteer" %}</h5>
-                                <p class="card-text small">
+                                <div class="feature-title">{% trans "Volunteer" %}</div>
+                                <p class="feature-desc">
                                     {% trans "Help us organize tree planting events, community outreach, and educational workshops." %}
                                 </p>
+                                <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-success btn-sm mt-3">{% trans "See Volunteer Opportunities" %}</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card feature-card h-100 text-center">
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <i class="bi bi-tree-fill fs-1 text-success"></i>
+                                <div class="feature-icon">
+                                    <i class="bi bi-tree-fill"></i>
                                 </div>
-                                <h5 class="card-title">{% trans "Sponsor a Tree" %}</h5>
-                                <p class="card-text small">
+                                <div class="feature-title">{% trans "Sponsor a Tree" %}</div>
+                                <p class="feature-desc">
                                     {% trans "Support our reforestation efforts by sponsoring trees for yourself or as a gift." %}
                                 </p>
+                                <a href="{% url 'core:donate' %}" class="btn btn-outline-success btn-sm mt-3">{% trans "Sponsor Now" %}</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card feature-card h-100 text-center">
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <i class="bi bi-handshake-fill fs-1 text-success"></i>
+                                <div class="feature-icon">
+                                    <i class="bi bi-handshake-fill"></i>
                                 </div>
-                                <h5 class="card-title">{% trans "Partner with Us" %}</h5>
-                                <p class="card-text small">
+                                <div class="feature-title">{% trans "Partner with Us" %}</div>
+                                <p class="feature-desc">
                                     {% trans "Businesses and organizations can collaborate on sustainability projects and campaigns." %}
                                 </p>
+                                <a href="{% url 'partners:partner_list' %}" class="btn btn-outline-success btn-sm mt-3">{% trans "See Partners" %}</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
-                        <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card feature-card h-100 text-center">
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <i class="bi bi-megaphone-fill fs-1 text-success"></i>
+                                <div class="feature-icon">
+                                    <i class="bi bi-megaphone-fill"></i>
                                 </div>
-                                <h5 class="card-title">{% trans "Spread the Word" %}</h5>
-                                <p class="card-text small">
+                                <div class="feature-title">{% trans "Spread the Word" %}</div>
+                                <p class="feature-desc">
                                     {% trans "Share our story on social media and encourage others to join the initiative." %}
                                 </p>
+                                <button class="btn btn-outline-success btn-sm mt-3" onclick="if(navigator.share){navigator.share({title:document.title,url:window.location.href});}else{window.open(window.location.href,'_blank');}">{% trans "Share This Page" %}</button>
                             </div>
                         </div>
                     </div>
@@ -73,10 +115,11 @@
             <div class="bg-white rounded-4 p-4 mb-5 shadow-sm border">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h2 class="h4 text-success mb-2">{% trans "Become a Volunteer" %}</h2>
-                        <p class="mb-0">
+                        <h2 class="h4" style="color:#e8a94a;">{% trans "Become a Volunteer" %}</h2>
+                        <p class="mb-0" style="color:#4b2e1a;">
                             {% trans "Sign up to volunteer and make a direct impact in your community. No experience required—just passion for the environment!" %}
                         </p>
+                        <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-success btn-sm mt-3">{% trans "See Volunteer Opportunities" %}</a>
                     </div>
                     <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
                         <a href="{% url 'account_signup' %}" class="btn btn-success btn-lg px-4">{% trans "Volunteer Signup" %}</a>
@@ -84,10 +127,10 @@
                 </div>
             </div>
             <div class="bg-light rounded-4 p-4 shadow-sm">
-                <h2 class="h4 text-success mb-2">{% trans "Contact Us" %}</h2>
-                <p class="mb-0">
+                <h2 class="h4" style="color:#e8a94a;">{% trans "Contact Us" %}</h2>
+                <p class="mb-0" style="color:#4b2e1a;">
                     {% trans "Have questions or want to discuss partnership opportunities? Reach out via our" %}
-                    <a href="{% url 'core:contact' %}" class="text-success fw-semibold">{% trans "Contact" %}</a>
+                    <a href="{% url 'core:contact' %}" class="fw-semibold" style="color:#7b3f00;">{% trans "Contact" %}</a>
                     {% trans "page." %}
                 </p>
             </div>

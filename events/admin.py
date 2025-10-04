@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-	list_display = ('title', 'start_date', 'end_date', 'location', 'status', 'organizer', 'media_preview')
+	list_display = ('title', 'start_date', 'end_date', 'location', 'status', 'organizer', 'pinned', 'media_preview')
 	list_filter = ('status', 'start_date', 'location')
 	search_fields = ('title', 'description', 'location', 'organizer__username')
 	date_hierarchy = 'start_date'
@@ -13,7 +13,7 @@ class EventAdmin(admin.ModelAdmin):
 	readonly_fields = ('media_preview',)
 	fieldsets = (
 		(None, {
-			'fields': ('title', 'description', 'start_date', 'end_date', 'location', 'organizer', 'status', 'image', 'video', 'media_preview')
+			'fields': ('title', 'description', 'start_date', 'end_date', 'location', 'organizer', 'status', 'image', 'video', 'pinned', 'media_preview')
 		}),
 	)
 	def media_preview(self, obj):

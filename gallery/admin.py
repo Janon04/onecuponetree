@@ -6,7 +6,7 @@ from .models import GalleryImage
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'uploaded_at', 'media_preview')
+    list_display = ('title', 'uploaded_at', 'pinned', 'media_preview')
     search_fields = ('title', 'description')
     list_filter = ('uploaded_at',)
 
@@ -14,7 +14,7 @@ class GalleryImageAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'image', 'video', 'media_preview')
+            'fields': ('title', 'description', 'image', 'video', 'pinned', 'media_preview')
         }),
     )
 

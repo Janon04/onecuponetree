@@ -15,6 +15,7 @@ class BlogCategory(models.Model):
         return self.name
 
 class BlogPost(models.Model):
+    pinned = models.BooleanField(_('pinned'), default=False, help_text=_('Pin this post to keep it at the top'))
     title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(_('slug'), unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('author'))
@@ -31,7 +32,7 @@ class BlogPost(models.Model):
     class Meta:
         verbose_name = _('Blog Post')
         verbose_name_plural = _('Blog Posts')
-        ordering = ['-created_at']
+        ordering = ['-pinned', '-created_at']
     
     def __str__(self):
         return self.title

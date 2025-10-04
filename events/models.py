@@ -43,6 +43,7 @@ class Event(models.Model):
 		blank=True,
 	help_text='Upload a short video (mp4, mov, webm, max 50MB)'
 	)
+	pinned = models.BooleanField('Pinned', default=False, help_text='Pin this event to keep it at the top')
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,7 +51,7 @@ class Event(models.Model):
 	class Meta:
 		verbose_name = 'Event'
 		verbose_name_plural = 'Events'
-		ordering = ['-start_date']
+	ordering = ['-pinned', '-start_date']
 
 	def __str__(self):
 		return f"{self.title} ({self.get_status_display()})"

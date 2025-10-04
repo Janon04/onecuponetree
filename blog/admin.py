@@ -4,13 +4,13 @@ from .models import BlogPost, BlogCategory
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-	list_display = ('title', 'author', 'created_at', 'is_published', 'media_preview')
+	list_display = ('title', 'author', 'created_at', 'is_published', 'pinned', 'media_preview')
 	search_fields = ('title', 'description', 'content')
 	list_filter = ('is_published', 'created_at', 'author')
 	readonly_fields = ('media_preview',)
 	fieldsets = (
 		(None, {
-			'fields': ('title', 'slug', 'author', 'category', 'description', 'content', 'featured_image', 'video', 'media_preview', 'is_published')
+			'fields': ('title', 'slug', 'author', 'category', 'description', 'content', 'featured_image', 'video', 'pinned', 'media_preview', 'is_published')
 		}),
 	)
 	def media_preview(self, obj):
