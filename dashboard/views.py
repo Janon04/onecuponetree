@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.http import JsonResponse
 from django.db import models
 from django.db.models import Sum  
 from .models import ImpactStat, Testimonial
@@ -7,7 +8,31 @@ from farmers.models import Farmer
 from core.models import Donation
 
 def impact_dashboard(request):
+    """
+    Backend-only dashboard view that provides data processing without frontend rendering.
+    
+    Functionality:
+    - Calculates impact statistics (trees planted, donations, farmers supported, etc.)
+    - Processes monthly chart data for trees and donations
+    - Generates district-wise tree planting data
+    - Supports year filtering
+    
+    Access:
+    - Default: Redirects to home page (no frontend)
+    - API: Add ?format=json to get JSON response with all data
+    
+    Authentication: Requires staff user authentication
+    
+    Returns:
+    - Redirect to home page (default)
+    - JSON response (when ?format=json parameter is provided)
+    """
     from datetime import datetime
+    
+    # Check authentication - redirect if not staff
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('core:home')
+    
     # Get year from GET param, default to current year
     selected_year = request.GET.get('year')
     try:
@@ -15,12 +40,15 @@ def impact_dashboard(request):
     except (TypeError, ValueError):
         selected_year = datetime.now().year
 
-    # Trees planted by district (all years)
-    district_counts = Tree.objects.values('location').annotate(count=models.Count('id')).order_by('-count')
+    # Trees planted by district (all years, limited to top 10)
+    district_counts = Tree.objects.values('location').annotate(
+        count=models.Count('id')
+    ).exclude(location__isnull=True).exclude(location__exact='').order_by('-count')[:10]
+    
     district_labels = [d['location'] for d in district_counts]
     district_data = [d['count'] for d in district_counts]
-    if not request.user.is_authenticated or not request.user.is_staff:
-        return redirect('core:home')
+    
+    # Backend authentication check moved up
     from django.db.models.functions import TruncMonth
     import json
 
@@ -40,26 +68,28 @@ def impact_dashboard(request):
     from datetime import datetime
     from collections import OrderedDict
     import calendar
-    # Get year from GET param, default to current year
-    selected_year = request.GET.get('year')
-    try:
-        selected_year = int(selected_year)
-    except (TypeError, ValueError):
-        selected_year = datetime.now().year
     months = [str(m) for m in range(1, 13)]
     month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    # Trees per month (all years)
-    trees_monthly = Tree.objects.extra({
+    
+    # Trees per month (current year or selected year)
+    trees_monthly = Tree.objects.filter(
+        planted_date__year=selected_year
+    ).extra({
         'month': "strftime('%%m', planted_date)"
     }).values('month').annotate(count=models.Count('id')).order_by('month')
+    
     trees_month_dict = {str(int(m['month'])): m['count'] for m in trees_monthly}
     trees_month_data = [trees_month_dict.get(m, 0) for m in months]
 
-    # Donations per month (all years)
-    donations_monthly = Donation.objects.filter(payment_status='paid').extra({
+    # Donations per month (current year or selected year)
+    donations_monthly = Donation.objects.filter(
+        payment_status='paid',
+        created_at__year=selected_year
+    ).extra({
         'month': "strftime('%%m', created_at)"
     }).values('month').annotate(total=models.Sum('amount')).order_by('month')
-    donations_month_dict = {str(int(m['month'])): float(m['total']) for m in donations_monthly}
+    
+    donations_month_dict = {str(int(m['month'])): float(m['total']) if m['total'] else 0 for m in donations_monthly}
     donations_month_data = [donations_month_dict.get(m, 0) for m in months]
 
     # Get all years with data for dropdown
@@ -84,20 +114,29 @@ def impact_dashboard(request):
     # Farmer stories count for success stories card
     from farmers.models import FarmerStory
     total_success_stories = FarmerStory.objects.filter(is_published=True).count()
-    return render(request, 'dashboard/impact.html', {
-        'stats': stats,
-        'recent_trees': recent_trees,
-        'map_trees': map_trees,
-        'testimonials': testimonials,
-        'impact_stats': impact_stats,
-        'recent_donations': stats['recent_donations'],
-        'total_donations': stats['total_donations'],
-        'total_success_stories': total_success_stories,
-        'month_labels': json.dumps(month_labels),
-        'trees_month_data': json.dumps(trees_month_data),
-        'donations_month_data': json.dumps(donations_month_data),
-        'district_labels': json.dumps(district_labels),
-        'district_data': json.dumps(district_data),
-        'selected_year': selected_year,
-        'all_years': all_years,
-    })
+    
+    # Return JSON response for API usage instead of rendering template
+    if request.GET.get('format') == 'json':
+        return JsonResponse({
+            'stats': {
+                'trees_planted': stats['trees_planted'],
+                'youth_trained': stats['youth_trained'],
+                'coffee_cups_sold': stats['coffee_cups_sold'],
+                'farmers_supported': stats['farmers_supported'],
+                'total_donations': float(stats['total_donations']),
+                'total_success_stories': total_success_stories,
+            },
+            'charts': {
+                'month_labels': month_labels,
+                'trees_month_data': trees_month_data,
+                'donations_month_data': donations_month_data,
+                'district_labels': district_labels,
+                'district_data': district_data,
+            },
+            'map_trees': map_trees,
+            'selected_year': selected_year,
+            'all_years': all_years,
+        })
+    
+    # Redirect to home page since we removed frontend
+    return redirect('core:home')

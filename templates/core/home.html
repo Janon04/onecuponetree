@@ -5,158 +5,17 @@
 
 {% load static %}
 {% block extra_css %}
-<style>
-    /* Home Page Hero Section Styles (from About Page) */
-    .hero-section {
-        /* background removed to show animated static image */
-        padding: 8rem 0 5rem;
-        margin-top: 0;
-        color: #fdfdfd;
-        position: relative;
-    }
-    .hero-section .container {
-        position: relative;
-        z-index: 3;
-    }
-    /* Animated Hero Background */
-        .hero-animated-bg {
-            /* Ensure the filename and extension match your static/images folder! */
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background: url('{% static "images/coffee-1.jpg" %}') center center/cover no-repeat, #222;
-            opacity: 1;
-            animation: heroMotion 7s cubic-bezier(0.4,0.2,0.2,1) infinite alternate;
-            border-radius: 0 0 2rem 2rem;
-        }
-        @keyframes heroMotion {
-            0% { transform: scale(1) translateY(0) translateX(0); }
-            40% { transform: scale(1.04) translateY(-10px) translateX(10px); }
-            60% { transform: scale(1.08) translateY(-18px) translateX(-10px); }
-            100% { transform: scale(1.12) translateY(-30px) translateX(10px); }
-        }
-    }
-    @keyframes heroZoom {
-        0% { transform: scale(1) translateY(0); }
-        100% { transform: scale(1.08) translateY(-10px); }
-    }
-    /* Ensure quick-access-card text is visible on hover */
-    .quick-access-card:hover,
-    .quick-access-card:focus {
-        background-color: #110906 !important;
-        color: #fdfdfd !important;
-    }
-    .quick-access-card:hover h4,
-    .quick-access-card:hover p,
-    .quick-access-card:hover .quick-access-icon,
-    .quick-access-card:focus h4,
-    .quick-access-card:focus p,
-    .quick-access-card:focus .quick-access-icon {
-        color: #fdfdfd !important;
-    }
-</style>
-<style>
-    /* Impact Cards Layout Organization */
-    .impact-stats .impact-cards-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-    }
-    .impact-stats .impact-card {
-        min-width: 220px;
-        max-width: 260px;
-        flex: 1 1 220px;
-        margin: 0 auto;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    @media (max-width: 991px) {
-        .impact-stats .impact-cards-row {
-            gap: 1.2rem;
-        }
-        .impact-stats .impact-card {
-            min-width: 180px;
-            max-width: 100%;
-        }
-    }
-    @media (max-width: 767px) {
-        .impact-stats .impact-cards-row {
-            flex-direction: column;
-            align-items: center;
-        }
-        .impact-stats .impact-card {
-            width: 100%;
-            margin-bottom: 1.5rem;
-        }
-    }
-</style>
-<style>
-    /* Impact Section Customization */
-    .impact-stats {
-        background: #e0ddd8 !important;
-        color: #110906;
-    }
-    .impact-stats h2 {
-        color: #110906 !important;
-        letter-spacing: 1px;
-        text-shadow: 1px 2px 8px #e0ddd8;
-    }
-    .impact-stats .impact-card {
-        background: #110906;
-        border-radius: 16px;
-        box-shadow: 0 2px 12px rgba(17,9,6,0.08);
-        padding: 2rem 1rem;
-        text-align: center;
-        border: 2px solid #e0ddd8;
-        color: #fdfdfd;
-        transition: box-shadow 0.2s, transform 0.2s;
-    }
-    .impact-stats .impact-card:hover {
-        box-shadow: 0 8px 24px rgba(17,9,6,0.18);
-        transform: translateY(-4px) scale(1.03);
-    }
-    .impact-stats .impact-number {
-        font-size: 2.7rem;
-        font-weight: 700;
-        color: #e0ddd8;
-        margin-bottom: 0.5rem;
-        background: #000503;
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-        box-shadow: 0 2px 8px rgba(17,9,6,0.07);
-    }
-    .impact-stats .impact-label {
-        color: #fdfdfd !important;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-    .impact-stats p.lead {
-        color: #000503 !important;
-    }
-</style>
 {% endblock %}
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section position-relative" style="overflow:hidden;">
-    <div class="hero-animated-bg"></div>
-    <div style="position:relative; z-index:2; padding: 6rem 2rem 4rem 2rem; max-width:900px; margin:auto; text-align:left;">
-        <h1 class="display-3 fw-bold mb-4" style="color:#e0ddd8; text-shadow: 1px 2px 8px #000503;">
+<section class="home-hero-section position-relative">
+    <div class="hero-animated-bg" style="background-image: url('{% static "images/coffee-1.jpg" %}');"></div>
+    <div class="hero-content-container">
+        <h1 class="display-3 fw-bold mb-4 hero-main-title">
             Every Cup Counts.<br>
-            <span style="color:#fdfdfd;">Every Tree Matters.</span>
+            <span class="subtitle">Every Tree Matters.</span>
         </h1>
-        <p class="lead mb-5" style="color:#fdfdfd;">
+        <p class="lead mb-5 hero-lead-text">
             A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time.
         </p>
     </div>
@@ -192,12 +51,12 @@
 </section>
 
 <!-- Quick Access Cards -->
-<section class="py-5" style="background:#e0ddd8;">
+<section class="py-5 section-light-bg">
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-3" style="color:#110906;">Get Started Today</h2>
-                <p class="lead" style="color:#000503;">
+                <h2 class="display-5 fw-bold mb-3 text-primary-dark">Get Started Today</h2>
+                <p class="lead text-accent-dark">
                     Choose how you'd like to be part of our sustainable movement.
                 </p>
             </div>
@@ -209,8 +68,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h4 class="mb-3" style="color:#110906;">Barista Academy</h4>
-                    <p class="mb-0" style="color:#000503;">
+                    <h4 class="mb-3 text-primary-dark">Barista Academy</h4>
+                    <p class="mb-0 text-accent-dark">
                         Join our comprehensive barista training program and build your career in the coffee industry.
                     </p>
                 </a>
@@ -220,8 +79,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-seedling"></i>
                     </div>
-                    <h4 class="mb-3" style="color:#110906;">Support Farmers</h4>
-                    <p class="mb-0" style="color:#000503;">
+                    <h4 class="mb-3 text-primary-dark">Support Farmers</h4>
+                    <p class="mb-0 text-accent-dark">
                         Help coffee farmers with sustainable practices, seedlings, and market access.
                     </p>
                 </a>
@@ -231,8 +90,8 @@
                     <div class="quick-access-icon">
                         <i class="fas fa-handshake"></i>
                     </div>
-                    <h4 class="mb-3" style="color:#110906;">Partner With Us</h4>
-                    <p class="mb-0" style="color:#000503;">
+                    <h4 class="mb-3 text-primary-dark">Partner With Us</h4>
+                    <p class="mb-0 text-accent-dark">
                         Collaborate with us to create lasting environmental and social impact.
                     </p>
                 </a>
@@ -242,17 +101,17 @@
 </section>
 
 <!-- Call to Action -->
-<section class="py-5" style="background:#110906; color:#fdfdfd;">
+<section class="py-5 section-dark-bg">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h3 class="fw-bold mb-3" style="color:#e0ddd8;">Ready to Make a Difference?</h3>
-                <p class="lead mb-0" style="color:#fdfdfd;">
+                <h3 class="fw-bold mb-3 text-light-cream">Ready to Make a Difference?</h3>
+                <p class="lead mb-0 text-white-pure">
                     Join thousands of people who are already part of our sustainable coffee movement.
                 </p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <a href="{% url 'get_involved:join' %}" class="btn btn-outline-primary btn-lg px-4 py-3" style="background:#fdfdfd;color:#110906;">
+                <a href="{% url 'get_involved:join' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
                     <i class="fas fa-rocket me-2"></i>Get Started Now
                 </a>
             </div>
@@ -261,19 +120,19 @@
 </section>
 
 <!-- Newsletter Signup & Actions -->
-<section id="newsletter-signup" class="py-5" style="background:#fdfdfd;">
+<section id="newsletter-signup" class="py-5 section-white-bg">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7 mx-auto">
-                <div class="card shadow border-0 rounded-4 p-4" style="background: #e0ddd8;">
-                    <h3 class="fw-bold mb-3 text-center" style="color:#110906;">Stay Updated</h3>
-                    <p class="mb-4 text-center" style="color:#000503;">
+                <div class="card shadow border-0 rounded-4 p-4 newsletter-card">
+                    <h3 class="fw-bold mb-3 text-center text-primary-dark">Stay Updated</h3>
+                    <p class="mb-4 text-center text-accent-dark">
                         Get the latest news about our programs, impact stories, and upcoming events.<br>
-                        <span style="color:#b97715; font-weight:600;">Be part of the movement!</span>
+                        <span class="text-highlight">Be part of the movement!</span>
                     </p>
                     <form class="d-flex gap-2 mb-3 justify-content-center" method="POST" action="{% url 'core:unified_subscribe' %}">
                         {% csrf_token %}
-                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email address" required style="background:#fff;color:#110906;max-width:320px;">
+                        <input type="email" name="email" class="form-control form-control-lg form-newsletter" placeholder="Enter your email address" required>
                         <button type="submit" class="btn btn-primary btn-lg px-4">
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -282,11 +141,11 @@
                         <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
                             <i class="fas fa-hands-helping me-2"></i>Join the Initiative
                         </a>
-                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3" style="background:#fdfdfd;color:#110906;">
+                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
                             <i class="fas fa-envelope me-2"></i>Newsletters
                         </a>
                     </div>
-                    <small class="mt-2 d-block text-center" style="color:#000503;">
+                    <small class="mt-2 d-block text-center text-accent-dark">
                         We respect your privacy. Unsubscribe at any time.
                     </small>
                 </div>
