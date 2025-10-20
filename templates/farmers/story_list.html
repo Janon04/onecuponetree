@@ -14,7 +14,7 @@
                 {% if story.video or story.photo %}
                 <div class="blog-media-zoom-wrapper d-flex align-items-center justify-content-center" style="width: 240px; max-width: 40vw; background: #e6d3c2; border-top-left-radius:1.2rem; border-bottom-left-radius:1.2rem; overflow:hidden;">
                     {% if story.video %}
-                        <video class="blog-media-zoom" style="width:100%;height:180px;object-fit:cover;cursor:pointer;" controls poster="{% if story.photo %}{{ story.photo.url }}{% endif %}">
+                        <video class="blog-media-zoom" style="width:100%;height:180px;object-fit:cover;cursor:pointer;" autoplay muted loop controls poster="{% if story.photo %}{{ story.photo.url }}{% endif %}">
                             <source src="{{ story.video.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
