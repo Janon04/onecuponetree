@@ -1,6 +1,6 @@
-# One Cup One Tree Initiative Website
+# One Cup Initiative Website
 
-A comprehensive Django web application for the One Cup One Tree Initiative - a sustainable movement empowering farmers, training youth, and restoring our planet through innovative coffee and tree planting programs.
+A comprehensive Django web application for the One Cup Initiative - a sustainable movement empowering farmers, training youth, and restoring our planet through innovative coffee and tree planting programs.
 
 ## 🌟 Features
 
@@ -13,7 +13,7 @@ A comprehensive Django web application for the One Cup One Tree Initiative - a s
 ### Programs
 - **Coffee Farmer Support**: Seedling distribution, training, and market access
 - **Youth Barista Academy**: Comprehensive training programs with scholarship opportunities
-- **One Cup One Tree Campaign**: Tree planting tracking with digital certificates
+- **One Cup Campaign**: Tree planting tracking with digital certificates
 
 ### Additional Features
 - **E-commerce Integration**: Shop for reusable cups, coffee, and tree sponsorships
@@ -248,7 +248,7 @@ For support and questions:
 - Django community for the excellent framework
 - Font Awesome for icons
 - Unsplash for placeholder images
-- All contributors and supporters of the One Cup One Tree Initiative
+- All contributors and supporters of the One Cup Initiative
 
 ---
 
