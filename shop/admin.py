@@ -218,20 +218,20 @@ class CartAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'customer_info', 'cart_info', 'status_badge', 'total_amount', 'created_at')
     list_filter = ('status', 'created_at')
-    search_fields = ('customer_name', 'customer_email', 'customer_phone')
+    search_fields = ('full_name', 'email', 'phone')
     readonly_fields = ('order_summary', 'payment_info')
     date_hierarchy = 'created_at'
     ordering = ['-created_at']
     
     fieldsets = (
         ('Customer Information', {
-            'fields': ('customer_name', 'customer_email', 'customer_phone', 'customer_address')
+            'fields': ('full_name', 'email', 'phone', 'country', 'city', 'zip_code', 'delivery_method')
         }),
         ('Order Details', {
             'fields': ('cart', 'status', 'total_amount')
         }),
         ('Payment Information', {
-            'fields': ('payment_method', 'transaction_id', 'payment_info'),
+            'fields': ('payment_info',),
             'classes': ('collapse',)
         }),
         ('Order Summary', {
@@ -247,9 +247,9 @@ class OrderAdmin(admin.ModelAdmin):
             '<span style="color: #666;">{}</span><br>'
             '<span style="color: #666;">{}</span>'
             '</div>',
-            obj.customer_name or 'N/A',
-            obj.customer_email or 'N/A',
-            obj.customer_phone or 'N/A'
+            obj.full_name or 'N/A',
+            obj.email or 'N/A',
+            obj.phone or 'N/A'
         )
     customer_info.short_description = "Customer"
     
@@ -326,13 +326,14 @@ class OrderAdmin(admin.ModelAdmin):
         return format_html(
             '<div style="background: #f8f9fa; padding: 10px; border-radius: 6px;">'
             '<strong>Payment Information:</strong><br>'
-            'Method: {}<br>'
-            'Transaction ID: {}<br>'
-            'Status: {}'
+            'Status: {}<br>'
+            'Total Amount: {} {}<br>'
+            'Delivery: {}'
             '</div>',
-            obj.payment_method or 'Not specified',
-            obj.transaction_id or 'Not available',
-            obj.get_status_display()
+            obj.get_status_display(),
+            obj.total_amount,
+            'RWF',  # Assuming default currency
+            obj.get_delivery_method_display()
         )
     payment_info.short_description = "Payment Details"
     
@@ -355,21 +356,17 @@ class OrderAdmin(admin.ModelAdmin):
         
         headers = [
             'Order ID', 'Customer Name', 'Customer Email', 'Customer Phone',
-            'Status', 'Total Amount', 'Payment Method', 'Transaction ID', 'Created Date'
+            'Status', 'Total Amount', 'Country', 'City', 'Created Date'
         ]
         writer.writerow(headers)
         
         for obj in queryset:
-            total = 0
-            if obj.cart:
-                for item in obj.cart.items.all():
-                    if item.product:
-                        total += item.quantity * item.product.price
+            total = obj.total_amount
             
             writer.writerow([
-                obj.id, obj.customer_name, obj.customer_email, obj.customer_phone,
-                obj.get_status_display(), total, obj.payment_method,
-                obj.transaction_id, obj.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                obj.id, obj.full_name, obj.email, obj.phone,
+                obj.get_status_display(), total, obj.country,
+                obj.city, obj.created_at.strftime('%Y-%m-%d %H:%M:%S')
             ])
         return response
     export_as_csv.short_description = "Export selected orders as CSV"

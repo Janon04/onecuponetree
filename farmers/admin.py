@@ -27,7 +27,7 @@ class HouseholdAssetInline(admin.TabularInline):
 class FarmerStoryInline(admin.StackedInline):
     model = FarmerStory
     extra = 0
-    fields = ('title', 'content', 'image', 'is_published')
+    fields = ('title', 'content', 'photo', 'video', 'is_published')
     classes = ['collapse']
 
 @admin.register(Farmer)
@@ -65,7 +65,7 @@ class FarmerAdmin(admin.ModelAdmin):
         ('Basic Information', {
             'fields': (
                 'full_name', 'household_id', 'sex', 'age', 'marital_status', 
-                'education_level', 'phone_number'
+                'education_level', 'phone_number', 'occupation'
             )
         }),
         ('Location Details', {
@@ -74,20 +74,37 @@ class FarmerAdmin(admin.ModelAdmin):
         }),
         ('Economic Information', {
             'fields': (
-                'main_income_source', 'land_size', 'is_coop_member', 
-                'coop_name', 'coop_role', 'years_in_coop'
+                'main_income_source', 'income_source_other', 'avg_monthly_income',
+                'has_savings', 'has_loans', 'is_coop_member', 'farm_size'
             ),
             'classes': ('collapse',)
         }),
-        ('Coffee Farming', {
+        ('Food Security & Health', {
             'fields': (
-                'coffee_trees', 'coffee_production_kg', 'coffee_price_per_kg', 
-                'coffee_variety', 'coffee_age_years'
+                'main_staple_foods', 'meals_per_day', 'food_shortage', 'food_shortage_when',
+                'has_chronic_illness', 'chronic_illness_details'
+            ),
+            'classes': ('collapse',)
+        }),
+        ('Housing & Utilities', {
+            'fields': (
+                'house_type', 'roofing', 'roofing_other', 'lighting_source', 
+                'lighting_other', 'water_source', 'water_source_other', 'toilet_facility'
+            ),
+            'classes': ('collapse',)
+        }),
+        ('Community Participation', {
+            'fields': (
+                'is_savings_group_member', 'has_support', 'support_details'
             ),
             'classes': ('collapse',)
         }),
         ('Interview Details', {
             'fields': ('interview_date', 'interviewer_name', 'household_summary'),
+            'classes': ('collapse',)
+        }),
+        ('Additional Information', {
+            'fields': ('location', 'joined_date', 'bio', 'photo', 'is_featured'),
             'classes': ('collapse',)
         }),
     )
@@ -156,10 +173,10 @@ class FarmerAdmin(admin.ModelAdmin):
             '<strong>Household Overview:</strong><br>'
             'Members: {} people<br>'
             'Assets: {} items<br>'
-            'Coffee Trees: {}<br>'
-            'Land Size: {} hectares'
+            'Farm Size: {} hectares<br>'
+            'Income: {} RWF/month'
             '</div>',
-            members_count, assets_count, obj.coffee_trees or 0, obj.land_size or 0
+            members_count, assets_count, obj.farm_size or 0, obj.avg_monthly_income or 0
         )
     household_summary.short_description = "Household Summary"
     
@@ -188,7 +205,7 @@ class FarmerAdmin(admin.ModelAdmin):
         headers = [
             'Full Name', 'Household ID', 'Phone', 'District', 'Sector', 'Cell', 'Village',
             'Age', 'Sex', 'Marital Status', 'Education', 'Main Income Source',
-            'Coffee Trees', 'Coffee Production (kg)', 'Land Size', 'Coop Member',
+            'Farm Size', 'Monthly Income', 'Coop Member', 'Occupation',
             'Sponsorship Active', 'Sponsorship Goal', 'Sponsorship Received',
             'Interview Date', 'Interviewer'
         ]
@@ -200,8 +217,9 @@ class FarmerAdmin(admin.ModelAdmin):
                 obj.district, obj.sector, obj.cell, obj.village,
                 obj.age, obj.get_sex_display(), obj.get_marital_status_display(),
                 obj.get_education_level_display(), obj.main_income_source,
-                obj.coffee_trees, obj.coffee_production_kg, obj.land_size,
+                obj.farm_size, obj.avg_monthly_income, 
                 'Yes' if obj.is_coop_member else 'No',
+                obj.get_occupation_display() if obj.occupation else '',
                 'Yes' if obj.sponsorship_is_active else 'No',
                 obj.sponsorship_goal, obj.sponsorship_received,
                 obj.interview_date, obj.interviewer_name

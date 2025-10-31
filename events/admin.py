@@ -61,6 +61,13 @@ class EventAdmin(admin.ModelAdmin):
     status_badge.admin_order_field = 'status'
     
     def date_range(self, obj):
+        if not obj.start_date or not obj.end_date:
+            return format_html(
+                '<div style="color: #6c757d; font-style: italic;">'
+                '<i class="fas fa-calendar"></i> Dates not set'
+                '</div>'
+            )
+        
         start = obj.start_date.strftime("%b %d, %Y %H:%M")
         end = obj.end_date.strftime("%b %d, %Y %H:%M")
         
@@ -104,6 +111,11 @@ class EventAdmin(admin.ModelAdmin):
     attendees_count.short_description = "Attendees"
     
     def duration(self, obj):
+        if not obj.start_date or not obj.end_date:
+            return format_html(
+                '<span style="color: #6c757d; font-style: italic;">Dates not set</span>'
+            )
+        
         duration = obj.end_date - obj.start_date
         days = duration.days
         hours, remainder = divmod(duration.seconds, 3600)
@@ -118,6 +130,14 @@ class EventAdmin(admin.ModelAdmin):
     duration.short_description = "Duration"
     
     def time_until_event(self, obj):
+        # Check if dates are set
+        if not obj.start_date or not obj.end_date:
+            return format_html(
+                '<div style="color: #6c757d; font-style: italic;">'
+                '<i class="fas fa-clock"></i> Dates not set'
+                '</div>'
+            )
+        
         now = timezone.now()
         
         if obj.start_date > now:
@@ -219,12 +239,20 @@ class EventAdmin(admin.ModelAdmin):
         writer.writerow(headers)
         
         for obj in queryset:
-            duration_minutes = int((obj.end_date - obj.start_date).total_seconds() / 60)
+            if obj.start_date and obj.end_date:
+                duration_minutes = int((obj.end_date - obj.start_date).total_seconds() / 60)
+                start_date_str = obj.start_date.strftime('%Y-%m-%d %H:%M:%S')
+                end_date_str = obj.end_date.strftime('%Y-%m-%d %H:%M:%S')
+            else:
+                duration_minutes = 0
+                start_date_str = 'Not set'
+                end_date_str = 'Not set'
+                
             writer.writerow([
                 obj.title,
                 obj.get_status_display(),
-                obj.start_date.strftime('%Y-%m-%d %H:%M:%S'),
-                obj.end_date.strftime('%Y-%m-%d %H:%M:%S'),
+                start_date_str,
+                end_date_str,
                 obj.location,
                 obj.organizer.get_full_name() if obj.organizer else '',
                 duration_minutes,
