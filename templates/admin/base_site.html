@@ -1,0 +1,222 @@
+{% extends "admin/base.html" %}
+{% load i18n static admin_urls %}
+
+{% block title %}{{ title }} | One Cup Initiative Admin{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="{% static 'images/Black PNG _Onecup initiative @2x.png' %}" alt="One Cup Initiative" 
+             style="height: 35px; margin-right: 12px; background: rgba(255, 255, 255, 0.1); padding: 4px; border-radius: 6px;">
+        <span style="color: #e0ddd8; font-size: 18px; font-weight: 600;">One Cup Initiative Admin</span>
+    </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<div id="header-actions" style="margin-right: 20px;">
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <a href="{% url 'core:home' %}" target="_blank" 
+           style="color: #d4af37; text-decoration: none; display: flex; align-items: center; gap: 5px; font-size: 14px;">
+            <i class="fas fa-external-link-alt"></i>
+            View Site
+        </a>
+        {% if user.is_authenticated %}
+            <span style="color: #e0ddd8; font-size: 14px;">
+                Welcome, {{ user.get_full_name|default:user.username }}
+            </span>
+            <a href="{% url 'admin:logout' %}" 
+               style="color: #d4af37; text-decoration: none; font-size: 14px;">
+                Logout
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_admin.css' %}"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="{% static 'admin/js/custom_admin.js' %}"></script>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Import project color scheme */
+    :root {
+        --primary-color: #110906;
+        --secondary-color: #e0ddd8;
+        --accent-color: #000503;
+        --light-bg: #fdfdfd;
+        --gold-color: #d4af37;
+        --brown-color: #7b3f00;
+        --success-color: #28a745;
+        --font-body: 'Inter', sans-serif;
+        --font-heading: 'Poppins', sans-serif;
+    }
+    
+    /* Override Django admin styles with project theme */
+    #header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%) !important;
+        border-bottom: 3px solid var(--gold-color) !important;
+    }
+    
+    body {
+        font-family: var(--font-body) !important;
+        background: #f8f9fa !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading) !important;
+        color: var(--primary-color) !important;
+    }
+    
+    #branding h1 {
+        color: var(--secondary-color) !important;
+    }
+    
+    .breadcrumbs {
+        background: var(--light-bg) !important;
+        border-bottom: 1px solid #e0e0e0 !important;
+        color: var(--primary-color) !important;
+    }
+    
+    .breadcrumbs a {
+        color: var(--brown-color) !important;
+    }
+    
+    .module h2, .module caption {
+        background: var(--gold-color) !important;
+        color: white !important;
+        font-weight: 600 !important;
+    }
+    
+    .button, input[type=submit], input[type=button], .submit-row input {
+        background: var(--gold-color) !important;
+        border: none !important;
+        color: white !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .button:hover, input[type=submit]:hover, input[type=button]:hover {
+        background: var(--brown-color) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    .default {
+        background: var(--success-color) !important;
+    }
+    
+    .default:hover {
+        background: #1e7e34 !important;
+    }
+    
+    th {
+        background: var(--secondary-color) !important;
+        color: var(--primary-color) !important;
+        font-weight: 600 !important;
+    }
+    
+    .results table {
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    .row1 {
+        background: #fafafa !important;
+    }
+    
+    .row2 {
+        background: white !important;
+    }
+    
+    tr:hover td {
+        background: #f0f8ff !important;
+    }
+    
+    .field-box {
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 6px !important;
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+        background: white !important;
+    }
+    
+    .form-row {
+        margin-bottom: 15px !important;
+    }
+    
+    input, textarea, select {
+        border: 1px solid #d0d0d0 !important;
+        border-radius: 4px !important;
+        padding: 8px 12px !important;
+        font-family: var(--font-body) !important;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        border-color: var(--gold-color) !important;
+        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+        outline: none !important;
+    }
+    
+    .errorlist {
+        background: #fff5f5 !important;
+        border-left: 4px solid #e53e3e !important;
+        color: #e53e3e !important;
+        padding: 10px !important;
+        border-radius: 4px !important;
+    }
+    
+    .object-tools {
+        background: transparent !important;
+    }
+    
+    .object-tools a {
+        background: var(--success-color) !important;
+        color: white !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        padding: 8px 15px !important;
+        margin-left: 10px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .object-tools a:hover {
+        background: #1e7e34 !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    .paginator {
+        background: white !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 6px !important;
+        padding: 10px !important;
+    }
+    
+    .paginator a {
+        color: var(--brown-color) !important;
+        padding: 5px 10px !important;
+        margin: 0 2px !important;
+        border-radius: 4px !important;
+        text-decoration: none !important;
+    }
+    
+    .paginator a:hover {
+        background: var(--gold-color) !important;
+        color: white !important;
+    }
+    
+    .paginator .this-page {
+        background: var(--gold-color) !important;
+        color: white !important;
+        padding: 5px 10px !important;
+        border-radius: 4px !important;
+    }
+</style>
+{% endblock %}

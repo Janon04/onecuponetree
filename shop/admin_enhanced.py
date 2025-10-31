@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price_display', 'currency', 'availability_status', 'image_preview', 'order_count', 'is_active')
+    list_display = ('name', 'price_display', 'currency', 'availability_status', 'image_preview', 'order_count')
     list_filter = ('is_active', 'currency')
     search_fields = ('name', 'description')
     readonly_fields = ('image_preview', 'product_stats')

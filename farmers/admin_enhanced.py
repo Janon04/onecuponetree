@@ -30,12 +30,17 @@ class FarmerStoryInline(admin.StackedInline):
     fields = ('title', 'content', 'image', 'is_published')
     classes = ['collapse']
 
+class FarmerSupportActivityInline(admin.TabularInline):
+    model = FarmerSupportActivity
+    extra = 0
+    fields = ('title', 'activity_type', 'date', 'outcome', 'is_public')
+    classes = ['collapse']
+
 @admin.register(Farmer)
 class FarmerAdmin(admin.ModelAdmin):
     list_display = (
         'full_name', 'household_id', 'location_info', 'phone_number', 
-        'sponsorship_status', 'cooperation_status', 'pinned_status', 'created_date',
-        'pinned'
+        'sponsorship_status', 'cooperation_status', 'pinned_status', 'created_date'
     )
     list_filter = (
         'pinned', 'sponsorship_is_active', 'is_coop_member', 'sex', 
@@ -52,7 +57,7 @@ class FarmerAdmin(admin.ModelAdmin):
     date_hierarchy = 'interview_date'
     ordering = ['-pinned', '-interview_date']
     
-    inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerStoryInline]
+    inlines = [HouseholdMemberInline, HouseholdAssetInline, FarmerStoryInline, FarmerSupportActivityInline]
     
     fieldsets = (
         ('Sponsorship Information', {

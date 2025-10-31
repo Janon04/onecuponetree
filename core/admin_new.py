@@ -164,19 +164,9 @@ class DonationAdmin(admin.ModelAdmin):
             'refunded': '#6c757d'
         }
         color = colors.get(obj.payment_status, '#6c757d')
-        
-        # Define display labels since the model doesn't have choices
-        status_labels = {
-            'pending': 'Pending',
-            'completed': 'Completed',
-            'failed': 'Failed',
-            'refunded': 'Refunded'
-        }
-        display_label = status_labels.get(obj.payment_status, obj.payment_status.title())
-        
         return format_html(
             '<span style="background: {}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">{}</span>',
-            color, display_label
+            color, obj.get_payment_status_display()
         )
     payment_status_badge.short_description = "Status"
     payment_status_badge.admin_order_field = 'payment_status'

@@ -24,8 +24,7 @@ class BlogCategoryAdmin(admin.ModelAdmin):
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = (
         'title', 'author_name', 'category', 'publication_status', 
-        'pinned_status', 'media_preview', 'views_count', 'created_at',
-        'pinned', 'is_published'
+        'pinned_status', 'media_preview', 'views_count', 'created_at'
     )
     list_filter = ('is_published', 'pinned', 'category', 'created_at', 'author')
     search_fields = ('title', 'description', 'content', 'author__username', 'author__first_name', 'author__last_name')
