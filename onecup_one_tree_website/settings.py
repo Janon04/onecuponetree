@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'partners',
     'programs',
     'shop',
-    'media',
     'events',
     'contact',
     'api',
