@@ -3,6 +3,7 @@ CONTACT_NOTIFICATION_EMAIL = 'info@onecupinitiative.org'
 import os
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,13 +11,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Add apps directory to Python path
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
+# Load environment variables from .env at project root (if present)
+load_dotenv(BASE_DIR / '.env')
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-onecup-one-tree-secret-key-change-in-production'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-onecup-one-tree-secret-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DJANGO_DEBUG = os.getenv('DJANGO_DEBUG', 'False')
+DEBUG = str(DJANGO_DEBUG).lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
+# Allowed hosts can be a comma-separated list in the env var
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',') if h.strip()]
 
 # Application definition
 INSTALLED_APPS = [
@@ -100,6 +106,19 @@ DATABASES = {
     }
 }
 
+# If running in production (set DJANGO_PRODUCTION=True in .env), use Postgres
+if os.getenv('DJANGO_PRODUCTION', 'False').lower() in ('1', 'true', 'yes'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        }
+    }
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -177,15 +196,15 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Email Configuration (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'janon3030@gmail.com'
-EMAIL_HOST_PASSWORD = 'bflu atpq mrhe wzvw'  # Gmail App Password
-DEFAULT_FROM_EMAIL = 'janon3030@gmail.com'
-CONTACT_NOTIFICATION_EMAIL = 'djanonelhard@gmail.com'
+# Email Configuration (read from environment)
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = str(os.getenv('EMAIL_USE_TLS', 'True')).lower() in ('1', 'true', 'yes')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+CONTACT_NOTIFICATION_EMAIL = os.getenv('CONTACT_NOTIFICATION_EMAIL', 'djanonelhard@gmail.com')
 
 # Security Settings
 SECURE_BROWSER_XSS_FILTER = True
