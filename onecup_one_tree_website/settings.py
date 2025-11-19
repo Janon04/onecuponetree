@@ -106,18 +106,34 @@ DATABASES = {
     }
 }
 
-# If running in production (set DJANGO_PRODUCTION=True in .env), use Postgres
+# If running in production (set DJANGO_PRODUCTION=True in .env), use MySQL by default.
+# You can change `DJANGO_DB` to `postgres` to use the commented Postgres config below.
 if os.getenv('DJANGO_PRODUCTION', 'False').lower() in ('1', 'true', 'yes'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+    DB_ENGINE = os.getenv('DJANGO_DB', 'mysql').lower()
+    if DB_ENGINE == 'mysql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.getenv('MYSQL_DATABASE', os.getenv('POSTGRES_DB')),
+                'USER': os.getenv('MYSQL_USER', os.getenv('POSTGRES_USER')),
+                'PASSWORD': os.getenv('MYSQL_PASSWORD', os.getenv('POSTGRES_PASSWORD')),
+                'HOST': os.getenv('MYSQL_HOST', os.getenv('POSTGRES_HOST', 'localhost')),
+                'PORT': os.getenv('MYSQL_PORT', '3306'),
+            }
         }
-    }
+
+# Postgres configuration (kept for reference). To use Postgres, set `DJANGO_DB=postgres`.
+# if os.getenv('DJANGO_PRODUCTION', 'False').lower() in ('1', 'true', 'yes') and os.getenv('DJANGO_DB','postgres') == 'postgres':
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.getenv('POSTGRES_DB'),
+#             'USER': os.getenv('POSTGRES_USER'),
+#             'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#             'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+#             'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#         }
+#     }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
