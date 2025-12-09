@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,19 +9,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Add apps directory to Python path
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
+# Load environment variables from .env at project root (if present)
+load_dotenv(BASE_DIR / '.env')
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-onecup-one-tree-secret-key-change-in-production')
+SECRET_KEY = os.getenv('SECRET_KEY', os.getenv('DJANGO_SECRET_KEY', 'django-insecure-onecup-one-tree-secret-key-change-in-production'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
+DJANGO_DEBUG = os.getenv('DEBUG', os.getenv('DJANGO_DEBUG', 'False'))
+DEBUG = str(DJANGO_DEBUG).lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allowed hosts can be a comma-separated list in the env var
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0')).split(',') if h.strip()]
 
 # CSRF Settings - Fix for production CSRF verification errors
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    'CSRF_TRUSTED_ORIGINS', 
-    'http://localhost:8000,http://127.0.0.1:8000,http://159.198.68.63:81'
-).split(',')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000,http://159.198.68.63:81').split(',') if o.strip()]
 
 # Application definition
 INSTALLED_APPS = [
@@ -50,7 +53,6 @@ INSTALLED_APPS = [
     'partners',
     'programs',
     'shop',
-    'media',
     'events',
     'contact',
     'api',
@@ -103,6 +105,35 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# If running in production (set DJANGO_PRODUCTION=True in .env), use MySQL by default.
+# You can change `DJANGO_DB` to `postgres` to use the commented Postgres config below.
+if os.getenv('DJANGO_PRODUCTION', 'False').lower() in ('1', 'true', 'yes'):
+    DB_ENGINE = os.getenv('DJANGO_DB', 'mysql').lower()
+    if DB_ENGINE == 'mysql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': os.getenv('MYSQL_DATABASE', os.getenv('POSTGRES_DB')),
+                'USER': os.getenv('MYSQL_USER', os.getenv('POSTGRES_USER')),
+                'PASSWORD': os.getenv('MYSQL_PASSWORD', os.getenv('POSTGRES_PASSWORD')),
+                'HOST': os.getenv('MYSQL_HOST', os.getenv('POSTGRES_HOST', 'localhost')),
+                'PORT': os.getenv('MYSQL_PORT', '3306'),
+            }
+        }
+
+# Postgres configuration (kept for reference). To use Postgres, set `DJANGO_DB=postgres`.
+# if os.getenv('DJANGO_PRODUCTION', 'False').lower() in ('1', 'true', 'yes') and os.getenv('DJANGO_DB','postgres') == 'postgres':
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.getenv('POSTGRES_DB'),
+#             'USER': os.getenv('POSTGRES_USER'),
+#             'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#             'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+#             'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#         }
+#     }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -181,11 +212,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Email Configuration
+# Email Configuration (read from environment)
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+EMAIL_USE_TLS = str(os.getenv('EMAIL_USE_TLS', 'True')).lower() in ('1', 'true', 'yes')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)

@@ -299,3 +299,27 @@ For support and questions:
 
 **Built with ❤️ for a sustainable future**
 
+## Production `.env` and PostgreSQL
+
+Add a `.env` file at the project root (a template was added as `.env`). Fill in your production values (SECRET_KEY, POSTGRES_*, email credentials, and DJANGO_ALLOWED_HOSTS). Example steps:
+
+```bash
+# create and activate virtualenv
+python -m venv venv
+source venv/bin/activate
+
+# install dependencies (ensure psycopg2-binary and python-dotenv are installed)
+pip install -r requirements.txt
+
+# run migrations
+python manage.py migrate
+
+# collect static
+python manage.py collectstatic --noinput
+
+# run with gunicorn in production
+# gunicorn onecup_one_tree_website.wsgi:application --bind 0.0.0.0:8000
+```
+
+Keep the `.env` file out of version control and use environment-specific secrets management in production (e.g., server env vars, Docker secrets, or a secret manager).
+
