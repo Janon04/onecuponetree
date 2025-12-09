@@ -6,7 +6,7 @@
     {% if opportunities %}
         <div class="blog-list-vertical">
             {% for opportunity in opportunities %}
-            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch" style="background-color: #fff7ef; color: #4b2e1a; transition: box-shadow 0.3s; min-height:220px;">
+            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch bg-light-warm text-primary-dark" style="transition: box-shadow 0.3s; min-height:220px;">
                 {% if opportunity.image or opportunity.video %}
                 <div class="blog-media-zoom-wrapper d-flex align-items-center justify-content-center" style="width: 240px; max-width: 40vw; background: #e6d3c2; border-top-left-radius:1.2rem; border-bottom-left-radius:1.2rem; overflow:hidden;">
                     {% if opportunity.video %}
@@ -22,7 +22,7 @@
                 <div class="card-body d-flex flex-column p-4 justify-content-between" style="flex:1 1 0;">
                     <div>
                         <h5 class="card-title mb-1" style="color:#d2700d; font-weight:700; font-size:1.15rem; letter-spacing:0.5px;">{{ opportunity.title }}</h5>
-                        <p class="card-text small mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;">
+                        <p class="card-text small mb-2 text-muted-dark" style="font-weight:500;">
                             <i class="fa fa-calendar-alt me-1"></i> {{ opportunity.start_date }} - {{ opportunity.end_date }}
                             {% if opportunity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ opportunity.location }}{% endif %}
                         </p>

@@ -62,11 +62,11 @@
             <div class="col-lg-2 col-md-6 footer-small">
                 <h6 class="text-uppercase mb-3 footer-small">{% trans "Contact" %}</h6>
                 <ul class="list-unstyled small footer-small">
-                    <li><i class="fas fa-envelope me-2"></i>info@onecuponetree.org</li>
-                    <li><i class="fas fa-phone me-2"></i>+250 788 354 403</li>
-                    <li><i class="fas fa-map-marker-alt me-2"></i>16 KG 599 Street, Kigali</li>
+                    <li><i class="fas fa-envelope me-2"></i>{{ CONTACT_NOTIFICATION_EMAIL }}</li>
+                    <li><i class="fas fa-phone me-2"></i>{{ CONTACT_PHONE }}</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i>{{ CONTACT_ADDRESS }}</li>
                     <li>
-                        <a href="https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="text-light text-decoration-underline">
+                        <a href="{{ CONTACT_MAP_URL }}" target="_blank" rel="noopener" class="text-light text-decoration-underline">
                             <i class="fas fa-map me-2"></i>{% trans "Google Maps" %}
                         </a>
                     </li>

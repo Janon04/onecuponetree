@@ -5,7 +5,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-lg border-0 rounded-4 blog-detail-pro" style="background-color: #fff7ef; color: #4b2e1a;">
+            <div class="card shadow-lg border-0 rounded-4 blog-detail-pro bg-light-warm text-primary-dark">
                 <div class="card-body p-5">
                                         <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ opportunity.title|striptags }}</h1>
                                         {% if opportunity.image or opportunity.video %}
@@ -20,7 +20,7 @@
                                                 {% endif %}
                                         </div>
                                         {% endif %}
-                                        <p class="mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;">
+                                        <p class="mb-2 text-muted-dark" style="font-weight:500;">
                                                 <i class="fa fa-calendar-alt me-1"></i> {{ opportunity.start_date }} - {{ opportunity.end_date }}
                                                 {% if opportunity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ opportunity.location }}{% endif %}
                                         </p>

@@ -7,7 +7,7 @@
   {% if activities %}
     <div class="blog-list-vertical">
       {% for activity in activities %}
-      <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch" style="background-color: #fff7ef; color: #4b2e1a; transition: box-shadow 0.3s; min-height:220px;">
+      <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch bg-light-warm text-primary-dark" style="transition: box-shadow 0.3s; min-height:220px;">
         {% if activity.attachment %}
           {% with ext=activity.attachment.url|lower %}
             {% if ".mp4" in ext or ".webm" in ext or ".ogg" in ext %}
@@ -29,7 +29,7 @@
         <div class="card-body d-flex flex-column p-4 justify-content-between" style="flex:1 1 0;">
           <div>
             <h5 class="card-title mb-1" style="color:#d2700d; font-weight:700; font-size:1.15rem; letter-spacing:0.5px;">{{ activity.title }}</h5>
-            <p class="card-text small mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;">
+            <p class="card-text small mb-2 text-muted-dark" style="font-weight:500;">
               <i class="fa fa-calendar-alt me-1"></i> {{ activity.date }}
               {% if activity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ activity.location }}{% endif %}
             </p>

@@ -29,14 +29,14 @@
                                 {% endfor %}
                                 </div>
                             {% endif %}
-                            <div class="card-text" style="color:#4b2e1a;">{{ newsletter.content|safe }}</div>
+                            <div class="card-text text-primary-dark">{{ newsletter.content|safe }}</div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="alert alert-info text-center mt-5" style="background:#e0ddd8; color:#110906; border:none;">No newsletters have been published yet.</div>
+        <div class="alert alert-info text-center mt-5 bg-beige" style="color:#110906; border:none;">No newsletters have been published yet.</div>
     {% endif %}
 </div>
 {% endblock %}

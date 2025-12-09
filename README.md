@@ -2,6 +2,10 @@
 
 A comprehensive Django web application for the One Cup Initiative - a sustainable movement empowering farmers, training youth, and restoring our planet through innovative coffee and tree planting programs.
 
+## 📚 Documentation
+
+- **[ADMIN_DOCUMENTATION.md](ADMIN_DOCUMENTATION.md)** - Comprehensive admin guide including media files management
+
 ## 🌟 Features
 
 ### Core Functionality
@@ -52,22 +56,31 @@ A comprehensive Django web application for the One Cup Initiative - a sustainabl
    pip install -r requirements.txt
    ```
 
-4. **Run database migrations**
+4. **Configure environment variables**
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # Edit .env file and add your configuration
+   # At minimum, set SECRET_KEY and email settings
+   ```
+
+5. **Run database migrations**
    ```bash
    python manage.py migrate
    ```
 
-5. **Create a superuser (optional)**
+6. **Create a superuser (optional)**
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Start the development server**
+7. **Start the development server**
    ```bash
    python manage.py runserver
    ```
 
-7. **Access the website**
+8. **Access the website**
    - Open your browser and go to `http://127.0.0.1:8000`
    - Admin panel: `http://127.0.0.1:8000/admin`
 
@@ -123,43 +136,75 @@ onecup_one_tree_website/
 
 #### Styling
 - The project uses Bootstrap 5 with custom CSS variables
-- Modify colors in `templates/base.html` CSS section
-- Primary color: `#2d5016` (forest green)
-- Secondary color: `#8b4513` (coffee brown)
+- All theme colors are defined in `static/css/main.css` using CSS variables:
+  ```css
+  --color-primary: #fd9d02
+  --color-primary-dark: #4b2e1a
+  --color-accent: #d2700d
+  ```
+- Modify these variables to change the site's color scheme
+- Social media icon colors are also defined as CSS variables
+- No need to change colors throughout templates - just update CSS variables
 
 #### Content
-- Update site settings in `settings.py`
-- Modify homepage content in `apps/core/views.py`
-- Edit templates in `templates/` directory
+- All site content (name, description, contact info) is managed through environment variables
+- Update `.env` file to change site information
+- Social media links are also configured in `.env`
+- No hardcoded values in templates - everything uses Django context
 
 ## 🔧 Configuration
 
 ### Environment Variables
-Create a `.env` file for production settings:
 
-```env
-SECRET_KEY=your-secret-key-here
-DEBUG=False
-ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+The project uses environment variables for configuration to keep sensitive data secure and make deployment easier. All configuration is done through environment variables defined in a `.env` file.
 
-# Database (for production)
-DATABASE_URL=postgresql://user:password@localhost/dbname
+**Setup:**
 
-# Email settings
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
+1. Copy the example file:
+   ```bash
+   cp .env.example .env
+   ```
 
-# Payment gateways
-MTN_API_KEY=your-mtn-api-key
-RWANDA_PAY_API_KEY=your-rwandapay-api-key
-PAYPAL_CLIENT_ID=your-paypal-client-id
+2. Edit `.env` with your values:
+   ```env
+   # Django Core Settings
+   SECRET_KEY=your-secret-key-here
+   DEBUG=False
+   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
 
-# Newsletter
-MAILCHIMP_API_KEY=your-mailchimp-api-key
-MAILCHIMP_LIST_ID=your-list-id
-```
+   # Email Configuration
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_HOST_USER=your-email@gmail.com
+   EMAIL_HOST_PASSWORD=your-app-password
+   CONTACT_NOTIFICATION_EMAIL=info@onecupinitiative.org
+
+   # Site Information (optional - has defaults)
+   SITE_NAME=One Cup Initiative
+   CONTACT_PHONE=+250 788 354 403
+   CONTACT_ADDRESS=16 KG 599 Street, Kigali
+
+   # Social Media Links (optional - has defaults)
+   SOCIAL_FACEBOOK=https://facebook.com/yourpage
+   SOCIAL_TWITTER=https://twitter.com/youraccount
+   SOCIAL_INSTAGRAM=https://instagram.com/youraccount
+   SOCIAL_YOUTUBE=https://youtube.com/yourchannel
+
+   # Payment Gateways (optional)
+   MTN_ENABLED=True
+   MTN_API_KEY=your-mtn-api-key
+   MTN_SECRET_KEY=your-mtn-secret-key
+
+   # Newsletter Integration (optional)
+   MAILCHIMP_API_KEY=your-mailchimp-api-key
+   MAILCHIMP_LIST_ID=your-list-id
+   ```
+
+**Important Notes:**
+- Never commit `.env` file to version control
+- Use `.env.example` as a template for documentation
+- All sensitive credentials should be stored as environment variables
+- For development, you can use default values (check `.env.example`)
 
 ### Database
 - Development: SQLite (default)

@@ -5,7 +5,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-                        <div class="card shadow-lg border-0 rounded-4 blog-detail-pro" style="background-color: #fff7ef; color: #4b2e1a;">
+                        <div class="card shadow-lg border-0 rounded-4 blog-detail-pro bg-light-warm text-primary-dark">
                                                 {% if post.video %}
                                                     <div class="blog-media-zoom-wrapper position-relative" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#mediaModal">
                                                         <video class="card-img-top blog-media-zoom" controls preload="metadata" style="width:100%;height:auto;max-height:340px;object-fit:cover; background:#222; transition: transform 0.5s cubic-bezier(.4,2,.6,1);">
@@ -41,14 +41,14 @@
 </div>
                                 <div class="card-body p-5">
                                         <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ post.title }}</h1>
-                                        <p class="mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;">
+                                        <p class="mb-2 text-muted-dark" style="font-weight:500;">
                                                 <i class="fa fa-calendar"></i>
                                                 {{ post.created_at|date:"M d, Y" }}
                                         </p>
                     {% if post.description %}
                         <p class="lead mb-4" style="color:#000; opacity:1;">{{ post.description|safe }}</p>
                     {% endif %}
-                                        <div class="mb-4" style="color:#4b2e1a;">{{ post.content|safe }}</div>
+                                        <div class="mb-4 text-primary-dark">{{ post.content|safe }}</div>
                                 </div>
                         </div>
 </div>

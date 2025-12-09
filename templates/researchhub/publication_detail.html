@@ -9,7 +9,7 @@
                 {% if publication.image %}
                     <img src="{{ publication.image.url }}" class="card-img-top rounded-top-4" alt="{{ publication.title }}" style="max-height:340px;object-fit:cover;">
                 {% endif %}
-                <div class="card-body p-4 p-md-5" style="color:#4b2e1a;">
+                <div class="card-body p-4 p-md-5 text-primary-dark">
                     <div class="d-flex align-items-center mb-2">
                         {% if publication.category %}
                             <span class="badge" style="background:#ffe0b2; color:#b85c00; border:1px solid #b85c00;">{{ publication.category.name }}</span>
@@ -18,7 +18,7 @@
                     </div>
                     <h1 class="mb-2 fw-bold" style="color:#b85c00; letter-spacing:-1px;">{{ publication.title }}</h1>
                     <div class="mb-3" style="color:#7a5a3a; font-size:0.95em;">{{ publication.author }}</div>
-                    <p class="lead mb-4" style="color:#4b2e1a;">{{ publication.summary }}</p>
+                    <p class="lead mb-4 text-primary-dark">{{ publication.summary }}</p>
                     {% if publication.document %}
                         <div class="mb-4">
                             <div class="alert alert-secondary mb-2 d-flex align-items-center" style="background:#fff7ef; color:#4b2e1a; border:1px solid #b85c00;">

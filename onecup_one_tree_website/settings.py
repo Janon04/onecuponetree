@@ -1,5 +1,3 @@
-# Email address to receive contact notifications
-CONTACT_NOTIFICATION_EMAIL = 'info@onecupinitiative.org'
 import os
 import sys
 from pathlib import Path
@@ -11,12 +9,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-onecup-one-tree-secret-key-change-in-production'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-onecup-one-tree-secret-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# CSRF Settings - Fix for production CSRF verification errors
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS', 
+    'http://localhost:8000,http://127.0.0.1:8000,http://159.198.68.63:81'
+).split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -177,15 +181,15 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Email Configuration (for development)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'janon3030@gmail.com'
-EMAIL_HOST_PASSWORD = 'bflu atpq mrhe wzvw'  # Gmail App Password
-DEFAULT_FROM_EMAIL = 'janon3030@gmail.com'
-CONTACT_NOTIFICATION_EMAIL = 'djanonelhard@gmail.com'
+# Email Configuration
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+CONTACT_NOTIFICATION_EMAIL = os.getenv('CONTACT_NOTIFICATION_EMAIL', 'info@onecupinitiative.org')
 
 # Security Settings
 SECURE_BROWSER_XSS_FILTER = True
@@ -193,11 +197,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
 # CORS Settings (if needed for API)
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'False').lower() in ('true', '1', 'yes')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
 
 # Logging Configuration
 LOGGING = {
@@ -221,39 +222,54 @@ LOGGING = {
 }
 
 # Custom Settings for One Cup Initiative
-SITE_NAME = "One Cup Initiative"
-SITE_DESCRIPTION = "A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time."
-CONTACT_EMAIL = "janon3030@gmail.com"
+SITE_NAME = os.getenv('SITE_NAME', 'One Cup Initiative')
+SITE_DESCRIPTION = os.getenv('SITE_DESCRIPTION', 'A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time.')
+CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', CONTACT_NOTIFICATION_EMAIL)
+
+# Social Media Links
 SOCIAL_MEDIA_LINKS = {
-    'facebook': 'https://facebook.com/onecuponetree',
-    'instagram': 'https://instagram.com/onecuponetree',
-    'twitter': 'https://twitter.com/onecuponetree',
-    'youtube': 'https://youtube.com/onecuponetree',
+    'facebook': os.getenv('SOCIAL_FACEBOOK', 'https://www.facebook.com/share/r/1Cn4fDMwRs/?mibextid=wwXIfr'),
+    'twitter': os.getenv('SOCIAL_TWITTER', 'https://x.com/onecuprwanda?s=21'),
+    'instagram': os.getenv('SOCIAL_INSTAGRAM', 'https://www.instagram.com/onecuproasters?igsh=MWRqaG0yY3Z0OGU5eQ=='),
+    'youtube': os.getenv('SOCIAL_YOUTUBE', 'https://youtu.be/DindpiHNdAA?si=XrxBs5FYDcfUWuzQ'),
 }
 
-# Payment Gateway Settings (to be configured with actual credentials)
+# Contact Information
+CONTACT_PHONE = os.getenv('CONTACT_PHONE', '+250 788 354 403')
+CONTACT_ADDRESS = os.getenv('CONTACT_ADDRESS', '16 KG 599 Street, Kigali')
+CONTACT_MAP_URL = os.getenv('CONTACT_MAP_URL', 'https://www.google.com/maps/place/One+Cup+Coffeehouse/@-1.9553987,30.1025397,16.81z/data=!4m6!3m5!1s0x19dca7d7008f0575:0x57abf3f2b852188d!8m2!3d-1.9554701!4d30.1026171!16s%2Fg%2F11s4tf7gkg?entry=ttu&g_ep=EgoyMDI1MDgyNS4wIKXMDSoASAFQAw%3D%3D')
+
+# Payment Gateway Settings
 PAYMENT_GATEWAYS = {
     'MTN_MOBILE_MONEY': {
-        'enabled': True,
-        'api_key': 'your-mtn-api-key',
-        'secret_key': 'your-mtn-secret-key',
+        'enabled': os.getenv('MTN_ENABLED', 'False').lower() in ('true', '1', 'yes'),
+        'api_key': os.getenv('MTN_API_KEY', ''),
+        'secret_key': os.getenv('MTN_SECRET_KEY', ''),
     },
     'RWANDA_PAY': {
-        'enabled': True,
-        'api_key': 'your-rwandapay-api-key',
-        'secret_key': 'your-rwandapay-secret-key',
+        'enabled': os.getenv('RWANDA_PAY_ENABLED', 'False').lower() in ('true', '1', 'yes'),
+        'api_key': os.getenv('RWANDA_PAY_API_KEY', ''),
+        'secret_key': os.getenv('RWANDA_PAY_SECRET_KEY', ''),
     },
     'PAYPAL': {
-        'enabled': True,
-        'client_id': 'your-paypal-client-id',
-        'client_secret': 'your-paypal-client-secret',
-        'sandbox': True,
+        'enabled': os.getenv('PAYPAL_ENABLED', 'False').lower() in ('true', '1', 'yes'),
+        'client_id': os.getenv('PAYPAL_CLIENT_ID', ''),
+        'client_secret': os.getenv('PAYPAL_CLIENT_SECRET', ''),
+        'sandbox': os.getenv('PAYPAL_SANDBOX', 'True').lower() in ('true', '1', 'yes'),
     },
 }
 
 # Newsletter Integration (Mailchimp)
-MAILCHIMP_API_KEY = 'your-mailchimp-api-key'
-MAILCHIMP_LIST_ID = 'your-mailchimp-list-id'
+MAILCHIMP_API_KEY = os.getenv('MAILCHIMP_API_KEY', '')
+MAILCHIMP_LIST_ID = os.getenv('MAILCHIMP_LIST_ID', '')
+
+# Security Settings for Production
+# Note: These are set to False for HTTP connections. Change to True when using HTTPS.
+SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
+CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
+CSRF_COOKIE_HTTPONLY = False  # Must be False for AJAX requests to work
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # File Upload Settings
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB

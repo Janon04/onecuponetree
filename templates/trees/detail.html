@@ -35,7 +35,7 @@
                     {% endif %}
                     {% if object.video %}
                         <div class="mb-3 text-center">
-                            <video controls style="max-width:100%; max-height:300px; border: 2px solid #4b2e1a;">
+                            <video controls class="border-primary-dark" style="max-width:100%; max-height:300px; border-width: 2px;">
                                 <source src="{{ object.video.url }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>

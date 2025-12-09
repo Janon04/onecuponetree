@@ -8,8 +8,8 @@
             <h1 class="mb-0 fw-bold text-center w-100" style="color:#b85c00; letter-spacing: -1px;">{% trans "Research & Publications" %}</h1>
         </div>
         <form method="get" class="d-flex align-items-center gap-2 ms-3">
-            <label for="category" class="form-label mb-0 me-2 fw-semibold" style="color:#4b2e1a;">{% trans "Category:" %}</label>
-            <select id="category" name="category" class="form-select form-select-sm w-auto" onchange="this.form.submit()" style="color:#4b2e1a; border-color:#b85c00;">
+            <label for="category" class="form-label mb-0 me-2 fw-semibold text-primary-dark">{% trans "Category:" %}</label>
+            <select id="category" name="category" class="form-select form-select-sm w-auto text-primary-dark" onchange="this.form.submit()" style="border-color:#b85c00;">
                 <option value="">{% trans "All" %}</option>
                 {% for cat in categories %}
                     <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>{{ cat.name }}</option>
@@ -34,7 +34,7 @@
                     </div>
                     <h5 class="mb-1 fw-semibold" style="color:#b85c00;">{{ pub.title }}</h5>
                     <div class="mb-1" style="color:#7a5a3a; font-size:0.95em;">{{ pub.author }}</div>
-                    <p class="mb-2 small" style="color:#4b2e1a;">{{ pub.summary|safe }}</p>
+                    <p class="mb-2 small text-primary-dark">{{ pub.summary|safe }}</p>
                     <a href="{% url 'researchhub:publication_detail' pub.pk %}" class="btn btn-sm fw-semibold" style="background:#b85c00; color:#fff;">{% trans "Read More" %}</a>
                 </div>
             </div>
