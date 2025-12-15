@@ -30,7 +30,10 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
 ]
 
-# Serve media files during development
+# Serve media and static files during development
+# Always serve media files in development (even if DEBUG=False for testing)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files only when DEBUG=True (WhiteNoise handles production static files)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
