@@ -1,0 +1,39 @@
+Django==5.2.5
+djangorestframework==3.16.1
+django-allauth==65.11.0
+django-crispy-forms==2.4
+crispy-bootstrap5==2025.6
+Pillow==11.3.0
+django-modeltranslation==0.18.11
+whitenoise==6.9.0
+
+# Optional production dependencies
+# psycopg2-binary==2.9.9  # For PostgreSQL
+# gunicorn==21.2.0        # For production server
+# django-cors-headers==4.3.1  # For CORS if needed
+# celery==5.3.4           # For background tasks
+# redis==5.0.1            # For caching and Celery broker
+
+# Environment / Postgres support
+python-dotenv>=1.0.0
+psycopg2-binary>=2.9
+mysqlclient>=2.1
+
+# Editor / WYSIWYG
+django-ckeditor>=6.4
+
+# CORS support (settings include CORS_ALLOW settings)
+django-cors-headers>=4.3
+
+# Optional utilities used across Django projects (some apps reference these in comments/migrations)
+django-filter>=23.3
+django-tables2>=2.6.0
+django-widget-tweaks>=1.5.0
+django-countries>=8.0
+
+# Helpers for configuring databases from a single URL (optional)
+dj-database-url>=1.0.0
+
+# Pure-Python MySQL fallback (optional)
+PyMySQL>=1.0.3
+

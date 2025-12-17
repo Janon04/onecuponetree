@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Gallery" %}{% endblock %}
+{% block extra_css %}
+<style>
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.2rem;
+    }
+    .gallery-item {
+        overflow: hidden;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        transition: box-shadow 0.3s;
+        position: relative;
+    }
+    .gallery-media {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.4s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+        will-change: transform;
+        display: block;
+    }
+    .gallery-item:hover .gallery-media {
+        transform: scale(1.08) rotate(-1deg);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        z-index: 2;
+    }
+    .gallery-item:active .gallery-media {
+        transform: scale(0.97);
+    }
+    .gallery-title {
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        background: rgba(17,9,6,0.7);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+        text-align: left;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+        margin: 0;
+        z-index: 3;
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+        <h2 class="section-title">{% trans "Gallery" %}</h2>
+        <div class="gallery-grid">
+                {% for image in images %}
+                        <div class="gallery-item">
+                                {% if image.video %}
+                                        <video class="gallery-media" controls preload="none" muted autoplay loop>
+                                                <source src="{{ image.video.url }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                        </video>
+                                {% elif image.image %}
+                                        <img src="{{ image.image.url }}" class="gallery-media" alt="{{ image.title }}">
+                                {% endif %}
+                                <div class="gallery-title">{{ image.title }}</div>
+                        </div>
+                {% empty %}
+                        <div class="col-12">
+                                <div class="alert alert-info">{% trans "No images found." %}</div>
+                        </div>
+                {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="mt-4">
+                <nav>
+                        <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
+                                {% endif %}
+                                <li class="page-item disabled"><span class="page-link">{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</span></li>
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+                                {% endif %}
+                        </ul>
+                </nav>
+        </div>
+        {% endif %}
+</div>
+{% endblock %}

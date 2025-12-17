@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}{{ training.title }} | Barista Training{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 rounded-4 blog-detail-pro" style="background-color: #fff7ef; color: #4b2e1a;">
+        {% if training.video %}
+          <div class="blog-media-zoom-wrapper position-relative aspect-ratio-16x9" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; border: 2px solid #e0ddd8; box-shadow: 0 4px 24px rgba(34,22,10,0.10); background:#222;">
+            <video class="card-img-top blog-media-zoom" controls preload="metadata" style="width:100%;height:100%;object-fit:cover; background:#222; transition: transform 0.5s cubic-bezier(.4,2,.6,1); display:block;">
+              <source src="{{ training.video.url }}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="blog-media-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg,rgba(34,22,10,0.10) 0%,rgba(34,22,10,0.22) 100%); pointer-events:none;"></div>
+          </div>
+        {% elif training.image %}
+          <div class="blog-media-zoom-wrapper position-relative aspect-ratio-16x9" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; border: 2px solid #e0ddd8; box-shadow: 0 4px 24px rgba(34,22,10,0.10); background:#e0ddd8;">
+            <img src="{{ training.image.url }}" class="card-img-top blog-media-zoom" alt="{{ training.title }} image" style="object-fit:cover; width:100%; height:100%; min-height:220px; transition: transform 0.5s cubic-bezier(.4,2,.6,1); display:block; background:#e0ddd8;">
+            <div class="blog-media-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg,rgba(34,22,10,0.10) 0%,rgba(34,22,10,0.22) 100%); pointer-events:none;"></div>
+          </div>
+        {% elif training.banner %}
+          <div class="blog-media-zoom-wrapper position-relative aspect-ratio-16x9" style="overflow:hidden; border-top-left-radius:1.2rem; border-top-right-radius:1.2rem; border: 2px solid #e0ddd8; box-shadow: 0 4px 24px rgba(34,22,10,0.10); background:#e0ddd8;">
+            <img src="{{ training.banner.url }}" class="card-img-top blog-media-zoom" alt="{{ training.title }} banner" style="object-fit:cover; width:100%; height:100%; min-height:220px; transition: transform 0.5s cubic-bezier(.4,2,.6,1); display:block; background:#e0ddd8;">
+            <div class="blog-media-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg,rgba(34,22,10,0.10) 0%,rgba(34,22,10,0.22) 100%); pointer-events:none;"></div>
+          </div>
+        {% endif %}
+        <!-- Modal for enlarged media -->
+        <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="background:rgba(34,22,10,0.92); border-radius:1.2rem;">
+              <div class="modal-body p-0 position-relative">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index:10; filter:invert(1);"></button>
+                {% if training.video %}
+                  <div style="aspect-ratio:16/9; width:100%; background:#222; border-radius:1.2rem; overflow:hidden;">
+                    <video controls autoplay style="width:100%; height:100%; object-fit:cover; display:block; background:#222; border-radius:1.2rem;">
+                      <source src="{{ training.video.url }}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                {% elif training.image %}
+                  <div style="aspect-ratio:16/9; width:100%; background:#e0ddd8; border-radius:1.2rem; overflow:hidden;">
+                    <img src="{{ training.image.url }}" alt="{{ training.title }} image" style="width:100%; height:100%; object-fit:cover; display:block; background:#e0ddd8; border-radius:1.2rem;">
+                  </div>
+                {% elif training.banner %}
+                  <div style="aspect-ratio:16/9; width:100%; background:#e0ddd8; border-radius:1.2rem; overflow:hidden;">
+                    <img src="{{ training.banner.url }}" alt="{{ training.title }} banner" style="width:100%; height:100%; object-fit:cover; display:block; background:#e0ddd8; border-radius:1.2rem;">
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-5">
+          <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ training.title }}</h1>
+          <p class="mb-2" style="color:#4b2e1a; opacity:0.7; font-weight:500;"><i class="fa fa-calendar-alt me-1"></i> <strong>Date:</strong> {{ training.date }} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> <strong>Location:</strong> {{ training.location }}</p>
+          <p class="mb-4" style="color:#000;opacity:1;">{{ training.description }}</p>
+          <a href="{% url 'volunteers:barista_training_apply' training.pk %}" class="btn mt-3 align-self-start" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:180px;">Apply for this Training</a>
+          <a href="{% url 'volunteers:barista_training_list' %}" class="btn btn-link ms-2">Back to all trainings</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+    .blog-detail-pro {
+        box-shadow: 0 8px 32px rgba(34,22,10,0.13), 0 2px 12px rgba(210,112,13,0.13);
+    }
+  .aspect-ratio-16x9 {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: #e0ddd8;
+    border-radius: 1.2rem 1.2rem 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  .aspect-ratio-16x9 > video,
+  .aspect-ratio-16x9 > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.2rem 1.2rem 0 0;
+    background: #e0ddd8;
+    transition: none;
+    cursor: default;
+  }
+  .blog-media-overlay {
+    border-top-left-radius:1.2rem; border-top-right-radius:1.2rem;
+  }
+  /* No zoom effect on hover */
+  @media (max-width: 991px) {
+    .blog-detail-pro { border-radius: 0.8rem !important; }
+    .blog-media-overlay { border-top-left-radius:0.8rem; border-top-right-radius:0.8rem; }
+  }
+  @media (max-width: 767px) {
+    .blog-detail-pro { border-radius: 0.5rem !important; }
+    .blog-media-overlay { border-top-left-radius:0.5rem; border-top-right-radius:0.5rem; }
+  }
+</style>
+{% endblock %}

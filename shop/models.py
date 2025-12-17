@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.db.models import Avg, Count
+from django.conf import settings
 
 # Product Category model
 class ProductCategory(models.Model):
@@ -46,7 +47,8 @@ class Product(models.Model):
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 	compare_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Original price for showing discounts")
 	currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default="RWF")
-	stock_quantity = models.IntegerField(default=0, help_text="Available stock quantity")
+	stock_quantity = models.IntegerField(null=True, blank=True, help_text="Available stock quantity (leave empty if not tracking)")
+	show_stock_publicly = models.BooleanField(default=False, help_text="Display stock quantity on public product pages")
 	is_active = models.BooleanField(default=True)
 	is_featured = models.BooleanField(default=False, help_text="Display as featured product")
 	is_new = models.BooleanField(default=False, help_text="Mark as new product")
@@ -103,6 +105,22 @@ class ProductReview(models.Model):
 	
 	def __str__(self):
 		return f"{self.customer_name} - {self.product.name} ({self.rating}★)"
+
+
+# Wishlist model
+class Wishlist(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wishlists')
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='wishlisted_by')
+	created_at = models.DateTimeField(auto_now_add=True)
+	
+	class Meta:
+		unique_together = ['user', 'product']
+		ordering = ['-created_at']
+		verbose_name = "Wishlist Item"
+		verbose_name_plural = "Wishlist Items"
+	
+	def __str__(self):
+		return f"{self.user.username} - {self.product.name}"
 
 
 # Cart model

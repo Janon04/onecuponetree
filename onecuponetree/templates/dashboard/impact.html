@@ -1,0 +1,388 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="dashboard container-fluid py-4 dashboard-container">
+
+    <!-- Quick Links Section -->
+    <div class="row mb-4">
+        <div class="col-auto">
+            <a href="{% url 'trees:record_tree' %}" class="btn btn-success btn-lg shadow-sm px-4 py-2">
+                <i class="fas fa-clipboard-list me-2"></i> Record Tree
+            </a>
+        </div>
+        <div class="col-auto ms-auto">
+            <form method="get" class="d-flex align-items-center">
+                <label for="year-select" class="form-label me-2 mb-0">Filter by Year:</label>
+                <select id="year-select" name="year" class="form-select" onchange="this.form.submit()">
+                    {% for year in all_years %}
+                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <!-- Charts Data -->
+    {{ month_labels|json_script:"monthLabels" }}
+    {{ trees_month_data|json_script:"treesMonthData" }}
+    {{ donations_month_data|json_script:"donationsMonthData" }}
+    {{ district_labels|json_script:"districtLabels" }}
+    {{ district_data|json_script:"districtData" }}
+
+    <!-- Charts Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-4 h-100 chart-trees">
+                <h5 class="mb-3 text-success">
+                    <i class="fas fa-tree me-2"></i>Trees Planted Per Month
+                </h5>
+                <div class="chart-container">
+                    <canvas id="treesPlantedChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-4 h-100 chart-donations">
+                <h5 class="mb-3 text-warning">
+                    <i class="fas fa-donate me-2"></i>Donations Per Month
+                </h5>
+                <div class="chart-container">
+                    <canvas id="donationsPerMonthChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="dashboard-chart card shadow-sm p-4 h-100 chart-districts">
+                <h5 class="mb-3 text-brown">
+                    <i class="fas fa-map-pin me-2"></i>Trees Planted by District
+                </h5>
+                <div class="chart-container">
+                    <canvas id="treesByDistrictChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Year Filter -->
+    <form id="year-select-form" class="d-flex align-items-center gap-2 mb-4" method="get" action="">
+        <label for="year-select" class="form-label mb-0 fw-bold">Year:</label>
+        <select id="year-select" name="year" class="form-select w-auto">
+            {% for year in all_years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Stats Section -->
+    <!-- Stats Section -->
+    <div class="row g-3 mb-4 text-center">
+        {% for stat in impact_stats %}
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card card shadow-sm p-3 h-100" style="background: linear-gradient(135deg, #f7f6f3 60%, #e8f5e9 100%);">
+                <div class="stat-value fs-5 fw-bold">
+                    {% if stat.stat_icon %}
+                        <i class="{{ stat.stat_icon }} mb-2"></i><br>
+                    {% endif %}
+                    {{ stat.stat_value|intcomma|default:'0' }}
+                </div>
+                <div class="stat-label small text-muted">{{ stat.stat_name }}</div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Success Stories -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="stat-card card shadow-sm p-4 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #ffe082 60%, #ff9800 100%);">
+                <div class="stat-value display-4 fw-bold mb-2">
+                    <i class="fas fa-star mb-3" style="font-size:2.5rem;color:#fff200;"></i><br>
+                    {{ total_success_stories|intcomma|default:'0' }}
+                </div>
+                <div class="stat-label fs-5 fw-semibold text-white">Success Stories</div>
+            </div>
+        </div>
+
+        <!-- Total Donations -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="stat-card card shadow-sm p-4 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #b2dfdb 60%, #009688 100%);">
+                <div class="stat-value fw-bold mb-2" style="font-size:2rem;">
+                    <i class="fas fa-donate mb-3" style="font-size:2.5rem;color:#fff;"></i><br>
+                    {{ total_donations|floatformat:0|intcomma|default:'0' }} RWF
+                </div>
+                <div class="stat-label fs-5 fw-semibold text-white">Total Donations</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="row g-4 mb-4">
+        <!-- Recent Trees -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm" style="background: linear-gradient(135deg, #e8f5e9 60%, #43a047 100%);">
+                <div class="card-header bg-success text-white text-center fs-5 fw-bold py-3">
+                    <i class="fas fa-seedling me-2"></i>Recent Trees Planted
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush small">
+                        {% for tree in recent_trees %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" style="background:rgba(67,160,71,0.07);">
+                            <span class="fw-semibold"><i class="fas fa-seedling text-success me-2"></i>{{ tree.species }}</span>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-success text-white">{{ tree.planted_date }}</span>
+                                {% if tree.latitude and tree.longitude %}
+                                    <span class="badge bg-info text-dark">{{ tree.latitude }}, {{ tree.longitude }}</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">No coordinates</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Donations -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm" style="background: linear-gradient(135deg, #b2dfdb 60%, #009688 100%);">
+                <div class="card-header bg-info text-white text-center fs-5 fw-bold py-3">
+                    <i class="fas fa-donate me-2"></i>Recent Donations
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush small">
+                        {% for donation in recent_donations %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap" style="background:rgba(0,150,136,0.07);">
+                            <span class="fw-semibold"><i class="fas fa-user text-info me-2"></i>{{ donation.donor_name|default:'Anonymous' }} ({{ donation.amount|floatformat:0 }} RWF)</span>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-info text-white">{{ donation.get_donation_type_display }}</span>
+                                <span class="text-muted small">{{ donation.created_at|date:'Y-m-d H:i' }}</span>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">No donations yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="accordion mb-4" id="dashboardAccordion">
+    <div class="accordion-item shadow-sm" style="background: linear-gradient(135deg, #e3f2fd 60%, #f7f6f3 100%);">
+            <h2 class="accordion-header" id="headingMap">
+                <button class="accordion-button fw-bold" type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseMap" 
+                        aria-expanded="true" 
+                        aria-controls="collapseMap">
+                    <i class="fas fa-map-marker-alt me-2 text-success"></i>
+                    Tree Planting Locations
+                </button>
+            </h2>
+            <div id="collapseMap" class="accordion-collapse collapse show" 
+                 aria-labelledby="headingMap" 
+                 data-bs-parent="#dashboardAccordion">
+                <div class="accordion-body p-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="ratio ratio-16x9 shadow-sm" style="min-height: 500px; background: #e3f2fd;">
+                                <iframe src="https://www.google.com/maps/d/embed?mid=1wHos7U7dnwhn_WiGsGdY89PFAM6KgWs&ehbc=2E312F"
+                                        width="100%" height="100%" 
+                                        style="border:0;" allowfullscreen loading="lazy"></iframe>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="impact-map" class="border rounded shadow-sm" style="min-height: 500px; background: #e3f2fd;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const monthLabels = JSON.parse(document.getElementById('monthLabels').textContent);
+    const treesMonthData = JSON.parse(document.getElementById('treesMonthData').textContent);
+    const donationsMonthData = JSON.parse(document.getElementById('donationsMonthData').textContent);
+    const districtLabels = JSON.parse(document.getElementById('districtLabels').textContent);
+    const districtData = JSON.parse(document.getElementById('districtData').textContent);
+
+    // Enhanced Chart Configuration
+    function createChart(ctx, type, labels, data, label, bgColor, borderColor, yLabel) {
+        return new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    backgroundColor: bgColor,
+                    borderColor: borderColor,
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                    barThickness: 40,
+                    maxBarThickness: 50,
+                    categoryPercentage: 0.8,
+                    barPercentage: 0.7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20,
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: borderColor,
+                        borderWidth: 1,
+                        cornerRadius: 6,
+                        padding: 12
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: labels.length > 10 ? 'District' : 'Month',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 11
+                            },
+                            maxRotation: labels.length > 10 ? 45 : 0
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: yLabel,
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            font: {
+                                size: 11
+                            },
+                            callback: function(value) {
+                                if (yLabel.includes('RWF')) {
+                                    return new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'RWF',
+                                        minimumFractionDigits: 0
+                                    }).format(value);
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuart'
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    }
+
+    // Create charts with improved styling
+    const treesChart = createChart(
+        document.getElementById('treesPlantedChart').getContext('2d'),
+        'bar', 
+        monthLabels, 
+        treesMonthData, 
+        'Trees Planted', 
+        'rgba(67, 160, 71, 0.8)', 
+        'rgba(67, 160, 71, 1)', 
+        'Trees Planted'
+    );
+
+    const donationsChart = createChart(
+        document.getElementById('donationsPerMonthChart').getContext('2d'),
+        'bar', 
+        monthLabels, 
+        donationsMonthData, 
+        'Donations (RWF)', 
+        'rgba(160, 148, 79, 0.8)', 
+        'rgba(160, 148, 79, 1)', 
+        'Donations (RWF)'
+    );
+
+    const districtChart = createChart(
+        document.getElementById('treesByDistrictChart').getContext('2d'),
+        'bar', 
+        districtLabels, 
+        districtData, 
+        'Trees Planted', 
+        'rgba(123, 63, 0, 0.8)', 
+        'rgba(123, 63, 0, 1)', 
+        'Trees Planted'
+    );
+
+    // Add empty data handling
+    function showEmptyMessage(chartId, message) {
+        const canvas = document.getElementById(chartId);
+        const ctx = canvas.getContext('2d');
+        ctx.font = '16px Arial';
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+    }
+
+    // Check for empty data and show messages
+    if (treesMonthData.every(val => val === 0)) {
+        treesChart.destroy();
+        showEmptyMessage('treesPlantedChart', 'No tree data available for this year');
+    }
+
+    if (donationsMonthData.every(val => val === 0)) {
+        donationsChart.destroy();
+        showEmptyMessage('donationsPerMonthChart', 'No donation data available for this year');
+    }
+
+    if (districtData.length === 0) {
+        districtChart.destroy();
+        showEmptyMessage('treesByDistrictChart', 'No district data available');
+    }
+});
+</script>
+
+{% endblock %}

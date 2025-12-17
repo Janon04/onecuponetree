@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.db.models import Sum, Count
-from .models import Product, ProductCategory, ProductReview, Cart, CartItem, Order
+from .models import Product, ProductCategory, ProductReview, Cart, CartItem, Order, Wishlist
 import csv
 from django.http import HttpResponse
 
@@ -61,7 +61,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price_display', 'stock_status', 'rating_display', 'image_preview', 'is_active', 'is_featured', 'is_new')
     list_filter = ('is_active', 'is_featured', 'is_new', 'category', 'currency')
     search_fields = ('name', 'description', 'slug')
-    readonly_fields = ('image_preview', 'product_stats', 'slug', 'created_at', 'updated_at')
+    readonly_fields = ('image_preview', 'product_stats', 'created_at', 'updated_at')
     list_editable = ('is_active', 'is_featured', 'is_new')
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-created_at']
@@ -75,7 +75,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('price', 'compare_price', 'currency')
         }),
         ('Inventory', {
-            'fields': ('stock_quantity',)
+            'fields': ('stock_quantity', 'show_stock_publicly')
         }),
         ('Status & Features', {
             'fields': ('is_active', 'is_featured', 'is_new')
@@ -91,7 +91,11 @@ class ProductAdmin(admin.ModelAdmin):
     )
     
     def stock_status(self, obj):
-        if obj.stock_quantity > 10:
+        if obj.stock_quantity is None:
+            color = '#6c757d'
+            icon = 'minus-circle'
+            text = 'Not Tracked'
+        elif obj.stock_quantity > 10:
             color = '#28a745'
             icon = 'check-circle'
             text = f'In Stock ({obj.stock_quantity})'
@@ -461,3 +465,23 @@ class OrderAdmin(admin.ModelAdmin):
             ])
         return response
     export_as_csv.short_description = "Export selected orders as CSV"
+
+
+@admin.register(Wishlist)
+class WishlistAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('user__username', 'user__email', 'product__name')
+    readonly_fields = ('created_at',)
+    date_hierarchy = 'created_at'
+    ordering = ['-created_at']
+    
+    fieldsets = (
+        ('Wishlist Item', {
+            'fields': ('user', 'product')
+        }),
+        ('Metadata', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )

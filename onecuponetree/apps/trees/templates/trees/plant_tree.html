@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">Plant a Coffee Tree</h2>
+  <form method="post" enctype="multipart/form-data" id="plant-tree-form">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name != 'latitude' and field.name != 'longitude' %}
+        <div class="mb-3">{{ field.label_tag }}{{ field }}{% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}</div>
+      {% endif %}
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div id="success-message" class="alert alert-success mt-3" style="display:none;">Tree planted successfully!</div>
+  <script>
+    // Use browser geolocation to set latitude and longitude dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+      const latInput = document.getElementById('id_latitude');
+      const lonInput = document.getElementById('id_longitude');
+      const statusDiv = document.getElementById('location-status');
+      if (navigator.geolocation && latInput && lonInput) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          latInput.value = position.coords.latitude.toFixed(3);
+          lonInput.value = position.coords.longitude.toFixed(3);
+          if (statusDiv) {
+            statusDiv.textContent = 'Location captured from your device.';
+          }
+        }, function(error) {
+          if (statusDiv) {
+            statusDiv.textContent = 'Unable to retrieve your location.';
+          }
+        });
+      }
+      // Show success message on submit
+      document.getElementById('plant-tree-form').addEventListener('submit', function(e) {
+        setTimeout(function() {
+          document.getElementById('success-message').style.display = 'block';
+        }, 500);
+      });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      const districtSelect = document.getElementById('id_location');
+      const latInput = document.getElementById('id_latitude');
+      const lonInput = document.getElementById('id_longitude');
+      const statusDiv = document.getElementById('location-status');
+      function updateCoords() {
+        const district = districtSelect.value;
+        if (districtCoords[district]) {
+          latInput.value = parseFloat(districtCoords[district].lat).toFixed(6);
+          lonInput.value = parseFloat(districtCoords[district].lon).toFixed(6);
+          statusDiv.textContent = `Coordinates for ${district} set automatically.`;
+        } else {
+          latInput.value = '-0.0000';
+          lonInput.value = '00.000';
+          statusDiv.textContent = 'Please select a district to set coordinates.';
+        }
+      }
+      if (districtSelect && latInput && lonInput) {
+        districtSelect.addEventListener('change', updateCoords);
+        updateCoords(); // Set initial values
+      }
+      // Show success message on submit
+      document.getElementById('plant-tree-form').addEventListener('submit', function(e) {
+        setTimeout(function() {
+          document.getElementById('success-message').style.display = 'block';
+        }, 500);
+      });
+    });
+  </script>
+</div>
+{% endblock %}

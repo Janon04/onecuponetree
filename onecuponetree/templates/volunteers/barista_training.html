@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Barista Training Application" %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h1 class="mb-3">{% trans "Barista Training Application" %}</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success mt-3">{% trans "Submit Application" %}</button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-secondary">{% trans "Back to Opportunities" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

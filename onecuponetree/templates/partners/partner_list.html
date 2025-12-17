@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Our Partners{% endblock %}
+{% block content %}
+<style>
+    .partner-marquee-container {
+        overflow: hidden;
+        width: 100%;
+        background: #fdfdfd;
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 12px rgba(17,9,6,0.07);
+        margin-bottom: 2rem;
+        position: relative;
+        padding: 1.5rem 0;
+    }
+    .partner-marquee-track {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        animation: partnerMarquee 14s linear infinite;
+        will-change: transform;
+    }
+    @keyframes partnerMarquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .partner-logo {
+        max-width: 90px;
+        max-height: 90px;
+        object-fit: contain;
+        display: block;
+        filter: grayscale(0.2) brightness(0.95);
+        transition: filter 0.2s, transform 0.2s;
+    }
+    .partner-logo:hover {
+        filter: none;
+        transform: scale(1.08) rotate(-2deg);
+    }
+</style>
+<div class="container py-5">
+        <h1 class="section-title">Our Partners</h1>
+        <div class="partner-marquee-container">
+            <div class="partner-marquee-track" id="partner-marquee-track">
+                {% for partner in partners %}
+                    {% if partner.logo %}
+                        <img src="{{ partner.logo.url }}" class="partner-logo mx-3" alt="Partner logo">
+                    {% endif %}
+                {% endfor %}
+                {# Duplicate logos for seamless loop #}
+                {% for partner in partners %}
+                    {% if partner.logo %}
+                        <img src="{{ partner.logo.url }}" class="partner-logo mx-3" alt="Partner logo">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+        const marqueeTrack = document.getElementById('partner-marquee-track');
+        let pauseTimeout = null;
+        document.querySelectorAll('.partner-logo').forEach(function(logo) {
+            logo.addEventListener('click', function(e) {
+                marqueeTrack.style.animationPlayState = 'paused';
+                if (pauseTimeout) clearTimeout(pauseTimeout);
+                pauseTimeout = setTimeout(function() {
+                    marqueeTrack.style.animationPlayState = 'running';
+                }, 5000);
+            });
+        });
+        </script>
+        {% if partners|length == 0 %}
+            <div class="alert alert-info mt-4">No partners found.</div>
+        {% endif %}
+</div>
+{% endblock %}

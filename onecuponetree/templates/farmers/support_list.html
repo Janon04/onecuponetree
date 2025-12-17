@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Farmer Support" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4 text-primary">{% trans "Farmer Support" %}</h1>
+    {% if activities %}
+        <div class="row">
+            {% for activity in activities %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ activity.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ activity.farmer.user.get_full_name }}</h6>
+                            <p class="card-text">{{ activity.description|default:_('No description')|safe }}</p>
+                            <ul class="list-unstyled mb-0">
+                                <li><strong>{% trans "Date:" %}</strong> {{ activity.date }}</li>
+                                <li><strong>{% trans "Type:" %}</strong> {{ activity.support_type }}</li>
+                                <li><strong>{% trans "Successful:" %}</strong> {{ activity.is_successful|yesno:_('Yes,No') }}</li>
+                                {% if activity.outcome %}
+                                    <li><strong>{% trans "Outcome:" %}</strong> {{ activity.outcome|safe }}</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% trans "No farmer support activities found." %}</p>
+    {% endif %}
+</div>
+{% endblock %}

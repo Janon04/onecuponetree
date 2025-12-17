@@ -88,6 +88,7 @@
             </div>
             
             <!-- Stock Status -->
+            {% if product.show_stock_publicly and product.stock_quantity is not None %}
             <div class="mb-4">
                 {% if product.is_in_stock %}
                 <div class="alert alert-success d-inline-flex align-items-center">
@@ -101,6 +102,7 @@
                 </div>
                 {% endif %}
             </div>
+            {% endif %}
             
             <!-- Add to Cart -->
             <form method="post" action="{% url 'shop:add_to_cart' %}" class="mb-4">

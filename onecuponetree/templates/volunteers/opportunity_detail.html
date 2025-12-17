@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ opportunity.title }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4 blog-detail-pro bg-light-warm text-primary-dark">
+                <div class="card-body p-5">
+                                        <h1 class="mb-3" style="color:#d2700d; font-family: var(--font-heading); font-weight:700; letter-spacing:0.5px;">{{ opportunity.title|striptags }}</h1>
+                                        {% if opportunity.image or opportunity.video %}
+                                        <div class="mb-4 d-flex justify-content-center align-items-center">
+                                                {% if opportunity.video %}
+                                                        <video style="max-width:420px;max-height:260px;border-radius:1rem;box-shadow:0 2px 12px rgba(210,112,13,0.10);cursor:pointer;" controls poster="{% if opportunity.image %}{{ opportunity.image.url }}{% endif %}" onclick="showMediaModal('{{ opportunity.video.url }}', 'video')">
+                                                                <source src="{{ opportunity.video.url }}" type="video/mp4">
+                                                                Your browser does not support the video tag.
+                                                        </video>
+                                                {% elif opportunity.image %}
+                                                        <img src="{{ opportunity.image.url }}" style="max-width:420px;max-height:260px;object-fit:cover;border-radius:1rem;box-shadow:0 2px 12px rgba(210,112,13,0.10);cursor:pointer;" alt="Volunteer Opportunity Image" loading="lazy" onclick="showMediaModal('{{ opportunity.image.url }}', 'image')">
+                                                {% endif %}
+                                        </div>
+                                        {% endif %}
+                                        <p class="mb-2 text-muted-dark" style="font-weight:500;">
+                                                <i class="fa fa-calendar-alt me-1"></i> {{ opportunity.start_date }} - {{ opportunity.end_date }}
+                                                {% if opportunity.location %} &nbsp; <i class="fa fa-map-marker-alt me-1"></i> {{ opportunity.location }}{% endif %}
+                                        </p>
+                                        <p class="mb-4" style="color:#000;opacity:1;">{{ opportunity.description|striptags }}</p>
+                                        <p class="mb-1"><strong>{% trans "Skills Required:" %}</strong> {{ opportunity.skills_required|striptags }}</p>
+                                        <p class="mb-1"><strong>{% trans "Max Volunteers:" %}</strong> {{ opportunity.max_volunteers }}</p>
+                                        <a href="{% url 'volunteers:apply' opportunity.pk %}" class="btn mt-3 align-self-start" style="background-color: #d2700d; color: #fff; border: none; font-weight: 700; font-size:1.05rem; box-shadow: 0 2px 12px rgba(210,112,13,0.10); border-radius:0.6rem; letter-spacing:0.5px; min-width:180px;">{% trans "Apply Now" %}</a>
+                                        <!-- Modal for image/video zoom -->
+                                        <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content" style="background:rgba(0,0,0,0.85);border:none;box-shadow:0 8px 32px rgba(34,22,10,0.25);">
+                                                    <div class="modal-body text-center p-0">
+                                                        <img id="modalImage" src="" alt="Media" style="max-width:100%;max-height:70vh;display:none;" />
+                                                        <video id="modalVideo" controls style="max-width:100%;max-height:70vh;display:none;"></video>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center border-0" style="background:none;">
+                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                        function showMediaModal(url, type) {
+                                                var img = document.getElementById('modalImage');
+                                                var vid = document.getElementById('modalVideo');
+                                                if(type === 'image') {
+                                                        img.src = url;
+                                                        img.style.display = 'block';
+                                                        vid.style.display = 'none';
+                                                } else if(type === 'video') {
+                                                        vid.src = url;
+                                                        vid.style.display = 'block';
+                                                        img.style.display = 'none';
+                                                }
+                                                var modal = new bootstrap.Modal(document.getElementById('mediaModal'));
+                                                modal.show();
+                                        }
+                                        </script>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'volunteers:opportunities' %}" class="btn btn-outline-secondary">{% trans "Back to Opportunities" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .blog-detail-pro {
+        box-shadow: 0 8px 32px rgba(34,22,10,0.13), 0 2px 12px rgba(210,112,13,0.13);
+    }
+</style>
+{% endblock %}

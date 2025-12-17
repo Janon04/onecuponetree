@@ -55,12 +55,43 @@ def impact_dashboard(request):
     # Use ImpactStat for all key stats, fallback to calculated if missing
     impact_stats = ImpactStat.objects.filter(is_active=True)
     stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
+    
+    # Trees Planted
+    if 'trees_planted' in stats_dict:
+        trees_planted = stats_dict['trees_planted'].stat_value
+    else:
+        trees_planted = Tree.objects.filter(is_active=True).count()
+    
+    # Youth Trained
+    if 'youth_trained' in stats_dict:
+        youth_trained = stats_dict['youth_trained'].stat_value
+    else:
+        youth_trained = 0
+    
+    # Coffee Cups Sold
+    if 'coffee_cups_sold' in stats_dict:
+        coffee_cups_sold = stats_dict['coffee_cups_sold'].stat_value
+    else:
+        coffee_cups_sold = 0
+    
+    # Farmers Supported
+    if 'farmers_supported' in stats_dict:
+        farmers_supported = stats_dict['farmers_supported'].stat_value
+    else:
+        farmers_supported = Farmer.objects.count()
+    
+    # Total Donations
+    if 'total_donations' in stats_dict:
+        total_donations = stats_dict['total_donations'].stat_value
+    else:
+        total_donations = Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0
+    
     stats = {
-        'trees_planted': stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count(),
-        'youth_trained': stats_dict.get('youth_trained', None) or 0,
-        'coffee_cups_sold': stats_dict.get('coffee_cups_sold', None) or 0,
-        'farmers_supported': stats_dict.get('farmers_supported', None) or Farmer.objects.count(),
-        'total_donations': stats_dict.get('total_donations', None) or Donation.objects.filter(payment_status='paid').aggregate(total=Sum('amount'))['total'] or 0,
+        'trees_planted': trees_planted,
+        'youth_trained': youth_trained,
+        'coffee_cups_sold': coffee_cups_sold,
+        'farmers_supported': farmers_supported,
+        'total_donations': total_donations,
         'recent_donations': Donation.objects.filter(payment_status='paid').order_by('-created_at')[:5],
     }
 

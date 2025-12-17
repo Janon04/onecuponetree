@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Donate | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="background-color: #fff;">
+    <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10 col-md-12">
+            <div class="card shadow border-0 rounded-4" style="background-color: #9b4308; color: #fff;">
+                <div class="card-body p-5">
+                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
+                        📋 DONATION FORM
+                    </h1>
+                    <p class="lead text-center mb-4" style="color: #f5f5f5;">
+                        Thank you for supporting our initiative. Please provide the following information so we can record your donation properly.
+                    </p>
+
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div id="donation-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        <script>
+                            setTimeout(function() {
+                                var alertElem = document.getElementById('donation-success-alert');
+                                if (alertElem) { alertElem.style.display = 'none'; }
+                            }, 5000);
+                        </script>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>There were errors in your submission:</strong>
+                                <ul class="mb-0">
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- 1. Donor Information -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #8a2a04;">1. Donor Information</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_donor_name" class="form-label">Full Name / Organization Name</label>
+                                {{ form.donor_name }}
+                                {% for error in form.donor_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_donor_email" class="form-label">Email Address</label>
+                                {{ form.donor_email }}
+                                {% for error in form.donor_email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_phone" class="form-label">Phone Number (WhatsApp if available)</label>
+                                {{ form.phone }}
+                                {% for error in form.phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_country" class="form-label">Country</label>
+                                {{ form.country }}
+                                {% for error in form.country.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_province_district" class="form-label">Province / District</label>
+                                {{ form.province_district }}
+                                {% for error in form.province_district.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- 2. Donation Details -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">2. Donation Details</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Donation Frequency</label><br>
+                                {{ form.donation_frequency }}
+                                {% for error in form.donation_frequency.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Donation Type</label><br>
+                                {{ form.donation_type }}
+                                {% for error in form.donation_type.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Donation Amount</label>
+                                {{ form.amount }}
+                                {% for error in form.amount.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                <label class="form-label">Currency</label>
+                                {{ form.currency }}
+                                {% for error in form.currency.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_transaction_reference" class="form-label">Transaction Reference Number (if applicable)</label>
+                                {{ form.transaction_reference }}
+                                {% for error in form.transaction_reference.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- 2b. Payment Method -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">Payment Method</h4>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="payment_card" value="card" checked>
+                                <label class="form-check-label" for="payment_card">Credit/Debit Card <span class="text-muted">Visa, Mastercard, American Express</span></label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="payment_mobile" value="mobile">
+                                <label class="form-check-label" for="payment_mobile">Mobile Money <span class="text-muted">MTN Mobile Money, Airtel Money</span></label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="payment_bank" value="bank">
+                                <label class="form-check-label" for="payment_bank">Bank Transfer <span class="text-muted">Direct bank transfer</span></label>
+                            </div>
+                        </div>
+                        <div id="card-details" class="mb-3">
+                            <label class="form-label">Card Details</label>
+                            <input type="text" class="form-control mb-2" name="card_number" placeholder="Card Number *" maxlength="19">
+                            <input type="text" class="form-control mb-2" name="card_name" placeholder="Cardholder Name *" maxlength="100">
+                            <input type="text" class="form-control mb-2" name="card_expiry" placeholder="Expiry Date * (MM/YY)" maxlength="5">
+                            <input type="text" class="form-control mb-2" name="card_cvv" placeholder="CVV *" maxlength="4">
+                            <small class="form-text text-muted">Secure Payment: Your payment information is encrypted and secure. We do not store your card details on our servers.</small>
+                        </div>
+                        <div id="mobile-details" class="mb-3" style="display:none;">
+                            <label class="form-label">Mobile Money Details</label>
+                            <select class="form-select mb-2" name="mobile_provider">
+                                <option value="">Select Provider</option>
+                                <option value="mtn">MTN Mobile Money</option>
+                                <option value="airtel">Airtel Money</option>
+                            </select>
+                            <input type="text" class="form-control mb-2" name="mobile_number" placeholder="Mobile Number *" maxlength="15">
+                        </div>
+                        <div id="bank-details" class="mb-3" style="display:none;">
+                            <label class="form-label">Bank Transfer Instructions</label>
+                            <div class="p-3 rounded border" style="background:#ffe0b3; color:#4b2e1a; border:2px solid #713103;">
+                                <strong style="color:#713103;">Bank:</strong> <span style="color:#2c1810;">Bank of Kigali</span><br>
+                                <strong style="color:#713103;">Account Name:</strong> <span style="color:#2c1810;">One Cup Initiative</span><br>
+                                <strong style="color:#713103;">Account Number:</strong> <span style="color:#2c1810;">123456789</span><br>
+                                <strong style="color:#713103;">Swift Code:</strong> <span style="color:#2c1810;">BKIGFRKA</span>
+                            </div>
+                            <p class="text-muted mt-2">Once you submit your donation, detailed instructions for completing your bank transfer will be sent to your email. Thank you for supporting our mission!</p>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            function showPaymentFields() {
+                                var method = document.querySelector('input[name="payment_method"]:checked').value;
+                                document.getElementById('card-details').style.display = (method === 'card') ? '' : 'none';
+                                document.getElementById('mobile-details').style.display = (method === 'mobile') ? '' : 'none';
+                                document.getElementById('bank-details').style.display = (method === 'bank') ? '' : 'none';
+                            }
+                            document.querySelectorAll('input[name="payment_method"]').forEach(function(radio) {
+                                radio.addEventListener('change', showPaymentFields);
+                            });
+                            showPaymentFields();
+                        });
+                        </script>
+
+                        <!-- 3. Purpose of Donation (Optional) -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">3. Purpose of Donation (Optional)</h4>
+                        <div class="mb-3">
+                            <label class="form-label">I would like my donation to support:</label><br>
+                            {{ form.purpose }}
+                            {% for error in form.purpose.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.message.label_tag }} {{ form.message }}
+                            {% for error in form.message.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <!-- 4. Acknowledgement & Consent -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">4. Acknowledgement & Consent</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Would you like your name to be publicly acknowledged as a donor?</label><br>
+                            {{ form.public_acknowledgement }}
+                            {% for error in form.public_acknowledgement.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Communication Preferences:</label><br>
+                            {{ form.communication_opt_in }}
+                            {% for error in form.communication_opt_in.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.declaration }} {{ form.declaration.label_tag }}
+                            {% for error in form.declaration.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <!-- 5. Confirmation -->
+                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">5. Confirmation</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_donor_signature" class="form-label">Full Name of Donor (as signature)</label>
+                                {{ form.donor_signature }}
+                                {% for error in form.donor_signature.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id_signature_date" class="form-label">Date</label>
+                                {{ form.signature_date }}
+                                {% for error in form.signature_date.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-lg btn-warning fw-bold" style="color: #2c1810;">Donate Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -84,25 +84,25 @@
         <div class="row">
             <div class="col-md-3 col-6 mb-4 mb-md-0">
                 <div class="text-center py-3">
-                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ trees_planted|default:'0' }}">0</div>
+                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ trees_planted|default:0 }}">{{ trees_planted|default:0 }}</div>
                     <div class="text-uppercase text-white-50 fs-6 letter-spacing-1">{% trans "Trees Planted" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0">
                 <div class="text-center py-3">
-                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ farmers_supported|default:'0' }}">0</div>
+                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ farmers_supported|default:0 }}">{{ farmers_supported|default:0 }}</div>
                     <div class="text-uppercase text-white-50 fs-6 letter-spacing-1">{% trans "Farmers Supported" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="text-center py-3">
-                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ communities|default:'0' }}">0</div>
+                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ communities|default:0 }}">{{ communities|default:0 }}</div>
                     <div class="text-uppercase text-white-50 fs-6 letter-spacing-1">{% trans "Communities" %}</div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
                 <div class="text-center py-3">
-                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ youth_trained|default:'0' }}">0</div>
+                    <div class="display-4 fw-bold mb-2 stat-number" data-target="{{ youth_trained|default:0 }}">{{ youth_trained|default:0 }}</div>
                     <div class="text-uppercase text-white-50 fs-6 letter-spacing-1">{% trans "Youth Trained" %}</div>
                 </div>
             </div>
@@ -301,47 +301,51 @@
             </p>
         </div>
         
-        <div class="row">
+        <div class="row justify-content-center">
             {% for member in team_members %}
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="text-center">
-                    <img src="{{ member.photo.url }}" 
-                         alt="{{ member.name }} - {{ member.title }}" 
-                         class="img-fluid rounded-circle mb-3 shadow-sm" 
-                         style="width: 180px; height: 180px; object-fit: cover; border: 4px solid var(--bs-beige);">
-                    
-                    <h5 class="mb-1 text-dark">{{ member.name }}</h5>
-                    <p class="mb-2 text-muted">{{ member.title }}</p>
-                    
-                    {% if member.bio %}
-                    <p class="small px-3 text-muted">{{ member.bio }}</p>
-                    {% endif %}
-                    
-                    <div class="d-flex gap-2 justify-content-center mt-3">
-                        {% if member.facebook %}
-                        <a href="{{ member.facebook }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-circle">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
+                <div class="card border-0 shadow-sm h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <img src="{{ member.photo.url }}" 
+                             alt="{{ member.name }}" 
+                             class="img-fluid rounded-circle mb-3 shadow-sm" 
+                             style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f8f9fa;">
+                        
+                        <h5 class="fw-bold mb-2 text-dark">{{ member.name }}</h5>
+                        <p class="text-warning fw-semibold mb-3 text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.5px;">{{ member.title }}</p>
+                        
+                        {% if member.bio %}
+                        <p class="small text-muted mb-3" style="line-height: 1.6;">{{ member.bio }}</p>
                         {% endif %}
-                        {% if member.twitter %}
-                        <a href="{{ member.twitter }}" target="_blank" class="btn btn-outline-info btn-sm rounded-circle">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        {% endif %}
-                        {% if member.instagram %}
-                        <a href="{{ member.instagram }}" target="_blank" class="btn btn-outline-danger btn-sm rounded-circle">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        {% endif %}
-                        {% if member.youtube %}
-                        <a href="{{ member.youtube }}" target="_blank" class="btn btn-outline-danger btn-sm rounded-circle">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        {% endif %}
-                        {% if member.linkedin %}
-                        <a href="{{ member.linkedin }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-circle">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
+                        
+                        {% if member.facebook or member.twitter or member.instagram or member.youtube or member.linkedin %}
+                        <div class="d-flex gap-2 justify-content-center mt-3">
+                            {% if member.linkedin %}
+                            <a href="{{ member.linkedin }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-circle" style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.facebook %}
+                            <a href="{{ member.facebook }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-circle" style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.twitter %}
+                            <a href="{{ member.twitter }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-circle" style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.instagram %}
+                            <a href="{{ member.instagram }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-circle" style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.youtube %}
+                            <a href="{{ member.youtube }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm rounded-circle" style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            {% endif %}
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -377,6 +381,16 @@
 
 <!-- Minimal CSS for animations and hover effects -->
 <style>
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+    }
+    
+    .container, .row {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
     /* Letter spacing utility */
     .letter-spacing-1 {
         letter-spacing: 1px;
@@ -465,11 +479,15 @@
                     observer.unobserve(entry.target);
                 }
             });
-        });
+        }, { threshold: 0.1 });
         
-        const statsSection = document.querySelector('section.bg-dark.text-white[style*="background: linear-gradient"]');
+        // Find the stats section - try multiple selectors
+        const statsSection = document.querySelector('.stat-number')?.closest('section');
         if (statsSection) {
             observer.observe(statsSection);
+        } else {
+            // Fallback: animate immediately if section not found
+            animateCounters();
         }
         
         // Initialize Bootstrap tooltips

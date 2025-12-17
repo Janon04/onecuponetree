@@ -51,7 +51,7 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center py-4">
                     <div class="card-body">
-                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ trees_planted }}">0</div>
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ trees_planted|default:0 }}">{{ trees_planted|default:0 }}</div>
                         <div class="text-muted fs-5">Trees Planted</div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center py-4">
                     <div class="card-body">
-                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ youth_trained }}">0</div>
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ youth_trained|default:0 }}">{{ youth_trained|default:0 }}</div>
                         <div class="text-muted fs-5">Youth Trained</div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100 text-center py-4">
                     <div class="card-body">
-                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ coffee_cups_sold }}">0</div>
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ coffee_cups_sold|default:0 }}">{{ coffee_cups_sold|default:0 }}</div>
                         <div class="text-muted fs-5">Coffee Cups Sold</div>
                     </div>
                 </div>

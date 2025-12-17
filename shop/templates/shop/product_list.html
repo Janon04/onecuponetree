@@ -6,13 +6,18 @@
     <!-- Shop Header -->
     <div class="row align-items-center mb-4 mb-md-5">
         <div class="col-md-8">
-            <h1 class="display-5 fw-bold text-dark mb-2">Shop Products</h1>
-            <p class="lead text-muted">
+            <h1 class="display-5 fw-bold mb-2" style="color: #6f4e37;">Shop Products</h1>
+            <p class="lead" style="color: #4b2c20;">
                 Discover our premium selection of One Cup Initiative products. Every purchase supports sustainable coffee farming.
             </p>
         </div>
         <div class="col-md-4 text-md-end mt-3 mt-md-0">
-            <a href="{% url 'shop:view_cart' %}" class="btn btn-dark btn-lg position-relative">
+            {% if user.is_authenticated %}
+            <a href="{% url 'shop:view_wishlist' %}" class="btn btn-lg me-2" style="background-color: #ffffff; color: #8f521b; border: 2px solid #8f521b;">
+                <i class="far fa-heart me-2"></i> Wishlist
+            </a>
+            {% endif %}
+            <a href="{% url 'shop:view_cart' %}" class="btn btn-lg position-relative" style="background-color: #8f521b; color: #ffffff; border: none;">
                 <i class="fas fa-shopping-basket me-2"></i> View Cart
                 {% if cart_count and cart_count > 0 %}
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
@@ -52,15 +57,15 @@
     {% if categories %}
     <div class="mb-4">
         <div class="d-flex flex-wrap align-items-center mb-3">
-            <h5 class="me-3 mb-0 text-muted">Filter by:</h5>
+            <h5 class="me-3 mb-0" style="color: #4b2c20;">Filter by:</h5>
             <div class="btn-group flex-wrap" role="group" aria-label="Product categories">
                 <a href="{% url 'shop:product_list' %}" 
-                   class="btn btn-outline-dark {% if not active_category %}active{% endif %}">
+                   class="btn {% if not active_category %}active{% endif %}" style="{% if not active_category %}background-color: #8f521b; color: #ffffff; border-color: #8f521b;{% else %}background-color: #ffffff; color: #8f521b; border: 1px solid #8f521b;{% endif %}">
                     All Products
                 </a>
                 {% for category in categories %}
                     <a href="{% url 'shop:product_list' %}?category={{ category.slug }}" 
-                       class="btn btn-outline-dark {% if active_category == category.slug %}active{% endif %}">
+                       class="btn {% if active_category == category.slug %}active{% endif %}" style="{% if active_category == category.slug %}background-color: #8f521b; color: #ffffff; border-color: #8f521b;{% else %}background-color: #ffffff; color: #8f521b; border: 1px solid #8f521b;{% endif %}">
                         {{ category.name }}
                         {% if category.product_count %}
                             <span class="badge bg-warning text-dark ms-1">{{ category.product_count }}</span>
@@ -75,15 +80,15 @@
     <!-- Product Count and Sort -->
     <div class="row mb-4">
         <div class="col-md-6">
-            <p class="mb-0 text-muted">
-                Showing <span class="fw-semibold">{{ products|length }}</span> 
-                of <span class="fw-semibold">{{ total_products }}</span> products
-                {% if active_category %} in <span class="fw-semibold">{{ active_category|title }}</span>{% endif %}
+            <p class="mb-0" style="color: #4b2c20;">
+                Showing <span class="fw-semibold" style="color: #8f521b;">{{ products|length }}</span> 
+                of <span class="fw-semibold" style="color: #8f521b;">{{ total_products }}</span> products
+                {% if active_category %} in <span class="fw-semibold" style="color: #8f521b;">{{ active_category|title }}</span>{% endif %}
             </p>
         </div>
         <div class="col-md-6 text-md-end">
             <div class="dropdown d-inline-block">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #ffffff; color: #8f521b; border: 1px solid #8f521b;">
                     <i class="fas fa-sort me-1"></i>
                     {% if sort_by == 'name' %}Name A-Z
                     {% elif sort_by == '-name' %}Name Z-A
@@ -129,17 +134,18 @@
                     <!-- Product Badges -->
                     <div class="position-absolute top-0 start-0 p-3">
                         {% if product.is_new %}
-                        <span class="badge bg-warning text-dark">New</span>
+                        <span class="badge" style="background-color: #fd9d02; color: #000000;">New</span>
                         {% endif %}
                         {% if product.is_featured %}
-                        <span class="badge bg-danger">Featured</span>
+                        <span class="badge" style="background-color: #8f521b; color: #ffffff;">Featured</span>
                         {% endif %}
                         {% if product.stock_quantity <= 10 and product.stock_quantity > 0 %}
-                        <span class="badge bg-info">Low Stock</span>
+                        <span class="badge" style="background-color: #6f4e37; color: #ffffff;">Low Stock</span>
                         {% endif %}
                     </div>
                     
                     <!-- Stock Status -->
+                    {% if product.show_stock_publicly and product.stock_quantity is not None %}
                     <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75">
                         {% if product.stock_quantity > 0 %}
                         <p class="mb-0 text-white small">
@@ -153,13 +159,14 @@
                         </p>
                         {% endif %}
                     </div>
+                    {% endif %}
                 </div>
                 
                 <div class="card-body d-flex flex-column">
                     <!-- Product Category -->
                     {% if product.category %}
                     <div class="mb-2">
-                        <span class="badge bg-light text-dark border">{{ product.category.name }}</span>
+                        <span class="badge" style="background-color: #faf0e6; color: #4b2c20; border: 1px solid #8f521b;">{{ product.category.name }}</span>
                     </div>
                     {% endif %}
                     
@@ -202,11 +209,11 @@
                                    class="form-control" 
                                    style="max-width: 80px;"
                                    aria-label="Quantity">
-                            <button type="submit" class="btn btn-dark flex-grow-1">
+                            <button type="submit" class="btn flex-grow-1" style="background-color: #8f521b; color: #ffffff; border: none;">
                                 <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                             </button>
                             {% else %}
-                            <button type="button" class="btn btn-outline-dark flex-grow-1" disabled>
+                            <button type="button" class="btn flex-grow-1" disabled style="background-color: #e0e0e0; color: #666666; border: 1px solid #cccccc;">
                                 <i class="fas fa-bell me-2"></i>Notify When Available
                             </button>
                             {% endif %}
@@ -216,12 +223,12 @@
                     <!-- Quick Actions -->
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{% url 'shop:product_detail' product.slug %}" 
-                           class="text-decoration-none text-dark small">
+                           class="text-decoration-none small" style="color: #8f521b;">
                             <i class="fas fa-eye me-1"></i>View Details
                         </a>
                         {% if user.is_authenticated %}
-                        <button class="btn btn-link text-decoration-none text-dark small p-0"
-                                onclick="addToWishlist({{ product.id }})">
+                        <button class="btn btn-link text-decoration-none small p-0"
+                                onclick="addToWishlist({{ product.id }})" style="color: #8f521b;">
                             <i class="far fa-heart me-1"></i>Save
                         </button>
                         {% endif %}
@@ -291,35 +298,6 @@
             <a href="{% url 'core:contact' %}" class="btn btn-outline-dark">
                 <i class="fas fa-envelope me-2"></i>Contact Us
             </a>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Featured Categories Section -->
-    {% if featured_categories %}
-    <div class="mt-5 pt-5 border-top">
-        <h3 class="mb-4 text-dark">Shop by Category</h3>
-        <div class="row g-3">
-            {% for category in featured_categories %}
-            <div class="col-md-4">
-                <a href="{% url 'shop:product_list' %}?category={{ category.slug }}" 
-                   class="text-decoration-none">
-                    <div class="card border-0 shadow-sm hover-shadow transition-all">
-                        <div class="card-body text-center p-4">
-                            <div class="mb-3">
-                                <div class="bg-beige text-dark rounded-circle d-inline-flex align-items-center justify-content-center" 
-                                     style="width: 60px; height: 60px;">
-                                    <i class="fas fa-{{ category.icon|default:'tag' }}"></i>
-                                </div>
-                            </div>
-                            <h5 class="text-dark mb-2">{{ category.name }}</h5>
-                            <p class="text-muted small mb-0">{{ category.description|truncatechars:80 }}</p>
-                            <span class="badge bg-warning text-dark mt-2">{{ category.product_count }} products</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
         </div>
     </div>
     {% endif %}

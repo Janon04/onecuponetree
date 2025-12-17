@@ -12,24 +12,190 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS variables for theme - Minimal CSS only for variables -->
+    <!-- Custom CSS variables for theme - Soft Chocolate Colors -->
     <style>
         :root {
             --primary-color: #fd9d02;
-            --primary-dark: #4b2e1a;
+            --primary-dark: #4b2c20;
             --accent-color: #d2700d;
             --light-bg: #fff7ef;
             --beige-bg: #e0ddd8;
+            --coffee-dark: #4b2c20;
+            --coffee-medium: #6f4e37;
+            --coffee-light: #8b6f47;
+            --chocolate-brown: #7b3f00;
+            --cream: #faf0e6;
+            --coffee-chocolate-bg: linear-gradient(135deg, #6f4e37 0%, #4b2c20 100%);
         }
         
         body {
             font-family: 'Inter', sans-serif;
             padding-top: 80px;
+            background-color: #fafafa;
         }
         
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
+        }
+        
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(135deg, #6f4e37 0%, #4b2c20 100%) !important;
+            border-bottom: 3px solid #8b6f47;
+            box-shadow: 0 2px 10px rgba(75, 44, 32, 0.4);
+        }
+        
+        .navbar-brand {
+            color: #faf0e6 !important;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            color: #fd9d02 !important;
+            transform: translateY(-2px);
+        }
+        
+        .navbar .nav-link {
+            color: #faf0e6 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .navbar .nav-link:hover {
+            color: #fd9d02 !important;
+        }
+        
+        .navbar .nav-link.active {
+            color: #fd9d02 !important;
+        }
+        
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #fd9d02;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar .nav-link:hover::after,
+        .navbar .nav-link.active::after {
+            width: 80%;
+        }
+        
+        .navbar-toggler {
+            border-color: #faf0e6 !important;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(250, 240, 230, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+        
+        .dropdown-menu {
+            background-color: #6f4e37;
+            border: 1px solid #8b6f47;
+        }
+        
+        .dropdown-item {
+            color: #faf0e6 !important;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #4b2c20;
+            color: #fd9d02 !important;
+        }
+        
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(135deg, #6f4e37 0%, #4b2c20 100%) !important;
+            border-top: 3px solid #8b6f47;
+        }
+        
+        footer h5 {
+            color: #fd9d02;
+            font-weight: 600;
+        }
+        
+        footer a {
+            transition: all 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: #fd9d02 !important;
+            transform: translateX(5px);
+        }
+        
+        footer .btn-outline-light {
+            border-color: #faf0e6;
+            color: #faf0e6;
+            transition: all 0.3s ease;
+        }
+        
+        footer .btn-outline-light:hover {
+            background-color: #fd9d02;
+            border-color: #fd9d02;
+            color: #fff;
+            transform: scale(1.1);
+        }
+        
+        footer hr {
+            border-color: rgba(139, 111, 71, 0.3) !important;
+        }
+        
+        /* Card Styling */
+        .card {
+            background-color: #8f521b;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-body {
+            color: #ffffff;
+        }
+        
+        .card-title {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        
+        .card-text {
+            color: #f5f5f5;
+        }
+        
+        /* Alternative white card style */
+        .card-white {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .card-white:hover {
+            border-color: #8f521b;
+        }
+        
+        .card-white .card-body {
+            color: #000000;
+        }
+        
+        .card-white .card-title {
+            color: #000000 !important;
+        }
+        
+        .card-white .card-text {
+            color: #333333;
         }
     </style>
     
@@ -37,13 +203,13 @@
 </head>
 <body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm py-2">
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center text-dark fw-bold fs-4" href="{% url 'core:home' %}">
                 <img src="{% static 'images/Black PNG _Onecup initiative @2x.png' %}" 
                      alt="One Cup Initiative Logo" 
                      height="50" class="me-2">
-                One Cup Initiative
+                <!-- One Cup Initiative -->
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 

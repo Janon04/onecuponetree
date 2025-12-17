@@ -1,0 +1,305 @@
+{% extends "shop/base_shop.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'shop/shop.css' %}">
+<style>
+    .shop-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .shop-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e0ddd8;
+    }
+    
+    .shop-title {
+        font-weight: 700;
+        color: #110906;
+        margin-bottom: 0.5rem;
+    }
+    
+    .shop-subtitle {
+        color: #7b3f00;
+        font-size: 1.1rem;
+    }
+    
+    /* Success message styling */
+    .order-success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 1rem 1.5rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 90vw;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-left: 4px solid #28a745;
+        animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; top: 80px; }
+        to { opacity: 1; top: 100px; }
+    }
+    
+    /* Product grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .product-card {
+        background: #fdfdfd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(17, 9, 6, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e0ddd8;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(17, 9, 6, 0.12);
+    }
+    
+    .product-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-bottom: 1px solid #e0ddd8;
+    animation: productZoom 4s ease-in-out infinite;
+    }
+
+    @keyframes productZoom {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.08);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .product-content {
+        padding: 1.5rem;
+    }
+    
+    .product-name {
+        font-weight: 600;
+        color: #110906;
+        margin-bottom: 0.75rem;
+        font-size: 1.25rem;
+    }
+    
+    .product-description {
+        color: #000503;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        font-size: 0.95rem;
+    }
+    
+    .product-price {
+        font-weight: 700;
+        color: #7b3f00;
+        margin-bottom: 1.25rem;
+        font-size: 1.1rem;
+    }
+    
+    .add-to-cart-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .quantity-input {
+        padding: 0.5rem;
+        border: 1px solid #e0ddd8;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 1rem;
+        background: #f8f9fa;
+    }
+    
+    .add-to-cart-btn {
+        background: #7b3f00;
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .add-to-cart-btn:hover {
+        background: #110906;
+    }
+    
+    .view-cart-container {
+        text-align: right;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0ddd8;
+    }
+    
+    .view-cart-btn {
+        background: #110906;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.2s ease;
+    }
+    
+    .view-cart-btn:hover {
+        background: #7b3f00;
+        color: white;
+        text-decoration: none;
+    }
+    
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #000503;
+    }
+    
+    .empty-state-icon {
+        font-size: 3rem;
+        color: #e0ddd8;
+        margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .product-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .shop-container {
+            padding: 1.5rem 0.75rem;
+        }
+        
+        .order-success-message {
+            top: 80px;
+            width: 90%;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .add-to-cart-form {
+            flex-direction: row;
+        }
+        
+        .quantity-input {
+            flex: 1;
+        }
+        
+        .add-to-cart-btn {
+            flex: 2;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block shop_content %}
+<div class="shop-container">
+
+    <div class="shop-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 class="shop-title">Shop Products</h1>
+            <p class="shop-subtitle">Discover our premium selection of One Cup Initiative products</p>
+        </div>
+        <div>
+            <a href="{% url 'shop:view_cart' %}" class="view-cart-btn" style="margin-top:0;">
+                <i class="fas fa-shopping-basket"></i> View Cart
+            </a>
+        </div>
+    </div>
+
+    {% if request.GET.success %}
+    <div id="order-success-message" class="order-success-message">
+        <i class="fas fa-check-circle me-2"></i>Thank you! Your order has been received.
+    </div>
+    <script>
+        setTimeout(function() {
+            var msg = document.getElementById('order-success-message');
+            if (msg) { 
+                msg.style.opacity = '0';
+                msg.style.transition = 'opacity 0.5s ease';
+                setTimeout(function() { msg.style.display = 'none'; }, 500);
+            }
+        }, 5000);
+    </script>
+    {% endif %}
+
+    {% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" />
+            {% else %}
+            <div style="height:220px; background:#e0ddd8; display:flex; align-items:center; justify-content:center; color:#7b3f00;">
+                <i class="fas fa-coffee" style="font-size:2rem;"></i>
+            </div>
+            {% endif %}
+            
+            <div class="product-content">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-description">{{ product.description }}</p>
+                <p class="product-price">{{ product.price }} {{ product.currency }}</p>
+                
+                <form method="post" action="{% url 'shop:add_to_cart' %}" class="add-to-cart-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}" />
+                    <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
+                    <button type="submit" class="add-to-cart-btn">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- View Cart button moved to top right for visibility -->
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="fas fa-coffee"></i>
+        </div>
+        <h3>No Products Available</h3>
+        <p>Check back soon for our latest coffee offerings.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

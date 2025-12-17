@@ -20,10 +20,8 @@ def product_list(request):
 	# Get all active products
 	products = Product.objects.filter(is_active=True).select_related('category')
 	
-	# Get all categories with product counts
-	categories = ProductCategory.objects.filter(is_active=True).annotate(
-		product_count=Count('products', filter=Q(products__is_active=True))
-	)
+	# Get all categories (product_count is a property on the model)
+	categories = ProductCategory.objects.filter(is_active=True)
 	
 	# Category filtering
 	active_category = request.GET.get('category')
@@ -68,8 +66,8 @@ def product_list(request):
 		if cart:
 			cart_count = sum(item.quantity for item in cart.items.all())
 	
-	# Get featured categories (top 3)
-	featured_categories = categories.filter(product_count__gt=0)[:3]
+	# Get featured categories (top 3 with products)
+	featured_categories = [cat for cat in categories if cat.product_count > 0][:3]
 	
 	# Build context
 	context = {
@@ -398,4 +396,101 @@ def product_detail(request, slug):
 	}
 	
 	return render(request, "shop/product_detail.html", context)
+
+
+# Wishlist views
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import Wishlist
+
+
+@login_required
+@require_POST
+def add_to_wishlist(request, product_id):
+	"""
+	Add a product to the user's wishlist
+	"""
+	try:
+		product = Product.objects.get(id=product_id, is_active=True)
+		wishlist_item, created = Wishlist.objects.get_or_create(
+			user=request.user,
+			product=product
+		)
+		
+		if created:
+			return JsonResponse({
+				'success': True,
+				'message': 'Added to wishlist!',
+				'in_wishlist': True
+			})
+		else:
+			return JsonResponse({
+				'success': True,
+				'message': 'Already in wishlist',
+				'in_wishlist': True
+			})
+	except Product.DoesNotExist:
+		return JsonResponse({
+			'success': False,
+			'message': 'Product not found'
+		}, status=404)
+	except Exception as e:
+		return JsonResponse({
+			'success': False,
+			'message': 'Error adding to wishlist'
+		}, status=500)
+
+
+@login_required
+@require_POST
+def remove_from_wishlist(request, product_id):
+	"""
+	Remove a product from the user's wishlist
+	"""
+	try:
+		wishlist_item = Wishlist.objects.get(
+			user=request.user,
+			product_id=product_id
+		)
+		wishlist_item.delete()
+		
+		return JsonResponse({
+			'success': True,
+			'message': 'Removed from wishlist',
+			'in_wishlist': False
+		})
+	except Wishlist.DoesNotExist:
+		return JsonResponse({
+			'success': False,
+			'message': 'Item not in wishlist'
+		}, status=404)
+	except Exception as e:
+		return JsonResponse({
+			'success': False,
+			'message': 'Error removing from wishlist'
+		}, status=500)
+
+
+@login_required
+def view_wishlist(request):
+	"""
+	Display the user's wishlist
+	"""
+	wishlist_items = Wishlist.objects.filter(user=request.user).select_related('product')
+	
+	# Get cart count for navbar
+	cart_count = 0
+	session_key = request.session.session_key
+	if session_key:
+		cart = Cart.objects.filter(session_key=session_key).first()
+		if cart:
+			cart_count = sum(item.quantity for item in cart.items.all())
+	
+	context = {
+		'wishlist_items': wishlist_items,
+		'cart_count': cart_count,
+	}
+	
+	return render(request, 'shop/wishlist.html', context)
 

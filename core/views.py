@@ -70,12 +70,19 @@ class HomeView(TemplateView):
         from dashboard.models import ImpactStat
         from farmers.models import Farmer
         from apps.trees.models import Tree
+        
         # Try to get stats from ImpactStat, fallback to model counts
         impact_stats = ImpactStat.objects.filter(is_active=True)
         stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
-        context['trees_planted'] = stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count()
-        # Count youth trained from BaristaTrainingApplication if ImpactStat not set
-        if stats_dict.get('youth_trained', None):
+        
+        # Trees Planted
+        if 'trees_planted' in stats_dict:
+            context['trees_planted'] = stats_dict['trees_planted'].stat_value
+        else:
+            context['trees_planted'] = Tree.objects.filter(is_active=True).count()
+        
+        # Youth Trained
+        if 'youth_trained' in stats_dict:
             context['youth_trained'] = stats_dict['youth_trained'].stat_value
         else:
             try:
@@ -83,18 +90,28 @@ class HomeView(TemplateView):
                 context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
             except Exception:
                 context['youth_trained'] = 0
-        # Count coffee cups sold from paid/confirmed shop orders
-        try:
-            from shop.models import Order, CartItem
-            paid_orders = Order.objects.filter(status__in=["paid", "confirmed"])
-            cups_sold = 0
-            for order in paid_orders:
-                if order.cart:
-                    cups_sold += sum(item.quantity for item in order.cart.items.all())
-            context['coffee_cups_sold'] = cups_sold
-        except Exception:
-            context['coffee_cups_sold'] = 0
-        context['co2_saved'] = stats_dict.get('co2_saved', None) or 0
+        
+        # Coffee Cups Sold
+        if 'coffee_cups_sold' in stats_dict:
+            context['coffee_cups_sold'] = stats_dict['coffee_cups_sold'].stat_value
+        else:
+            try:
+                from shop.models import Order, CartItem
+                paid_orders = Order.objects.filter(status__in=["paid", "confirmed"])
+                cups_sold = 0
+                for order in paid_orders:
+                    if order.cart:
+                        cups_sold += sum(item.quantity for item in order.cart.items.all())
+                context['coffee_cups_sold'] = cups_sold
+            except Exception:
+                context['coffee_cups_sold'] = 0
+        
+        # CO2 Saved
+        if 'co2_saved' in stats_dict:
+            context['co2_saved'] = stats_dict['co2_saved'].stat_value
+        else:
+            context['co2_saved'] = 0
+            
         return context
 
 
@@ -108,13 +125,25 @@ class AboutView(TemplateView):
         from farmers.models import Farmer
         from apps.trees.models import Tree
         from .models import TeamMember
+        
         # Try to get stats from ImpactStat, fallback to model counts
         impact_stats = ImpactStat.objects.filter(is_active=True)
         stats_dict = {stat.stat_name.lower().replace(' ', '_'): stat for stat in impact_stats}
-        context['trees_planted'] = stats_dict.get('trees_planted', None) or Tree.objects.filter(is_active=True).count()
-        context['farmers_supported'] = stats_dict.get('farmers_supported', None) or Farmer.objects.count()
-        # Count youth trained from BaristaTrainingApplication if ImpactStat not set
-        if stats_dict.get('youth_trained', None):
+        
+        # Trees Planted
+        if 'trees_planted' in stats_dict:
+            context['trees_planted'] = stats_dict['trees_planted'].stat_value
+        else:
+            context['trees_planted'] = Tree.objects.filter(is_active=True).count()
+        
+        # Farmers Supported
+        if 'farmers_supported' in stats_dict:
+            context['farmers_supported'] = stats_dict['farmers_supported'].stat_value
+        else:
+            context['farmers_supported'] = Farmer.objects.count()
+        
+        # Youth Trained
+        if 'youth_trained' in stats_dict:
             context['youth_trained'] = stats_dict['youth_trained'].stat_value
         else:
             try:
@@ -122,9 +151,13 @@ class AboutView(TemplateView):
                 context['youth_trained'] = BaristaTrainingApplication.objects.filter(selected_for_training=True).count()
             except Exception:
                 context['youth_trained'] = 0
-        # Count unique sectors as communities (updated field name)
-        unique_sectors = Farmer.objects.values_list('sector', flat=True).distinct()
-        context['communities'] = stats_dict.get('communities', None) or unique_sectors.count()
+        
+        # Communities
+        if 'communities' in stats_dict:
+            context['communities'] = stats_dict['communities'].stat_value
+        else:
+            unique_sectors = Farmer.objects.values_list('sector', flat=True).distinct()
+            context['communities'] = unique_sectors.count()
         context.update({
             'mission': "To create a sustainable coffee ecosystem that empowers farmers, trains youth, and restores our environment through innovative tree planting initiatives.",
             'vision': "A world where every cup of coffee contributes to environmental restoration and economic empowerment of local communities.",

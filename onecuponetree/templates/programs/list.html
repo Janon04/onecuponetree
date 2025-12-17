@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load i18n %}
+    <title>{% trans "Programs List" %}</title>
+</head>
+<body>
+    <h1>{% trans "Available Programs" %}</h1>
+    <ul>
+        {% for program in programs %}
+            <li>
+                <strong>{{ program.name }}</strong>: {{ program.description }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

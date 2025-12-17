@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Research & Publications" %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div class="flex-grow-1">
+            <h1 class="mb-0 fw-bold text-center w-100" style="color:#b85c00; letter-spacing: -1px;">{% trans "Research & Publications" %}</h1>
+        </div>
+        <form method="get" class="d-flex align-items-center gap-2 ms-3">
+            <label for="category" class="form-label mb-0 me-2 fw-semibold" style="color:#4b2e1a;">{% trans "Category:" %}</label>
+            <select id="category" name="category" class="form-select form-select-sm w-auto" onchange="this.form.submit()" style="color:#4b2e1a; border-color:#b85c00;">
+                <option value="">{% trans "All" %}</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% if publications %}
+        <div class="list-group list-group-flush">
+            {% for pub in publications %}
+            <div class="list-group-item py-4 px-3 border-0 border-bottom d-flex align-items-start gap-4" style="background: #fff7ef; color:#4b2e1a;">
+                {% if pub.image %}
+                    <img src="{{ pub.image.url }}" alt="{{ pub.title }}" class="rounded-3 flex-shrink-0" style="width: 100px; height: 100px; object-fit: cover; border:2px solid #b85c00;">
+                {% endif %}
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center mb-1">
+                        {% if pub.category %}
+                            <span class="badge" style="background:#ffe0b2; color:#b85c00; border:1px solid #b85c00;">{{ pub.category.name }}</span>
+                        {% endif %}
+                        <span class="text-muted small ms-auto"><i class="bi bi-calendar-event"></i> {{ pub.publication_date|date:"M d, Y" }}</span>
+                    </div>
+                    <h5 class="mb-1 fw-semibold" style="color:#b85c00;">{{ pub.title }}</h5>
+                    <div class="mb-1" style="color:#7a5a3a; font-size:0.95em;">{{ pub.author }}</div>
+                    <p class="mb-2 small" style="color:#4b2e1a;">{{ pub.summary|safe }}</p>
+                    <a href="{% url 'researchhub:publication_detail' pub.pk %}" class="btn btn-sm fw-semibold" style="background:#b85c00; color:#fff;">{% trans "Read More" %}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-5">{% trans "No research publications available yet." %}</div>
+    {% endif %}
+</div>
+{% endblock %}

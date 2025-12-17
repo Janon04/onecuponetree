@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}Impact Dashboard | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Our Impact</h1>
+    <p class="lead text-center mb-4">See how your support is making a difference in our community and environment.</p>
+    
+    <div class="alert alert-info text-center">
+        <h4><i class="fas fa-info-circle me-2"></i>Dashboard Information</h4>
+        <p class="mb-0">The dashboard frontend has been removed. Data is available through the backend API.</p>
+        <p class="small mt-2">
+            <strong>For developers:</strong> Access data via <code>/dashboard/?format=json</code>
+        </p>
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'core:home' %}" class="btn btn-primary">
+            <i class="fas fa-home me-2"></i>Return to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

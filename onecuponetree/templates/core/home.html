@@ -1,0 +1,204 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ SITE_NAME }} - Every Cup Counts. Every Tree Matters.{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+{% endblock %}
+{% block content %}
+<!-- Hero Section -->
+<section class="home-hero-section position-relative">
+    <div class="hero-animated-bg" style="background-image: url('{% static "images/coffee-1.jpg" %}');"></div>
+    <div class="hero-content-container">
+        <h1 class="display-3 fw-bold mb-4 hero-main-title">
+            Every Cup Counts.<br>
+            <span class="subtitle">Every Tree Matters.</span>
+        </h1>
+        <p class="lead mb-5 hero-lead-text">
+            A sustainable movement empowering farmers, training youth, and restoring our planet — One Cup at a Time.
+        </p>
+    </div>
+</section>
+
+<!-- Impact Statistics -->
+<section class="py-5 impact-stats">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3">Our Impact So Far</h2>
+                <p class="lead">
+                    Together, we're making a real difference in communities and the environment.
+                </p>
+            </div>
+        </div>
+        
+        <div class="impact-cards-row">
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ trees_planted }}">0</div>
+                <div class="impact-label">Trees Planted</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ youth_trained }}">0</div>
+                <div class="impact-label">Youth Trained</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
+                <div class="impact-label">Coffee Cups Sold</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Access Cards -->
+<section class="py-5 section-light-bg">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold mb-3 text-primary-dark">Get Started Today</h2>
+                <p class="lead text-accent-dark">
+                    Choose how you'd like to be part of our sustainable movement.
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <a href="#" class="quick-access-card text-decoration-none">
+                    <div class="quick-access-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="mb-3 text-primary-dark">Barista Academy</h4>
+                    <p class="mb-0 text-accent-dark">
+                        Join our comprehensive barista training program and build your career in the coffee industry.
+                    </p>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <a href="#" class="quick-access-card text-decoration-none">
+                    <div class="quick-access-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h4 class="mb-3 text-primary-dark">Support Farmers</h4>
+                    <p class="mb-0 text-accent-dark">
+                        Help coffee farmers with sustainable practices, seedlings, and market access.
+                    </p>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <a href="#" class="quick-access-card text-decoration-none">
+                    <div class="quick-access-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="mb-3 text-primary-dark">Partner With Us</h4>
+                    <p class="mb-0 text-accent-dark">
+                        Collaborate with us to create lasting environmental and social impact.
+                    </p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 section-dark-bg">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-3 text-light-cream">Ready to Make a Difference?</h3>
+                <p class="lead mb-0 text-white-pure">
+                    Join thousands of people who are already part of our sustainable coffee movement.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'get_involved:join' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
+                    <i class="fas fa-rocket me-2"></i>Get Started Now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Signup & Actions -->
+<section id="newsletter-signup" class="py-5 section-white-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 mx-auto">
+                <div class="card shadow border-0 rounded-4 p-4 newsletter-card">
+                    <h3 class="fw-bold mb-3 text-center text-primary-dark">Stay Updated</h3>
+                    <p class="mb-4 text-center text-accent-dark">
+                        Get the latest news about our programs, impact stories, and upcoming events.<br>
+                        <span class="text-highlight">Be part of the movement!</span>
+                    </p>
+                    <form class="d-flex gap-2 mb-3 justify-content-center" method="POST" action="{% url 'core:unified_subscribe' %}">
+                        {% csrf_token %}
+                        <input type="email" name="email" class="form-control form-control-lg form-newsletter" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-2">
+                        <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
+                            <i class="fas fa-hands-helping me-2"></i>Join the Initiative
+                        </a>
+                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
+                            <i class="fas fa-envelope me-2"></i>Newsletters
+                        </a>
+                    </div>
+                    <small class="mt-2 d-block text-center text-accent-dark">
+                        We respect your privacy. Unsubscribe at any time.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block extra_js %}
+{{ block.super }}
+<div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast align-items-center text-bg-{{ message.tags }} border-0 show mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate impact numbers
+        document.querySelectorAll('.impact-number').forEach(function(el) {
+            var target = parseInt(el.getAttribute('data-target')) || 0;
+            var duration = 1200;
+            var frameRate = 30;
+            var frame = 0;
+            var totalFrames = Math.round(duration / (1000 / frameRate));
+            var count = 0;
+            var increment = target / totalFrames;
+            function animate() {
+                count += increment;
+                if (count < target) {
+                    el.textContent = Math.floor(count);
+                    frame++;
+                    requestAnimationFrame(animate);
+                } else {
+                    el.textContent = target;
+                }
+            }
+            animate();
+        });
+        // Toasts
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.forEach(function(toastEl) {
+            new bootstrap.Toast(toastEl, { delay: 5000 }).show();
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}
+
