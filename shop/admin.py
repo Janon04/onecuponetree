@@ -1,34 +1,125 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.db.models import Sum, Count
-from .models import Product, Cart, CartItem, Order
+from .models import Product, ProductCategory, ProductReview, Cart, CartItem, Order
 import csv
 from django.http import HttpResponse
 
+
+@admin.register(ProductCategory)
+class ProductCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'product_count_display', 'is_active', 'ordering')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'description')
+    prepopulated_fields = {'slug': ('name',)}
+    list_editable = ('is_active', 'ordering')
+    ordering = ['ordering', 'name']
+    
+    def product_count_display(self, obj):
+        count = obj.product_count
+        return format_html(
+            '<span style="background: #007bff; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">{} products</span>',
+            count
+        )
+    product_count_display.short_description = "Products"
+
+
+@admin.register(ProductReview)
+class ProductReviewAdmin(admin.ModelAdmin):
+    list_display = ('customer_name', 'product', 'rating_display', 'is_approved', 'is_verified_purchase', 'created_at')
+    list_filter = ('rating', 'is_approved', 'is_verified_purchase', 'created_at')
+    search_fields = ('customer_name', 'customer_email', 'comment', 'product__name')
+    list_editable = ('is_approved',)
+    readonly_fields = ('created_at',)
+    date_hierarchy = 'created_at'
+    ordering = ['-created_at']
+    
+    fieldsets = (
+        ('Review Information', {
+            'fields': ('product', 'customer_name', 'customer_email', 'rating', 'comment')
+        }),
+        ('Status', {
+            'fields': ('is_approved', 'is_verified_purchase')
+        }),
+        ('Metadata', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def rating_display(self, obj):
+        stars = '★' * obj.rating + '☆' * (5 - obj.rating)
+        return format_html(
+            '<span style="color: #ffc107; font-size: 16px;">{}</span>',
+            stars
+        )
+    rating_display.short_description = "Rating"
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price_display', 'currency', 'availability_status', 'image_preview', 'order_count', 'is_active')
-    list_filter = ('is_active', 'currency')
-    search_fields = ('name', 'description')
-    readonly_fields = ('image_preview', 'product_stats')
-    list_editable = ('is_active',)
-    ordering = ['-is_active', 'name']
+    list_display = ('name', 'category', 'price_display', 'stock_status', 'rating_display', 'image_preview', 'is_active', 'is_featured', 'is_new')
+    list_filter = ('is_active', 'is_featured', 'is_new', 'category', 'currency')
+    search_fields = ('name', 'description', 'slug')
+    readonly_fields = ('image_preview', 'product_stats', 'slug', 'created_at', 'updated_at')
+    list_editable = ('is_active', 'is_featured', 'is_new')
+    prepopulated_fields = {'slug': ('name',)}
+    ordering = ['-created_at']
+    date_hierarchy = 'created_at'
     
     fieldsets = (
         ('Product Information', {
-            'fields': ('name', 'description', 'image', 'image_preview')
+            'fields': ('name', 'slug', 'category', 'description', 'image', 'image_preview')
         }),
         ('Pricing', {
-            'fields': ('price', 'currency')
+            'fields': ('price', 'compare_price', 'currency')
         }),
-        ('Availability', {
-            'fields': ('is_active',)
+        ('Inventory', {
+            'fields': ('stock_quantity',)
+        }),
+        ('Status & Features', {
+            'fields': ('is_active', 'is_featured', 'is_new')
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
         }),
         ('Statistics', {
             'fields': ('product_stats',),
             'classes': ('collapse',)
         }),
     )
+    
+    def stock_status(self, obj):
+        if obj.stock_quantity > 10:
+            color = '#28a745'
+            icon = 'check-circle'
+            text = f'In Stock ({obj.stock_quantity})'
+        elif obj.stock_quantity > 0:
+            color = '#ffc107'
+            icon = 'exclamation-triangle'
+            text = f'Low Stock ({obj.stock_quantity})'
+        else:
+            color = '#dc3545'
+            icon = 'times-circle'
+            text = 'Out of Stock'
+        
+        return format_html(
+            '<span style="background: {}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">'
+            '<i class="fas fa-{}"></i> {}</span>',
+            color, icon, text
+        )
+    stock_status.short_description = "Stock"
+    
+    def rating_display(self, obj):
+        if obj.average_rating:
+            stars = '★' * int(obj.average_rating) + '☆' * (5 - int(obj.average_rating))
+            return format_html(
+                '<span style="color: #ffc107;">{}</span> <small>({} reviews)</small>',
+                stars, obj.review_count
+            )
+        return format_html('<small style="color: #6c757d;">No reviews</small>')
+    rating_display.short_description = "Rating"
     
     def price_display(self, obj):
         return format_html(

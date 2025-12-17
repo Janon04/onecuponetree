@@ -1,99 +1,129 @@
-
 {% extends 'base.html' %}
 
 {% block title %}{{ SITE_NAME }} - Every Cup Counts. Every Tree Matters.{% endblock %}
 
 {% load static %}
-{% block extra_css %}
-{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
-<section class="home-hero-section position-relative">
-    <div class="hero-animated-bg" style="background-image: url('{% static "images/coffee-1.jpg" %}');"></div>
-    <div class="hero-content-container">
-        <h1 class="display-3 fw-bold mb-4 hero-main-title">
-            Every Cup Counts.<br>
-            <span class="subtitle">Every Tree Matters.</span>
-        </h1>
-        <p class="lead mb-5 hero-lead-text">
-            A sustainable movement empowering farmers, training youth, and restoring our planet  One Cup at a Time.
-        </p>
+<section class="bg-dark text-white py-5 py-lg-0" style="min-height: 90vh; position: relative; overflow: hidden;">
+    <div class="position-absolute top-0 start-0 w-100 h-100" 
+         style="background: url('{% static "images/coffee-1.jpg" %}') center/cover no-repeat; 
+                animation: gentleZoom 30s ease-in-out infinite alternate;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" 
+             style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(75,46,26,0.5) 100%);"></div>
+    </div>
+    
+    <div class="container h-100 position-relative z-1">
+        <div class="row align-items-center h-100 py-5">
+            <div class="col-lg-8 col-xl-6">
+                <h1 class="display-3 fw-bold mb-4 text-white">
+                    Every Cup Counts.<br>
+                    <span class="text-warning">Every Tree Matters.</span>
+                </h1>
+                <p class="lead mb-5 fs-4 text-white">
+                    A sustainable movement empowering farmers, training youth, and restoring our planet One Cup at a Time.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'get_involved:join' %}" class="btn btn-warning btn-lg px-4 py-3 rounded-pill fw-semibold">
+                        <i class="fas fa-rocket me-2"></i>Get Started Now
+                    </a>
+                    <a href="{% url 'core:donate' %}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                        <i class="fas fa-heart me-2"></i>Support Us
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- Impact Statistics -->
-<section class="py-5 impact-stats">
+<section class="py-5 bg-beige">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-3">Our Impact So Far</h2>
-                <p class="lead">
-                    Together, we're making a real difference in communities and the environment.
-                </p>
-            </div>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3 text-dark">Our Impact So Far</h2>
+            <p class="lead text-muted">
+                Together, we're making a real difference in communities and the environment.
+            </p>
         </div>
         
-        <div class="impact-cards-row">
-            <div class="impact-card">
-                <div class="impact-number" data-target="{{ trees_planted }}">0</div>
-                <div class="impact-label">Trees Planted</div>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                    <div class="card-body">
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ trees_planted }}">0</div>
+                        <div class="text-muted fs-5">Trees Planted</div>
+                    </div>
+                </div>
             </div>
-            <div class="impact-card">
-                <div class="impact-number" data-target="{{ youth_trained }}">0</div>
-                <div class="impact-label">Youth Trained</div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                    <div class="card-body">
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ youth_trained }}">0</div>
+                        <div class="text-muted fs-5">Youth Trained</div>
+                    </div>
+                </div>
             </div>
-            <div class="impact-card">
-                <div class="impact-number" data-target="{{ coffee_cups_sold }}">0</div>
-                <div class="impact-label">Coffee Cups Sold</div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                    <div class="card-body">
+                        <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ coffee_cups_sold }}">0</div>
+                        <div class="text-muted fs-5">Coffee Cups Sold</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Quick Access Cards -->
-<section class="py-5 section-light-bg">
+<section class="py-5 bg-light">
     <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="display-5 fw-bold mb-3 text-primary-dark">Get Started Today</h2>
-                <p class="lead text-accent-dark">
-                    Choose how you'd like to be part of our sustainable movement.
-                </p>
-            </div>
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3 text-dark">Get Started Today</h2>
+            <p class="lead text-muted">
+                Choose how you'd like to be part of our sustainable movement.
+            </p>
         </div>
         
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <a href="#" class="quick-access-card text-decoration-none">
-                    <div class="quick-access-icon">
-                        <i class="fas fa-graduation-cap"></i>
+                <a href="{% url 'volunteers:barista_training_list' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3 text-dark">Barista Academy</h4>
+                        <p class="card-text text-muted">
+                            Join our comprehensive barista training program and build your career in the coffee industry.
+                        </p>
                     </div>
-                    <h4 class="mb-3 text-primary-dark">Barista Academy</h4>
-                    <p class="mb-0 text-accent-dark">
-                        Join our comprehensive barista training program and build your career in the coffee industry.
-                    </p>
                 </a>
             </div>
             <div class="col-lg-4 col-md-6">
-                <a href="#" class="quick-access-card text-decoration-none">
-                    <div class="quick-access-icon">
-                        <i class="fas fa-seedling"></i>
+                <a href="{% url 'farmers:support_activities_public' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-seedling fa-2x"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3 text-dark">Support Farmers</h4>
+                        <p class="card-text text-muted">
+                            Help coffee farmers with sustainable practices, seedlings, and market access.
+                        </p>
                     </div>
-                    <h4 class="mb-3 text-primary-dark">Support Farmers</h4>
-                    <p class="mb-0 text-accent-dark">
-                        Help coffee farmers with sustainable practices, seedlings, and market access.
-                    </p>
                 </a>
             </div>
             <div class="col-lg-4 col-md-6">
-                <a href="#" class="quick-access-card text-decoration-none">
-                    <div class="quick-access-icon">
-                        <i class="fas fa-handshake"></i>
+                <a href="{% url 'core:contact' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-handshake fa-2x"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3 text-dark">Partner With Us</h4>
+                        <p class="card-text text-muted">
+                            Collaborate with us to create lasting environmental and social impact.
+                        </p>
                     </div>
-                    <h4 class="mb-3 text-primary-dark">Partner With Us</h4>
-                    <p class="mb-0 text-accent-dark">
-                        Collaborate with us to create lasting environmental and social impact.
-                    </p>
                 </a>
             </div>
         </div>
@@ -101,17 +131,17 @@
 </section>
 
 <!-- Call to Action -->
-<section class="py-5 section-dark-bg">
+<section class="py-5 bg-dark text-white">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h3 class="fw-bold mb-3 text-light-cream">Ready to Make a Difference?</h3>
-                <p class="lead mb-0 text-white-pure">
+                <h3 class="fw-bold mb-3">Ready to Make a Difference?</h3>
+                <p class="lead mb-0 text-white-50">
                     Join thousands of people who are already part of our sustainable coffee movement.
                 </p>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <a href="{% url 'get_involved:join' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <a href="{% url 'get_involved:join' %}" class="btn btn-outline-light btn-lg px-4 py-3">
                     <i class="fas fa-rocket me-2"></i>Get Started Now
                 </a>
             </div>
@@ -120,32 +150,37 @@
 </section>
 
 <!-- Newsletter Signup & Actions -->
-<section id="newsletter-signup" class="py-5 section-white-bg">
+<section class="py-5 bg-white">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-7 mx-auto">
-                <div class="card shadow border-0 rounded-4 p-4 newsletter-card">
-                    <h3 class="fw-bold mb-3 text-center text-primary-dark">Stay Updated</h3>
-                    <p class="mb-4 text-center text-accent-dark">
-                        Get the latest news about our programs, impact stories, and upcoming events.<br>
-                        <span class="text-highlight">Be part of the movement!</span>
-                    </p>
-                    <form class="d-flex gap-2 mb-3 justify-content-center" method="POST" action="{% url 'core:unified_subscribe' %}">
+            <div class="col-lg-8">
+                <div class="card shadow border-0 rounded-4 p-4 bg-light">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold mb-3 text-dark">Stay Updated</h3>
+                        <p class="text-muted">
+                            Get the latest news about our programs, impact stories, and upcoming events.<br>
+                            <span class="text-warning fw-semibold">Be part of the movement!</span>
+                        </p>
+                    </div>
+                    
+                    <form class="d-flex flex-column flex-md-row gap-3 mb-4" method="POST" action="{% url 'core:unified_subscribe' %}">
                         {% csrf_token %}
-                        <input type="email" name="email" class="form-control form-control-lg form-newsletter" placeholder="Enter your email address" required>
-                        <button type="submit" class="btn btn-primary btn-lg px-4">
-                            <i class="fas fa-paper-plane"></i>
+                        <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
                         </button>
                     </form>
-                    <div class="d-flex flex-wrap gap-3 justify-content-center mb-2">
-                        <a href="{% url 'get_involved:join' %}" class="btn btn-primary btn-lg px-4 py-3">
+                    
+                    <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-3">
+                        <a href="{% url 'get_involved:join' %}" class="btn btn-dark btn-lg px-4 py-3">
                             <i class="fas fa-hands-helping me-2"></i>Join the Initiative
                         </a>
-                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-primary btn-lg px-4 py-3 btn-cta">
+                        <a href="{% url 'newsletter:newsletter_list' %}" class="btn btn-outline-dark btn-lg px-4 py-3">
                             <i class="fas fa-envelope me-2"></i>Newsletters
                         </a>
                     </div>
-                    <small class="mt-2 d-block text-center text-accent-dark">
+                    
+                    <small class="text-center d-block text-muted mt-3">
                         We respect your privacy. Unsubscribe at any time.
                     </small>
                 </div>
@@ -153,52 +188,59 @@
         </div>
     </div>
 </section>
-{% block extra_js %}
-{{ block.super }}
-<div aria-live="polite" aria-atomic="true" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="toast align-items-center text-bg-{{ message.tags }} border-0 show mb-2" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        {{ message }}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
-</div>
+
+<!-- Add minimal inline CSS for animations and hover effects -->
+<style>
+    /* Gentle zoom animation for hero background */
+    @keyframes gentleZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.05); }
+    }
+    
+    /* Card hover effect */
+    .hover-shadow-lg {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-shadow-lg:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.15) !important;
+    }
+    
+    /* Counter animation styles */
+    .impact-number {
+        transition: all 0.5s ease;
+    }
+</style>
+
+<!-- Add this minimal JavaScript -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Animate impact numbers
-        document.querySelectorAll('.impact-number').forEach(function(el) {
-            var target = parseInt(el.getAttribute('data-target')) || 0;
-            var duration = 1200;
-            var frameRate = 30;
-            var frame = 0;
-            var totalFrames = Math.round(duration / (1000 / frameRate));
-            var count = 0;
-            var increment = target / totalFrames;
-            function animate() {
-                count += increment;
-                if (count < target) {
-                    el.textContent = Math.floor(count);
-                    frame++;
-                    requestAnimationFrame(animate);
+        document.querySelectorAll('.impact-number').forEach(function(counter) {
+            const target = parseInt(counter.getAttribute('data-target')) || 0;
+            const duration = 1500;
+            const start = 0;
+            const increment = target / (duration / 16); // 60fps
+            
+            let current = start;
+            const timer = setInterval(function() {
+                current += increment;
+                if (current >= target) {
+                    counter.textContent = target.toLocaleString();
+                    clearInterval(timer);
                 } else {
-                    el.textContent = target;
+                    counter.textContent = Math.floor(current).toLocaleString();
                 }
-            }
-            animate();
+            }, 16);
         });
-        // Toasts
+        
+        // Initialize Bootstrap toasts for messages
         var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        toastElList.forEach(function(toastEl) {
-            new bootstrap.Toast(toastEl, { delay: 5000 }).show();
+        var toastList = toastElList.map(function(toastEl) {
+            return new bootstrap.Toast(toastEl);
         });
+        toastList.forEach(toast => toast.show());
     });
 </script>
 {% endblock %}
-{% endblock %}
-

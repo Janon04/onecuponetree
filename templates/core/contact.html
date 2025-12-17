@@ -1,41 +1,231 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}Contact Us - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
-<div class="container py-5" style="background-color: #fff;">
-    <div class="row justify-content-center">
-        <div class="col-lg-7 col-md-9">
-            <div class="card shadow border-0 rounded-4" style="background-color: #4b2e1a; color: #fff;">
-                <div class="card-body p-5">
-                    {% if message %}
-                        <div class="mb-3"><strong>Message:</strong> {{ message|safe }}</div>
-                    {% endif %}
-                    <h1 class="mb-3 text-center" style="font-family: var(--font-heading); color: #ffb366; text-shadow: 1px 1px 2px #2c1810;">
-                        📬 Contact Us
-                    </h1>
-                    <p class="lead text-center mb-4" style="color: #f5f5f5;">
-                        We'd love to hear from you! Please fill out the form below and our team will get back to you as soon as possible.
-                    </p>
+<div class="container py-4 py-md-5">
+    <!-- Header Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-dark mb-3">Contact Us</h1>
+        <p class="lead text-muted mb-4">
+            Have questions, feedback, or partnership inquiries? We'd love to hear from you.
+            Our team typically responds within 24-48 hours.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="#contact-form" class="btn btn-warning btn-lg">
+                <i class="fas fa-envelope me-2"></i>Send a Message
+            </a>
+            <a href="#contact-info" class="btn btn-outline-dark btn-lg">
+                <i class="fas fa-info-circle me-2"></i>Contact Info
+            </a>
+        </div>
+    </div>
 
-                    {% if success %}
-                        <div id="contact-success-alert" class="alert alert-success text-center fw-semibold" style="background-color:#d2691e; color:#fff; border:none;">
-                            Thank you for reaching out! Your message has been received.
+    <!-- Success Message -->
+    {% if success %}
+    <div id="contact-success-alert" class="alert alert-success alert-dismissible fade show shadow-sm mb-5" role="alert">
+        <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+                <i class="fas fa-check-circle fs-4"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5 class="alert-heading mb-1">Message Sent Successfully!</h5>
+                <p class="mb-0">Thank you for reaching out. We've received your message and will respond within 24-48 hours.</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <script>
+        // Auto-dismiss after 8 seconds
+        setTimeout(function() {
+            var alert = document.getElementById('contact-success-alert');
+            if (alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }
+        }, 8000);
+    </script>
+    {% endif %}
+
+    <div class="row g-5">
+        <!-- Contact Information Column -->
+        <div class="col-lg-5">
+            <div id="contact-info" class="sticky-top" style="top: 100px;">
+                <!-- Contact Cards -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-map-marker-alt fs-5"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-1 text-dark">Our Address</h5>
+                                <p class="text-muted mb-0">{{ CONTACT_ADDRESS|default:"123 Coffee Street, City, Country" }}</p>
+                                {% if CONTACT_MAP_URL %}
+                                <a href="{{ CONTACT_MAP_URL }}" target="_blank" rel="noopener" 
+                                   class="text-warning text-decoration-none small">
+                                    <i class="fas fa-map-marked-alt me-1"></i>View on Google Maps
+                                </a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <script>
-                            setTimeout(function() {
-                                var alertElem = document.getElementById('contact-success-alert');
-                                if (alertElem) { alertElem.style.display = 'none'; }
-                            }, 5000);
-                        </script>
-                    {% endif %}
+                    </div>
+                </div>
 
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {% if form.errors %}
-                            <div class="alert alert-danger">
-                                <strong>There were errors in your submission:</strong>
-                                <ul class="mb-0">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-phone fs-5"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-1 text-dark">Phone Numbers</h5>
+                                <p class="text-muted mb-1">{{ CONTACT_PHONE|default:"+1 (555) 123-4567" }}</p>
+                                {% if CONTACT_PHONE_2 %}
+                                <p class="text-muted mb-0">{{ CONTACT_PHONE_2 }}</p>
+                                {% endif %}
+                                <a href="tel:{{ CONTACT_PHONE|default:'+15551234567' }}" 
+                                   class="text-warning text-decoration-none small">
+                                    <i class="fas fa-phone-volume me-1"></i>Call Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-envelope fs-5"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="mb-1 text-dark">Email Addresses</h5>
+                                <p class="text-muted mb-1">{{ CONTACT_NOTIFICATION_EMAIL|default:"info@onecupinitiative.org" }}</p>
+                                {% if CONTACT_SUPPORT_EMAIL %}
+                                <p class="text-muted mb-0">{{ CONTACT_SUPPORT_EMAIL }}</p>
+                                {% endif %}
+                                <a href="mailto:{{ CONTACT_NOTIFICATION_EMAIL|default:'info@onecupinitiative.org' }}" 
+                                   class="text-warning text-decoration-none small">
+                                    <i class="fas fa-paper-plane me-1"></i>Send Email
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Hours -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3 text-dark">Business Hours</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
+                                <span class="text-muted">Monday - Friday</span>
+                                <span class="fw-semibold text-dark">9:00 AM - 6:00 PM</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
+                                <span class="text-muted">Saturday</span>
+                                <span class="fw-semibold text-dark">10:00 AM - 4:00 PM</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
+                                <span class="text-muted">Sunday</span>
+                                <span class="fw-semibold text-dark">Closed</span>
+                            </div>
+                        </div>
+                        <p class="small text-muted mt-3 mb-0">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Emergency inquiries outside business hours will be responded to on the next business day.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                {% if SOCIAL_MEDIA_LINKS %}
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3 text-dark">Connect With Us</h5>
+                        <div class="d-flex gap-2">
+                            {% if SOCIAL_MEDIA_LINKS.facebook %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.facebook }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-primary btn-sm rounded-circle p-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            {% endif %}
+                            {% if SOCIAL_MEDIA_LINKS.twitter %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.twitter }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-info btn-sm rounded-circle p-2">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            {% endif %}
+                            {% if SOCIAL_MEDIA_LINKS.instagram %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.instagram }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-danger btn-sm rounded-circle p-2">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            {% endif %}
+                            {% if SOCIAL_MEDIA_LINKS.youtube %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.youtube }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-danger btn-sm rounded-circle p-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            {% endif %}
+                            {% if SOCIAL_MEDIA_LINKS.linkedin %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.linkedin }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-primary btn-sm rounded-circle p-2">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Contact Form Column -->
+        <div class="col-lg-7">
+            <div id="contact-form" class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-dark mb-2">Send Us a Message</h2>
+                        <p class="text-muted">Fill out the form below and we'll get back to you as soon as possible.</p>
+                    </div>
+
+                    <!-- Quick Inquiry Tabs -->
+                    <div class="mb-4">
+                        <ul class="nav nav-pills nav-fill mb-3" id="inquiryTypeTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" 
+                                        type="button" role="tab" aria-controls="general" aria-selected="true">
+                                    <i class="fas fa-question-circle me-2"></i>General Inquiry
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="partnership-tab" data-bs-toggle="pill" data-bs-target="#partnership" 
+                                        type="button" role="tab" aria-controls="partnership" aria-selected="false">
+                                    <i class="fas fa-handshake me-2"></i>Partnership
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="support-tab" data-bs-toggle="pill" data-bs-target="#support" 
+                                        type="button" role="tab" aria-controls="support" aria-selected="false">
+                                    <i class="fas fa-life-ring me-2"></i>Support
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger border-0 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1">There were errors in your submission:</h5>
+                                <ul class="mb-0 mt-2">
                                 {% for field in form %}
                                     {% for error in field.errors %}
                                         <li><strong>{{ field.label }}:</strong> {{ error }}</li>
@@ -46,40 +236,336 @@
                                 {% endfor %}
                                 </ul>
                             </div>
-                        {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
 
-                        <!-- 1. Contact Information -->
-                        <h4 class="mt-4 mb-3" style="color: #ffe0b3; text-shadow: 1px 1px 2px #2c1810;">1. Contact Information</h4>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form.name.label_tag }}
+                    <form method="post" novalidate id="contactForm">
+                        {% csrf_token %}
+                        
+                        <div class="tab-content" id="inquiryTypeContent">
+                            <!-- General Inquiry Tab -->
+                            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                                <div class="mb-3">
+                                    <p class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        For general questions about our programs, donations, or volunteering opportunities.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Tab -->
+                            <div class="tab-pane fade" id="partnership" role="tabpanel" aria-labelledby="partnership-tab">
+                                <div class="mb-3">
+                                    <p class="text-muted">
+                                        <i class="fas fa-handshake me-1"></i>
+                                        For business partnerships, corporate sponsorships, or collaboration proposals.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Support Tab -->
+                            <div class="tab-pane fade" id="support" role="tabpanel" aria-labelledby="support-tab">
+                                <div class="mb-3">
+                                    <p class="text-muted">
+                                        <i class="fas fa-life-ring me-1"></i>
+                                        For technical support, account issues, or website feedback.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden field for inquiry type -->
+                        <input type="hidden" name="inquiry_type" id="inquiryType" value="general">
+
+                        <!-- Contact Information -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_name" class="form-label fw-semibold">
+                                    Full Name <span class="text-danger">*</span>
+                                </label>
                                 {{ form.name }}
-                                {% for error in form.name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                <div class="form-text">Please enter your full name</div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.email.label_tag }}
+                            <div class="col-md-6">
+                                <label for="id_email" class="form-label fw-semibold">
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
                                 {{ form.email }}
-                                {% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                <div class="form-text">We'll never share your email with anyone else</div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            {{ form.subject.label_tag }}
-                            {{ form.subject }}
-                            {% for error in form.subject.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.message.label_tag }}
-                            {{ form.message }}
-                            {% for error in form.message.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
                         </div>
 
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-lg btn-warning fw-bold" style="color: #2c1810;">Send Message</button>
+                        <!-- Subject -->
+                        <div class="mb-4">
+                            <label for="id_subject" class="form-label fw-semibold">
+                                Subject <span class="text-danger">*</span>
+                            </label>
+                            {{ form.subject }}
+                            <div class="form-text">Briefly describe the purpose of your message</div>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="mb-4">
+                            <label for="id_message" class="form-label fw-semibold">
+                                Message <span class="text-danger">*</span>
+                            </label>
+                            {{ form.message }}
+                            <div class="form-text d-flex justify-content-between">
+                                <span>Please provide as much detail as possible</span>
+                                <span id="charCount">0/2000 characters</span>
+                            </div>
+                        </div>
+
+                        <!-- Optional Fields -->
+                        <div class="card border-0 bg-light mb-4">
+                            <div class="card-body p-4">
+                                <h6 class="fw-semibold mb-3">Optional Information</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="id_phone" class="form-label">Phone Number</label>
+                                        <input type="tel" name="phone" id="id_phone" class="form-control" 
+                                               placeholder="Optional phone number">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="id_organization" class="form-label">Organization</label>
+                                        <input type="text" name="organization" id="id_organization" class="form-control" 
+                                               placeholder="Your company or organization">
+                                    </div>
+                                </div>
+                                <p class="small text-muted mt-3 mb-0">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Your personal information is safe with us. We respect your privacy.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning btn-lg fw-bold py-3" id="submitBtn">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
                         </div>
                     </form>
+
+                    <!-- Privacy Note -->
+                    <div class="text-center mt-4">
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            By submitting this form, you agree to our 
+                            privacy_policy
+                            {% comment %} <a href="{% url 'core:privacy_policy' %}" class="text-decoration-none">Privacy Policy</a>. {% endcomment %}
+                            We don't spam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="mt-5">
+                <h3 class="fw-bold text-dark mb-4">Frequently Asked Questions</h3>
+                <div class="accordion" id="contactFAQ">
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How long does it take to get a response?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                            <div class="accordion-body">
+                                We typically respond within 24-48 hours during business days. For urgent matters, 
+                                please call us at {{ CONTACT_PHONE|default:"+1 (555) 123-4567" }}.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Do you accept partnership proposals?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                            <div class="accordion-body">
+                                Yes! We're always open to collaboration. Please select "Partnership" from the inquiry 
+                                type tabs above for partnership-related queries.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Can I volunteer with One Cup Initiative?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#contactFAQ">
+                            <div class="accordion-body">
+                                Absolutely! We welcome volunteers. Please visit our 
+                                <a href="{% url 'get_involved:join' %}" class="text-warning text-decoration-none">
+                                    Get Involved
+                                </a> page for more information on volunteer opportunities.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Minimal CSS for enhancements -->
+<style>
+    /* Sticky contact info on large screens */
+    @media (min-width: 992px) {
+        .sticky-top {
+            position: -webkit-sticky;
+            position: sticky;
+        }
+    }
+    
+    /* Form input focus styles */
+    .form-control:focus, .form-select:focus {
+        border-color: #fd9d02;
+        box-shadow: 0 0 0 0.25rem rgba(253, 157, 2, 0.25);
+    }
+    
+    /* Tab styling */
+    .nav-pills .nav-link {
+        color: #6c757d;
+        border: 1px solid #dee2e6;
+        background-color: white;
+    }
+    
+    .nav-pills .nav-link.active {
+        background-color: #fd9d02;
+        border-color: #fd9d02;
+        color: white;
+    }
+    
+    /* Card hover effects */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Character counter */
+    #charCount {
+        font-weight: 500;
+        color: #6c757d;
+    }
+    
+    #charCount.warning {
+        color: #fd7e14;
+    }
+    
+    #charCount.danger {
+        color: #dc3545;
+    }
+</style>
+
+<!-- JavaScript for enhanced functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Character counter for message field
+        const messageField = document.getElementById('id_message');
+        const charCount = document.getElementById('charCount');
+        
+        if (messageField && charCount) {
+            messageField.addEventListener('input', function() {
+                const length = this.value.length;
+                charCount.textContent = `${length}/2000 characters`;
+                
+                // Color coding
+                charCount.classList.remove('warning', 'danger');
+                if (length > 1800) {
+                    charCount.classList.add('warning');
+                }
+                if (length > 1950) {
+                    charCount.classList.add('danger');
+                }
+            });
+            
+            // Trigger on page load
+            messageField.dispatchEvent(new Event('input'));
+        }
+        
+        // Inquiry type tabs
+        const inquiryTypeInput = document.getElementById('inquiryType');
+        const tabs = document.querySelectorAll('#inquiryTypeTabs button[data-bs-toggle="pill"]');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                const targetId = event.target.getAttribute('data-bs-target').replace('#', '');
+                inquiryTypeInput.value = targetId;
+            });
+        });
+        
+        // Form submission with loading state
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (contactForm && submitBtn) {
+            contactForm.addEventListener('submit', function(e) {
+                const originalText = submitBtn.innerHTML;
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                submitBtn.disabled = true;
+                
+                // Re-enable after 5 seconds if still processing
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 5000);
+            });
+        }
+        
+        // Auto-populate subject based on inquiry type
+        const subjectField = document.getElementById('id_subject');
+        if (subjectField && tabs) {
+            tabs.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(event) {
+                    const targetId = event.target.getAttribute('data-bs-target').replace('#', '');
+                    
+                    if (targetId === 'partnership') {
+                        subjectField.value = subjectField.value || 'Partnership Inquiry';
+                    } else if (targetId === 'support') {
+                        subjectField.value = subjectField.value || 'Support Request';
+                    }
+                });
+            });
+        }
+        
+        // Initialize Bootstrap tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

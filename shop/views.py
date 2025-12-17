@@ -3,7 +3,9 @@ from urllib import request
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Product, Cart, CartItem, Order
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q, Count
+from .models import Product, ProductCategory, Cart, CartItem, Order
 
 
 
@@ -12,8 +14,78 @@ from .models import Order
 
 
 def product_list(request):
-	products = Product.objects.filter(is_active=True)
-	return render(request, "shop/product_list.html", {"products": products})
+	"""
+	Enhanced product list view with filtering, sorting, and pagination
+	"""
+	# Get all active products
+	products = Product.objects.filter(is_active=True).select_related('category')
+	
+	# Get all categories with product counts
+	categories = ProductCategory.objects.filter(is_active=True).annotate(
+		product_count=Count('products', filter=Q(products__is_active=True))
+	)
+	
+	# Category filtering
+	active_category = request.GET.get('category')
+	if active_category:
+		products = products.filter(category__slug=active_category)
+	
+	# Search functionality
+	search_query = request.GET.get('q', '').strip()
+	if search_query:
+		products = products.filter(
+			Q(name__icontains=search_query) | 
+			Q(description__icontains=search_query)
+		)
+	
+	# Sorting
+	sort_by = request.GET.get('sort', '-created_at')
+	valid_sort_options = ['name', '-name', 'price', '-price', '-created_at', 'created_at']
+	if sort_by in valid_sort_options:
+		products = products.order_by(sort_by)
+	else:
+		products = products.order_by('-created_at')
+	
+	# Get total count before pagination
+	total_products = products.count()
+	
+	# Pagination
+	page = request.GET.get('page', 1)
+	paginator = Paginator(products, 9)  # 9 products per page (3x3 grid)
+	
+	try:
+		products_page = paginator.page(page)
+	except PageNotAnInteger:
+		products_page = paginator.page(1)
+	except EmptyPage:
+		products_page = paginator.page(paginator.num_pages)
+	
+	# Get cart count for header
+	cart_count = 0
+	session_key = request.session.session_key
+	if session_key:
+		cart = Cart.objects.filter(session_key=session_key).first()
+		if cart:
+			cart_count = sum(item.quantity for item in cart.items.all())
+	
+	# Get featured categories (top 3)
+	featured_categories = categories.filter(product_count__gt=0)[:3]
+	
+	# Build context
+	context = {
+		'products': products_page,
+		'page_obj': products_page,
+		'is_paginated': products_page.has_other_pages(),
+		'categories': categories,
+		'active_category': active_category,
+		'sort_by': sort_by,
+		'search_query': search_query,
+		'total_products': total_products,
+		'cart_count': cart_count,
+		'featured_categories': featured_categories,
+	}
+	
+	return render(request, "shop/product_list.html", context)
 
 # Add to cart view
 from django.views.decorators.http import require_POST
@@ -289,4 +361,41 @@ def checkout(request):
 # Order success view
 def order_success(request):
 	return render(request, "shop/order_success.html")
+
+
+# Product detail view
+def product_detail(request, slug):
+	"""
+	Product detail page with reviews
+	"""
+	from django.shortcuts import get_object_or_404
+	from .models import ProductReview
+	
+	product = get_object_or_404(Product, slug=slug, is_active=True)
+	
+	# Get approved reviews
+	reviews = product.reviews.filter(is_approved=True).order_by('-created_at')
+	
+	# Get related products (same category)
+	related_products = Product.objects.filter(
+		category=product.category,
+		is_active=True
+	).exclude(id=product.id)[:4]
+	
+	# Get cart count
+	cart_count = 0
+	session_key = request.session.session_key
+	if session_key:
+		cart = Cart.objects.filter(session_key=session_key).first()
+		if cart:
+			cart_count = sum(item.quantity for item in cart.items.all())
+	
+	context = {
+		'product': product,
+		'reviews': reviews,
+		'related_products': related_products,
+		'cart_count': cart_count,
+	}
+	
+	return render(request, "shop/product_detail.html", context)
 

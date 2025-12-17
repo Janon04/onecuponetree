@@ -7,130 +7,209 @@
     <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
     <meta name="description" content="{% block description %}{{ SITE_DESCRIPTION }}{% endblock %}">
     
-    <!-- External Libraries -->
+    <!-- Bootstrap 5 with custom theme colors -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- Custom CSS variables for theme - Minimal CSS only for variables -->
+    <style>
+        :root {
+            --primary-color: #fd9d02;
+            --primary-dark: #4b2e1a;
+            --accent-color: #d2700d;
+            --light-bg: #fff7ef;
+            --beige-bg: #e0ddd8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-top: 80px;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+    </style>
     
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <!-- Night/Day Mode Toggle removed -->
+<body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: #fff;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm py-2">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center text-primary fw-bold" href="{% url 'core:home' %}" style="font-size:1.4rem;">
-                <img src="{% static 'images/Black PNG _Onecup initiative @2x.png' %}" alt="One Cup Initiative Logo" style="height:55px; margin-right:10px; vertical-align:middle;">
+            <a class="navbar-brand d-flex align-items-center text-dark fw-bold fs-4" href="{% url 'core:home' %}">
+                <img src="{% static 'images/Black PNG _Onecup initiative @2x.png' %}" 
+                     alt="One Cup Initiative Logo" 
+                     height="50" class="me-2">
                 One Cup Initiative
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">Home</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" 
+                           href="{% url 'core:home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">About Us</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active fw-semibold{% endif %}" 
+                           href="{% url 'core:about' %}">About Us</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if 'farmers' in request.path or 'volunteers' in request.path or 'programs' in request.path %}active{% endif %}" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'farmers' in request.path or 'volunteers' in request.path or 'programs' in request.path %}active fw-semibold{% endif %}" 
+                           href="#" 
+                           id="programsDropdown" 
+                           role="button" 
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
                             Programs
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'farmers:support_activities_public' %}">Farmer Support</a></li>
-                            <li><a class="dropdown-item" href="{% url 'volunteers:barista_training_list' %}">Youth Barista Academy</a></li>
-                            <li><a class="dropdown-item" href="{% url 'trees:plant_tree' %}">OCI Campaign</a></li>
+                        <ul class="dropdown-menu shadow border-0 rounded-3" aria-labelledby="programsDropdown">
+                            <li><a class="dropdown-item py-2 px-3" href="{% url 'farmers:support_activities_public' %}">Farmer Support</a></li>
+                            <li><a class="dropdown-item py-2 px-3" href="{% url 'volunteers:barista_training_list' %}">Youth Barista Academy</a></li>
+                            <li><a class="dropdown-item py-2 px-3" href="{% url 'trees:plant_tree' %}">OCI Campaign</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'shop' in request.path %}active{% endif %}" href="{% url 'shop:product_list' %}">Shop</a>
+                        <a class="nav-link {% if 'shop' in request.path %}active fw-semibold{% endif %}" 
+                           href="{% url 'shop:product_list' %}">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'gallery' in request.path %}active{% endif %}" href="{% url 'gallery:gallery_list' %}">Gallery</a>
+                        <a class="nav-link {% if 'gallery' in request.path %}active fw-semibold{% endif %}" 
+                           href="{% url 'gallery:gallery_list' %}">Gallery</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'blog' in request.path %}active{% endif %}" href="{% url 'blog:post_list' %}">Blog</a>
+                        <a class="nav-link {% if 'blog' in request.path %}active fw-semibold{% endif %}" 
+                           href="{% url 'blog:post_list' %}">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'core:contact' %}">Contact</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active fw-semibold{% endif %}" 
+                           href="{% url 'core:contact' %}">Contact</a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center gap-2">
-                    <a href="{% url 'core:donate' %}" class="btn btn-donate px-4 fw-semibold me-3 d-none d-lg-inline-block">Donate</a>
+                
+                <div class="d-flex align-items-center ms-lg-3">
+                    <a href="{% url 'core:donate' %}" 
+                       class="btn btn-warning rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                        <i class="fas fa-heart me-1"></i> Donate
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
     
     <!-- Main Content -->
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    <main>
+    <main class="py-4">
+        {% if messages %}
+            <div class="container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3 shadow-sm rounded-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
         {% block content %}{% endblock %}
     </main>
     
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="bg-dark text-white py-5 mt-auto">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="{% url 'core:home' %}" class="text-decoration-none">Home</a></li>
-                        <li><a href="{% url 'core:about' %}" class="text-decoration-none">About Us</a></li>
-                        <li><a href="{% url 'core:donate' %}" class="text-decoration-none">Donate</a></li>
-                        <li><a href="{% url 'core:contact' %}" class="text-decoration-none">Contact</a></li>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'core:home' %}" class="text-white-50 text-decoration-none hover-text-white">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'core:about' %}" class="text-white-50 text-decoration-none hover-text-white">About Us</a></li>
+                        <li class="mb-2"><a href="{% url 'core:donate' %}" class="text-white-50 text-decoration-none hover-text-white">Donate</a></li>
+                        <li class="mb-2"><a href="{% url 'core:contact' %}" class="text-white-50 text-decoration-none hover-text-white">Contact</a></li>
+                        <li class="mb-2"><a href="{% url 'shop:product_list' %}" class="text-white-50 text-decoration-none hover-text-white">Shop</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="fw-bold mb-3">Resources</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="{% url 'blog:post_list' %}" class="text-decoration-none">Blog</a></li>
-                        <li><a href="{% url 'researchhub:publication_list' %}" class="text-decoration-none">Research</a></li>
-                        <li><a href="{% url 'events:event_list' %}" class="text-decoration-none">Events</a></li>
-                        <li><a href="{% url 'gallery:gallery_list' %}" class="text-decoration-none">Gallery</a></li>
-                        <li><a href="{% url 'farmers:story_list' %}" class="text-decoration-none">Farmer Stories</a></li>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'blog:post_list' %}" class="text-white-50 text-decoration-none hover-text-white">Blog</a></li>
+                        <li class="mb-2"><a href="{% url 'researchhub:publication_list' %}" class="text-white-50 text-decoration-none hover-text-white">Research</a></li>
+                        <li class="mb-2"><a href="{% url 'events:event_list' %}" class="text-white-50 text-decoration-none hover-text-white">Events</a></li>
+                        <li class="mb-2"><a href="{% url 'gallery:gallery_list' %}" class="text-white-50 text-decoration-none hover-text-white">Gallery</a></li>
+                        <li class="mb-2"><a href="{% url 'farmers:story_list' %}" class="text-white-50 text-decoration-none hover-text-white">Farmer Stories</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="fw-bold mb-3">Contact Us</h6>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-1"><i class="fas fa-envelope me-2"></i>{{ CONTACT_NOTIFICATION_EMAIL }}</li>
-                        <li class="mb-1"><i class="fas fa-phone me-2"></i>{{ CONTACT_PHONE }}</li>
-                        <li class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>{{ CONTACT_ADDRESS }}</li>
-                        <li>
-                            <a href="{{ CONTACT_MAP_URL }}" target="_blank" rel="noopener" class="text-decoration-underline">
-                                <i class="fas fa-map me-2"></i>Google Maps
+                
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2 d-flex align-items-start">
+                            <i class="fas fa-envelope me-2 mt-1 text-warning"></i>
+                            <span class="text-white-50">{{ CONTACT_NOTIFICATION_EMAIL|default:"info@onecupinitiative.org" }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-start">
+                            <i class="fas fa-phone me-2 mt-1 text-warning"></i>
+                            <span class="text-white-50">{{ CONTACT_PHONE|default:"+1 (555) 123-4567" }}</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-start">
+                            <i class="fas fa-map-marker-alt me-2 mt-1 text-warning"></i>
+                            <span class="text-white-50">{{ CONTACT_ADDRESS|default:"123 Coffee Street, City, Country" }}</span>
+                        </li>
+                        <li class="mb-3">
+                            <a href="{{ CONTACT_MAP_URL|default:'#' }}" target="_blank" rel="noopener" 
+                               class="text-warning text-decoration-none">
+                                <i class="fas fa-map me-2"></i>View on Google Maps
                             </a>
                         </li>
                     </ul>
+                    
+                    <div class="d-flex gap-2">
+                        {% if SOCIAL_MEDIA_LINKS.facebook %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.facebook }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-light btn-sm rounded-circle p-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        {% endif %}
+                        {% if SOCIAL_MEDIA_LINKS.twitter %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.twitter }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-light btn-sm rounded-circle p-2">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        {% endif %}
+                        {% if SOCIAL_MEDIA_LINKS.instagram %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.instagram }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-light btn-sm rounded-circle p-2">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        {% endif %}
+                        {% if SOCIAL_MEDIA_LINKS.youtube %}
+                            <a href="{{ SOCIAL_MEDIA_LINKS.youtube }}" target="_blank" rel="noopener" 
+                               class="btn btn-outline-light btn-sm rounded-circle p-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             
-            <hr class="bg-secondary">
-            <div class="row justify-content-center footer-small">
-                <div class="col-12 text-center footer-small">
-                    <p class="mb-2 footer-small">&copy; 2025 <a href="/" class="text-reset text-decoration-none">One Cup Initiative</a>. All rights reserved.</p>
+            <hr class="bg-white-50 my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <p class="mb-0 text-white-50">
+                        &copy; {% now "Y" %} <a href="{% url 'core:home' %}" class="text-warning text-decoration-none">One Cup Initiative</a>. All rights reserved.
+                    </p>
                 </div>
-            </div>
-        </div>
-        <div class="row justify-content-center mb-3">
-            <div class="col-auto">
-                <div class="social-links">
-                    {% if SOCIAL_MEDIA_LINKS.facebook %}<a href="{{ SOCIAL_MEDIA_LINKS.facebook }}" target="_blank" rel="noopener" class="social-icon social-facebook fs-5 me-2"><i class="fab fa-facebook-f"></i></a>{% endif %}
-                    {% if SOCIAL_MEDIA_LINKS.twitter %}<a href="{{ SOCIAL_MEDIA_LINKS.twitter }}" target="_blank" rel="noopener" class="social-icon social-twitter fs-5 me-2"><i class="fab fa-twitter"></i></a>{% endif %}
-                    {% if SOCIAL_MEDIA_LINKS.instagram %}<a href="{{ SOCIAL_MEDIA_LINKS.instagram }}" target="_blank" rel="noopener" class="social-icon social-instagram fs-5 me-2"><i class="fab fa-instagram"></i></a>{% endif %}
-                    {% if SOCIAL_MEDIA_LINKS.youtube %}<a href="{{ SOCIAL_MEDIA_LINKS.youtube }}" target="_blank" rel="noopener" class="social-icon social-youtube fs-5"><i class="fab fa-youtube"></i></a>{% endif %}
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 text-white-50">
+                        Making a difference, one cup at a time.
+                    </p>
                 </div>
             </div>
         </div>
@@ -138,109 +217,31 @@
     
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!--
-    <script>
-        // Night/Day Mode Toggle (commented out)
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        function setTheme(mode) {
-            if (mode === 'night') {
-                body.classList.add('night-mode');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i> <span class="d-none d-md-inline">Day Mode</span>';
-                localStorage.setItem('theme', 'night');
-            } else {
-                body.classList.remove('night-mode');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i> <span class="d-none d-md-inline">Night Mode</span>';
-                localStorage.setItem('theme', 'day');
-            }
-        }
-        themeToggle.addEventListener('click', function() {
-            if (body.classList.contains('night-mode')) {
-                setTheme('day');
-            } else {
-                setTheme('night');
-            }
-        });
-        // On page load, set theme from localStorage
-        if (localStorage.getItem('theme') === 'night') {
-            setTheme('night');
-        } else {
-            setTheme('day');
-        }
-    </script>
-    -->
     
-    <!-- Custom JavaScript -->
+    <!-- Minimal JavaScript - Only essential functionality -->
     <script>
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        // Close mobile menu when clicking a link
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const navbarCollapse = document.querySelector('.navbar-collapse.show');
+                    if (navbarCollapse) {
+                        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                        if (bsCollapse) bsCollapse.hide();
+                    }
+                });
+            });
             
-                if (this.getAttribute('href') === '#' || document.querySelector(this.getAttribute('href'))) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
+            // Auto-dismiss alerts after 5 seconds
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = bootstrap.Alert.getInstance(alert);
+                    if (bsAlert) bsAlert.close();
+                });
+            }, 5000);
         });
-        
-        // Navbar background on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow');
-                navbar.style.padding = '0.5rem 0';
-            } else {
-                navbar.classList.remove('shadow');
-                navbar.style.padding = '0.8rem 0';
-            }
-        });
-        
-        // Initialize tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
-        
-        // Counter animation for impact statistics
-        function animateCounters() {
-            const counters = document.querySelectorAll('.impact-number');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const increment = target / 100;
-                let current = 0;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        counter.textContent = target.toLocaleString();
-                        clearInterval(timer);
-                    } else {
-                        counter.textContent = Math.floor(current).toLocaleString();
-                    }
-                }, 20);
-            });
-        }
-        
-        // Trigger counter animation when in viewport
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-        
-        const impactSection = document.querySelector('.impact-stats');
-        if (impactSection) {
-            observer.observe(impactSection);
-        }
     </script>
     
     {% block extra_js %}{% endblock %}

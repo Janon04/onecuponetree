@@ -1,8 +1,36 @@
 
 from django.db import models
+from django.utils.text import slugify
+from django.db.models import Avg, Count
+
+# Product Category model
+class ProductCategory(models.Model):
+	name = models.CharField(max_length=100, unique=True)
+	slug = models.SlugField(max_length=100, unique=True, blank=True)
+	description = models.TextField(blank=True)
+	icon = models.CharField(max_length=50, blank=True, help_text="Font Awesome icon name (e.g., 'coffee', 'leaf')")
+	is_active = models.BooleanField(default=True)
+	ordering = models.IntegerField(default=0, help_text="Lower numbers appear first")
+	created_at = models.DateTimeField(auto_now_add=True)
+	
+	class Meta:
+		verbose_name = "Product Category"
+		verbose_name_plural = "Product Categories"
+		ordering = ['ordering', 'name']
+	
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(self.name)
+		super().save(*args, **kwargs)
+	
+	def __str__(self):
+		return self.name
+	
+	@property
+	def product_count(self):
+		return self.products.filter(is_active=True).count()
 
 # Product model for shop
-
 class Product(models.Model):
 	CURRENCY_CHOICES = [
 		("RWF", "Rwandan Franc"),
@@ -12,14 +40,69 @@ class Product(models.Model):
 		("UGX", "Ugandan Shilling"),
 	]
 	name = models.CharField(max_length=255)
+	slug = models.SlugField(max_length=255, unique=True, blank=True)
 	description = models.TextField(blank=True)
+	category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
 	price = models.DecimalField(max_digits=10, decimal_places=2)
+	compare_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, help_text="Original price for showing discounts")
 	currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default="RWF")
+	stock_quantity = models.IntegerField(default=0, help_text="Available stock quantity")
 	is_active = models.BooleanField(default=True)
+	is_featured = models.BooleanField(default=False, help_text="Display as featured product")
+	is_new = models.BooleanField(default=False, help_text="Mark as new product")
 	image = models.ImageField(upload_to="product_images/", blank=True, null=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		ordering = ['-created_at']
+	
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(self.name)
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return self.name
+	
+	@property
+	def average_rating(self):
+		avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
+		return round(avg, 1) if avg else None
+	
+	@property
+	def review_count(self):
+		return self.reviews.count()
+	
+	@property
+	def is_in_stock(self):
+		return self.stock_quantity > 0
+	
+	@property
+	def discount_percentage(self):
+		if self.compare_price and self.compare_price > self.price:
+			return int(((self.compare_price - self.price) / self.compare_price) * 100)
+		return 0
+
+
+# Product Review model
+class ProductReview(models.Model):
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+	customer_name = models.CharField(max_length=100)
+	customer_email = models.EmailField()
+	rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)], help_text="Rating from 1 to 5")
+	comment = models.TextField()
+	is_verified_purchase = models.BooleanField(default=False)
+	is_approved = models.BooleanField(default=False, help_text="Approve review for public display")
+	created_at = models.DateTimeField(auto_now_add=True)
+	
+	class Meta:
+		ordering = ['-created_at']
+		verbose_name = "Product Review"
+		verbose_name_plural = "Product Reviews"
+	
+	def __str__(self):
+		return f"{self.customer_name} - {self.product.name} ({self.rating}★)"
 
 
 # Cart model
