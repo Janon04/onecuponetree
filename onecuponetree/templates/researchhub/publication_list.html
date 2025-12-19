@@ -21,7 +21,7 @@
     {% if publications %}
         <div class="list-group list-group-flush">
             {% for pub in publications %}
-            <div class="list-group-item py-4 px-3 border-0 border-bottom d-flex align-items-start gap-4" style="background: #fff7ef; color:#4b2e1a;">
+            <div class="list-group-item py-4 px-3 border-0 border-bottom d-flex align-items-start gap-4 list-item-dynamic-hover">
                 {% if pub.image %}
                     <img src="{{ pub.image.url }}" alt="{{ pub.title }}" class="rounded-3 flex-shrink-0" style="width: 100px; height: 100px; object-fit: cover; border:2px solid #b85c00;">
                 {% endif %}

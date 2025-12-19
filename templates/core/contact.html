@@ -13,10 +13,10 @@
             Our team typically responds within 24-48 hours.
         </p>
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="#contact-form" class="btn btn-warning btn-lg">
+            <a href="#contact-form" class="btn btn-lg" style="background-color: #692e07; color: white; border: none;">
                 <i class="fas fa-envelope me-2"></i>Send a Message
             </a>
-            <a href="#contact-info" class="btn btn-outline-dark btn-lg">
+            <a href="#contact-info" class="btn btn-outline-dark btn-lg" style="border-color: #692e07; color: #692e07;">
                 <i class="fas fa-info-circle me-2"></i>Contact Info
             </a>
         </div>
@@ -53,11 +53,11 @@
         <div class="col-lg-5">
             <div id="contact-info" class="sticky-top" style="top: 100px;">
                 <!-- Contact Cards -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card border-0 shadow-sm mb-4 card-dynamic-hover">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-start mb-3">
-                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
-                                 style="width: 50px; height: 50px;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background-color: #692e07; color: white;">
                                 <i class="fas fa-map-marker-alt fs-5"></i>
                             </div>
                             <div class="ms-3">
@@ -65,7 +65,7 @@
                                 <p class="text-muted mb-0">{{ CONTACT_ADDRESS|default:"123 Coffee Street, City, Country" }}</p>
                                 {% if CONTACT_MAP_URL %}
                                 <a href="{{ CONTACT_MAP_URL }}" target="_blank" rel="noopener" 
-                                   class="text-warning text-decoration-none small">
+                                   class="text-decoration-none small" style="color: #692e07;">
                                     <i class="fas fa-map-marked-alt me-1"></i>View on Google Maps
                                 </a>
                                 {% endif %}
@@ -74,11 +74,11 @@
                     </div>
                 </div>
 
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card border-0 shadow-sm mb-4 card-dynamic-hover">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-start mb-3">
-                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
-                                 style="width: 50px; height: 50px;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background-color: #692e07; color: white;">
                                 <i class="fas fa-phone fs-5"></i>
                             </div>
                             <div class="ms-3">
@@ -88,7 +88,7 @@
                                 <p class="text-muted mb-0">{{ CONTACT_PHONE_2 }}</p>
                                 {% endif %}
                                 <a href="tel:{{ CONTACT_PHONE|default:'+15551234567' }}" 
-                                   class="text-warning text-decoration-none small">
+                                   class="text-decoration-none small" style="color: #692e07;">
                                     <i class="fas fa-phone-volume me-1"></i>Call Now
                                 </a>
                             </div>
@@ -96,11 +96,11 @@
                     </div>
                 </div>
 
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card border-0 shadow-sm mb-4 card-dynamic-hover">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-start mb-3">
-                            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" 
-                                 style="width: 50px; height: 50px;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background-color: #692e07; color: white;">
                                 <i class="fas fa-envelope fs-5"></i>
                             </div>
                             <div class="ms-3">
@@ -110,7 +110,7 @@
                                 <p class="text-muted mb-0">{{ CONTACT_SUPPORT_EMAIL }}</p>
                                 {% endif %}
                                 <a href="mailto:{{ CONTACT_NOTIFICATION_EMAIL|default:'info@onecupinitiative.org' }}" 
-                                   class="text-warning text-decoration-none small">
+                                   class="text-decoration-none small" style="color: #692e07;">
                                     <i class="fas fa-paper-plane me-1"></i>Send Email
                                 </a>
                             </div>
@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Business Hours -->
-                <div class="card border-0 shadow-sm">
+                <div class="card border-0 shadow-sm card-dynamic-hover">
                     <div class="card-body p-4">
                         <h5 class="mb-3 text-dark">Business Hours</h5>
                         <div class="list-group list-group-flush">
@@ -145,7 +145,7 @@
 
                 <!-- Social Media -->
                 {% if SOCIAL_MEDIA_LINKS %}
-                <div class="card border-0 shadow-sm mt-4">
+                <div class="card border-0 shadow-sm mt-4 card-dynamic-hover">
                     <div class="card-body p-4">
                         <h5 class="mb-3 text-dark">Connect With Us</h5>
                         <div class="d-flex gap-2">
@@ -188,7 +188,7 @@
 
         <!-- Contact Form Column -->
         <div class="col-lg-7">
-            <div id="contact-form" class="card border-0 shadow-lg rounded-4">
+            <div id="contact-form" class="card border-0 shadow-lg rounded-4 card-dynamic-hover">
                 <div class="card-body p-4 p-md-5">
                     <div class="text-center mb-4">
                         <h2 class="fw-bold text-dark mb-2">Send Us a Message</h2>

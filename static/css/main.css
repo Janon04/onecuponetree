@@ -445,6 +445,138 @@ img {
     transition: all var(--transition-normal);
 }
 
+/* Dynamic Hover Cards - White to Chocolate */
+.card-dynamic-hover {
+    background-color: var(--color-bg-white) !important;
+    color: var(--color-primary-dark) !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.card-dynamic-hover .card-title,
+.card-dynamic-hover h5,
+.card-dynamic-hover h6 {
+    color: var(--color-primary-dark) !important;
+    transition: color 0.3s ease-in-out !important;
+}
+
+.card-dynamic-hover .card-text,
+.card-dynamic-hover p,
+.card-dynamic-hover small,
+.card-dynamic-hover .text-muted-dark,
+.card-dynamic-hover .badge {
+    color: var(--color-text-mid) !important;
+    transition: color 0.3s ease-in-out !important;
+}
+
+.card-dynamic-hover .text-warning,
+.card-dynamic-hover .impact-number {
+    transition: color 0.3s ease-in-out !important;
+}
+
+.card-dynamic-hover:hover {
+    background-color: #692e07 !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-dynamic-hover:hover > .card-body .card-title,
+.card-dynamic-hover:hover > .card-body h5,
+.card-dynamic-hover:hover > .card-body h6,
+.card-dynamic-hover:hover > .card-body .card-text,
+.card-dynamic-hover:hover > .card-body p:not(.bg-white p):not(.bg-beige p):not(.rounded-3 p),
+.card-dynamic-hover:hover > .card-body small,
+.card-dynamic-hover:hover > .card-header,
+.card-dynamic-hover:hover > .text-center > *:not(.bg-white):not(.bg-beige):not(.rounded-3) {
+    color: var(--color-text-light) !important;
+}
+
+.card-dynamic-hover:hover .text-muted-dark:not(.bg-white .text-muted-dark):not(.bg-beige .text-muted-dark),
+.card-dynamic-hover:hover .text-muted:not(.bg-white .text-muted):not(.bg-beige .text-muted):not(.rounded-3 .text-muted) {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Nested white/beige cards inside hover cards keep their dark text */
+.card-dynamic-hover:hover .bg-white h5,
+.card-dynamic-hover:hover .bg-white p,
+.card-dynamic-hover:hover .bg-beige h5,
+.card-dynamic-hover:hover .bg-beige p,
+.card-dynamic-hover:hover .rounded-3 h5,
+.card-dynamic-hover:hover .rounded-3 p,
+.card-dynamic-hover:hover .bg-white .text-dark,
+.card-dynamic-hover:hover .bg-beige .text-dark,
+.card-dynamic-hover:hover .rounded-3 .text-dark,
+.card-dynamic-hover:hover .bg-white .text-muted,
+.card-dynamic-hover:hover .bg-beige .text-muted,
+.card-dynamic-hover:hover .rounded-3 .text-muted {
+    color: var(--color-primary-dark) !important;
+}
+
+.card-dynamic-hover:hover .text-warning,
+.card-dynamic-hover:hover .impact-number {
+    color: #ffd700 !important;
+}
+
+.card-dynamic-hover:hover .bg-warning {
+    background-color: #fd9d02 !important;
+}
+
+/* For list items with dynamic hover */
+.list-item-dynamic-hover {
+    background-color: var(--color-bg-white) !important;
+    color: var(--color-primary-dark) !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.list-item-dynamic-hover:hover {
+    background-color: #692e07 !important;
+}
+
+.list-item-dynamic-hover:hover p,
+.list-item-dynamic-hover:hover small,
+.list-item-dynamic-hover:hover h1,
+.list-item-dynamic-hover:hover h2,
+.list-item-dynamic-hover:hover h3,
+.list-item-dynamic-hover:hover h4,
+.list-item-dynamic-hover:hover h5,
+.list-item-dynamic-hover:hover h6 {
+    color: var(--color-text-light) !important;
+}
+
+/* For farm cards with darker chocolate background */
+.card-dark-chocolate {
+    background-color: var(--color-bg-white) !important;
+    color: var(--color-text-dark) !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.card-dark-chocolate h3,
+.card-dark-chocolate h4,
+.card-dark-chocolate h5,
+.card-dark-chocolate p,
+.card-dark-chocolate .lead {
+    color: var(--color-text-dark) !important;
+    transition: color 0.3s ease-in-out !important;
+}
+
+.card-dark-chocolate:hover {
+    background-color: #4b2e1a !important;
+}
+
+.card-dark-chocolate:hover h3,
+.card-dark-chocolate:hover h4,
+.card-dark-chocolate:hover h5,
+.card-dark-chocolate:hover p,
+.card-dark-chocolate:hover .lead,
+.card-dark-chocolate:hover .text-light-on-hover {
+    color: var(--color-text-light) !important;
+}
+
+/* For form cards that should remain with chocolate background */
+.card-form-chocolate {
+    background-color: #4b2e1a !important;
+    color: #fff !important;
+}
+
 /* ============================================
    LAYOUT COMPONENTS
    ============================================ */

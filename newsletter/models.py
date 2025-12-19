@@ -6,7 +6,9 @@ from ckeditor.fields import RichTextField
 
 class Newsletter(models.Model):
     subject = models.CharField(_('subject'), max_length=255)
-    content = RichTextField(_('content'))
+    description = models.TextField(_('short description'), max_length=300, help_text=_('Brief description of the newsletter (max 300 characters)'), blank=True)
+    content = RichTextField(_('content'), blank=True, null=True, help_text=_('Optional detailed content'))
+    document = models.FileField(_('document'), upload_to='newsletter_documents/', null=True, blank=True, help_text=_('Upload PDF or document file'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     published = models.BooleanField(_('published'), default=False)
     sent_at = models.DateTimeField(_('sent at'), null=True, blank=True)

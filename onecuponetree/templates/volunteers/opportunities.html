@@ -6,7 +6,7 @@
     {% if opportunities %}
         <div class="blog-list-vertical">
             {% for opportunity in opportunities %}
-            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch bg-light-warm text-primary-dark" style="transition: box-shadow 0.3s; min-height:220px;">
+            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch card-dynamic-hover" style="transition: box-shadow 0.3s; min-height:220px;">
                 {% if opportunity.image or opportunity.video %}
                 <div class="blog-media-zoom-wrapper d-flex align-items-center justify-content-center" style="width: 240px; max-width: 40vw; background: #e6d3c2; border-top-left-radius:1.2rem; border-bottom-left-radius:1.2rem; overflow:hidden;">
                     {% if opportunity.video %}

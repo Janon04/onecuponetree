@@ -33,11 +33,29 @@ class NewsletterAdminForm(forms.ModelForm):
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
     form = NewsletterAdminForm
-    list_display = ('subject', 'created_at', 'published', 'sent_at', 'send_newsletter_action')
+    list_display = ('subject', 'has_document', 'created_at', 'published', 'sent_at', 'send_newsletter_action')
     list_filter = ('published', 'created_at', 'sent_at')
-    search_fields = ('subject', 'content')
+    search_fields = ('subject', 'description', 'content')
     actions = ['send_newsletter']
     inlines = [NewsletterMediaInline]
+    fieldsets = (
+        (_('Basic Information'), {
+            'fields': ('subject', 'description')
+        }),
+        (_('Content'), {
+            'fields': ('content', 'document'),
+            'description': _('You can either provide content or upload a document, or both. Content is optional.')
+        }),
+        (_('Publishing'), {
+            'fields': ('published',)
+        }),
+    )
+    
+    def has_document(self, obj):
+        if obj.document:
+            return format_html('<span style="color: green;">✓ Yes</span>')
+        return format_html('<span style="color: gray;">✗ No</span>')
+    has_document.short_description = _('Document')
 
     def send_newsletter_action(self, obj):
         if obj.published and not obj.sent_at:

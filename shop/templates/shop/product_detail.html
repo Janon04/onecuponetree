@@ -231,13 +231,14 @@
 </div>
 
 <style>
+    /* Product Detail Page Styling */
     .hover-lift {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     
     .hover-lift:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 8px 16px rgba(105, 46, 7, 0.2) !important;
     }
     
     .object-fit-cover {
@@ -246,7 +247,112 @@
     }
     
     .bg-beige {
-        background-color: #e0ddd8;
+        background-color: #f5efe6;
+    }
+    
+    /* Breadcrumb Styling */
+    .breadcrumb {
+        background-color: #fef9f3;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+    }
+    
+    .breadcrumb-item a {
+        color: #692e07;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    
+    .breadcrumb-item a:hover {
+        color: #ff9f1c;
+    }
+    
+    .breadcrumb-item.active {
+        color: #8a3d09;
+    }
+    
+    /* Badge Styling */
+    .badge.bg-warning {
+        background-color: #ff9f1c !important;
+    }
+    
+    .badge.bg-light {
+        background-color: #f5efe6 !important;
+        color: #692e07 !important;
+        border-color: #d4a574 !important;
+    }
+    
+    /* Button Styling */
+    .btn-dark {
+        background: linear-gradient(135deg, #692e07 0%, #4a2005 100%) !important;
+        border: none;
+        color: #ffffff !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-dark:hover {
+        background: linear-gradient(135deg, #8a3d09 0%, #692e07 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(105, 46, 7, 0.3);
+    }
+    
+    .btn-outline-dark {
+        border: 2px solid #692e07;
+        color: #692e07 !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-dark:hover {
+        background-color: #692e07 !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+    }
+    
+    /* Text Colors */
+    h1, h2, h3, h4, h5, h6,
+    .text-dark {
+        color: #2d2d2d !important;
+    }
+    
+    /* Card Styling */
+    .card {
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        border-color: #d4a574;
+    }
+    
+    /* Alert Styling */
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+    
+    /* Form Control */
+    .form-control:focus {
+        border-color: #692e07;
+        box-shadow: 0 0 0 0.25rem rgba(105, 46, 7, 0.25);
+    }
+    
+    /* Rating Stars */
+    .text-warning {
+        color: #ff9f1c !important;
+    }
+    
+    /* Product Info Icons */
+    .text-muted {
+        color: #6c757d !important;
     }
 </style>
 {% endblock %}

@@ -7,7 +7,7 @@
     {% if events %}
         <div class="blog-list-vertical">
             {% for event in events %}
-            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch bg-light-warm text-primary-dark" style="transition: box-shadow 0.3s; min-height:220px;">
+            <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch card-dynamic-hover" style="transition: box-shadow 0.3s; min-height:220px;">
                 {% if event.video %}
                     <div class="blog-media-zoom-wrapper position-relative flex-shrink-0" style="overflow:hidden; border-top-left-radius:1.2rem; border-bottom-left-radius:1.2rem; width: 260px; max-width:40vw; cursor:pointer;">
                         <video class="blog-media-zoom" controls preload="metadata" style="width:100%;height:220px;object-fit:cover; background:#222; transition: transform 0.5s cubic-bezier(.4,2,.6,1);">

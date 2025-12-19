@@ -1,42 +1,213 @@
 {% extends "base.html" %}
 
-{% block title %}Newsletters{% endblock %}
+{% block title %}Newsletters - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
+<!-- Newsletter Header -->
+<section class="newsletter-header py-5" style="background: linear-gradient(135deg, #692e07 0%, #4a2005 100%); border-bottom: 4px solid #d4a574;">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold text-white mb-3">
+            <i class="fas fa-newspaper me-3"></i>Our Newsletters
+        </h1>
+        <p class="lead text-white-50 mb-0">Stay updated with our latest news, stories, and impact reports</p>
+    </div>
+</section>
+
 <div class="container py-5">
-    <h2 class="fw-bold mb-4 text-center" style="color:#110906; letter-spacing:-1px;">Newsletters</h2>
     {% if newsletters %}
-        <div class="row justify-content-center">
+        <div class="row g-4">
             {% for newsletter in newsletters %}
-                <div class="col-lg-8 mb-5">
-                    <div class="card shadow border-0 rounded-4" style="background:#fff7ef;">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="card-title mb-2" style="color:#b85c00;">{{ newsletter.subject }}</h4>
-                            <div class="mb-3 text-muted small">
-                                <i class="fa-regular fa-calendar-alt me-1"></i> {{ newsletter.created_at|date:"F j, Y, g:i a" }}
+                <div class="col-lg-6 col-md-12">
+                    <div class="card newsletter-card h-100 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <!-- Card Header with Subject -->
+                        <div class="card-header border-0 p-4" style="background-color: #f8f9fa; border-bottom: 3px solid #692e07 !important;">
+                            <h3 class="card-title mb-3" style="color: #2d2d2d !important; font-weight: 700; font-size: 1.5rem;">
+                                <i class="fas fa-envelope-open-text me-2" style="color: #ff9f1c;"></i>
+                                {{ newsletter.subject }}
+                            </h3>
+                            <div class="d-flex flex-wrap align-items-center gap-3 text-muted" style="font-size: 0.9rem;">
+                                <span>
+                                    <i class="fas fa-calendar-alt me-2" style="color: #692e07;"></i>
+                                    {{ newsletter.created_at|date:"F j, Y" }}
+                                </span>
+                                <span>
+                                    <i class="fas fa-clock me-2" style="color: #692e07;"></i>
+                                    {{ newsletter.created_at|date:"g:i A" }}
+                                </span>
+                                {% if newsletter.published %}
+                                <span class="badge" style="background-color: #28a745; font-size: 0.8rem;">
+                                    <i class="fas fa-check-circle me-1"></i>Published
+                                </span>
+                                {% endif %}
                             </div>
+                        </div>
+
+                        <!-- Card Body with Media and Content -->
+                        <div class="card-body p-4">
                             {% if newsletter.media.all %}
-                                <div class="mb-3">
-                                {% for media in newsletter.media.all %}
-                                    {% if media.video %}
-                                        <video class="img-fluid rounded mb-3" controls style="width:100%;height:auto;max-height:320px;object-fit:cover;">
-                                            <source src="{{ media.video.url }}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    {% elif media.image %}
-                                        <img src="{{ media.image.url }}" class="img-fluid rounded mb-3" alt="Newsletter image">
-                                    {% endif %}
-                                {% endfor %}
+                                <div class="mb-4">
+                                    <div class="row g-3">
+                                    {% for media in newsletter.media.all %}
+                                        <div class="col-12 {% if newsletter.media.all.count > 1 and forloop.counter <= 2 %}col-md-6{% endif %}">
+                                            {% if media.video %}
+                                                <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm" style="border: 3px solid #d4a574;">
+                                                    <video controls class="w-100 h-100" style="object-fit: contain; background-color: #000;">
+                                                        <source src="{{ media.video.url }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+                                            {% elif media.image %}
+                                                <div class="position-relative rounded overflow-hidden shadow-sm" style="border: 3px solid #d4a574;">
+                                                    <img src="{{ media.image.url }}" 
+                                                         class="img-fluid w-100" 
+                                                         alt="Newsletter image"
+                                                         style="display: block; height: auto; max-height: 400px; object-fit: contain; background-color: #f8f9fa;">
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        {% if newsletter.media.all.count > 2 and forloop.counter == 2 %}
+                                            {% if newsletter.media.all.count > 2 %}
+                                            <div class="col-12 text-center mt-2">
+                                                <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                    <i class="fas fa-images me-2"></i>
+                                                    +{{ newsletter.media.all.count|add:"-2" }} more media file{% if newsletter.media.all.count > 3 %}s{% endif %}
+                                                </span>
+                                            </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    </div>
                                 </div>
                             {% endif %}
-                            <div class="card-text text-primary-dark">{{ newsletter.content|safe }}</div>
+
+                            <!-- Description -->
+                            {% if newsletter.description %}
+                            <div class="mb-3 p-3 rounded" style="background-color: #fef9f3; border-left: 4px solid #692e07;">
+                                <p class="mb-0" style="color: #2d2d2d; line-height: 1.7; font-size: 1rem;">
+                                    {{ newsletter.description }}
+                                </p>
+                            </div>
+                            {% endif %}
+
+                            <!-- Optional Content (Limited) -->
+                            {% if newsletter.content %}
+                            <div class="mb-3" style="color: #2d2d2d; line-height: 1.7;">
+                                {{ newsletter.content|striptags|truncatewords:50|safe }}
+                            </div>
+                            {% endif %}
                         </div>
+
+                        <!-- Card Footer with Document Download -->
+                        {% if newsletter.document %}
+                        <div class="card-footer bg-white border-0 p-4 pt-0">
+                            <a href="{{ newsletter.document.url }}" 
+                               target="_blank"
+                               download
+                               class="btn btn-dark w-100 d-flex align-items-center justify-content-center gap-2" 
+                               style="background: linear-gradient(135deg, #692e07 0%, #4a2005 100%); border: none; padding: 0.8rem; font-weight: 600; transition: all 0.3s ease;">
+                                <i class="fas fa-file-download" style="font-size: 1.2rem;"></i>
+                                <span>Download Newsletter Document</span>
+                            </a>
+                            <a href="{{ newsletter.document.url }}" 
+                               target="_blank"
+                               class="btn btn-outline-dark w-100 mt-2 d-flex align-items-center justify-content-center gap-2" 
+                               style="border: 2px solid #692e07; color: #692e07; padding: 0.8rem; font-weight: 600; transition: all 0.3s ease;">
+                                <i class="fas fa-eye" style="font-size: 1.2rem;"></i>
+                                <span>View Online</span>
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Pagination if needed -->
+        {% if newsletters.has_other_pages %}
+        <nav aria-label="Newsletter pagination" class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if newsletters.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ newsletters.previous_page_number }}" style="color: #692e07;">
+                        <i class="fas fa-chevron-left me-1"></i> Previous
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for num in newsletters.paginator.page_range %}
+                <li class="page-item {% if newsletters.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}" style="{% if newsletters.number == num %}background-color: #692e07; border-color: #692e07;{% else %}color: #692e07;{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+                
+                {% if newsletters.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ newsletters.next_page_number }}" style="color: #692e07;">
+                        Next <i class="fas fa-chevron-right ms-1"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
     {% else %}
-        <div class="alert alert-info text-center mt-5 bg-beige" style="color:#110906; border:none;">No newsletters have been published yet.</div>
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fas fa-newspaper" style="font-size: 5rem; color: #d4a574;"></i>
+            </div>
+            <h3 class="mb-3" style="color: #692e07;">No Newsletters Available</h3>
+            <p class="text-muted mb-4">No newsletters have been published yet. Check back soon for updates!</p>
+            <a href="{% url 'core:home' %}" class="btn btn-lg" style="background: linear-gradient(135deg, #692e07 0%, #4a2005 100%); border: none; color: #ffffff;">
+                <i class="fas fa-home me-2"></i>Return to Home
+            </a>
+        </div>
     {% endif %}
 </div>
+
+<style>
+    /* Newsletter Card Styling */
+    .newsletter-card {
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+    
+    .newsletter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(105, 46, 7, 0.2) !important;
+    }
+    
+    /* Button Styling */
+    .btn-dark:hover {
+        background: linear-gradient(135deg, #8a3d09 0%, #692e07 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(105, 46, 7, 0.4);
+    }
+    
+    .btn-outline-dark:hover {
+        background-color: #692e07 !important;
+        color: #ffffff !important;
+        border-color: #692e07 !important;
+        transform: translateY(-2px);
+    }
+    
+    /* Pagination Styling */
+    .pagination .page-link {
+        border: 1px solid #d4a574;
+        margin: 0 2px;
+        border-radius: 8px;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #f5efe6;
+        border-color: #692e07;
+    }
+    
+    .pagination .page-item.active .page-link {
+        color: #ffffff !important;
+    }
+</style>
 {% endblock %}

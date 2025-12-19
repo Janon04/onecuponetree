@@ -7,7 +7,7 @@
   {% if activities %}
     <div class="blog-list-vertical">
       {% for activity in activities %}
-      <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch" style="background-color: #fff7ef; color: #4b2e1a; transition: box-shadow 0.3s; min-height:220px;">
+      <div class="card mb-4 border-0 shadow-lg rounded-4 blog-card-pro d-flex flex-row align-items-stretch card-dynamic-hover" style="transition: box-shadow 0.3s; min-height:220px;">
         {% if activity.attachment %}
           {% with ext=activity.attachment.url|lower %}
             {% if ".mp4" in ext or ".webm" in ext or ".ogg" in ext %}

@@ -49,7 +49,7 @@
         
         <div class="row justify-content-center g-4">
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4 card-dynamic-hover">
                     <div class="card-body">
                         <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ trees_planted|default:0 }}">{{ trees_planted|default:0 }}</div>
                         <div class="text-muted fs-5">Trees Planted</div>
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4 card-dynamic-hover">
                     <div class="card-body">
                         <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ youth_trained|default:0 }}">{{ youth_trained|default:0 }}</div>
                         <div class="text-muted fs-5">Youth Trained</div>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 text-center py-4">
+                <div class="card border-0 shadow-sm h-100 text-center py-4 card-dynamic-hover">
                     <div class="card-body">
                         <div class="display-4 fw-bold text-warning mb-2 impact-number" data-target="{{ coffee_cups_sold|default:0 }}">{{ coffee_cups_sold|default:0 }}</div>
                         <div class="text-muted fs-5">Coffee Cups Sold</div>
@@ -88,7 +88,7 @@
         
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <a href="{% url 'volunteers:barista_training_list' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                <a href="{% url 'volunteers:barista_training_list' %}" class="card text-decoration-none border-0 shadow-sm h-100 card-dynamic-hover">
                     <div class="card-body text-center p-4">
                         <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-graduation-cap fa-2x"></i>
@@ -101,7 +101,7 @@
                 </a>
             </div>
             <div class="col-lg-4 col-md-6">
-                <a href="{% url 'farmers:support_activities_public' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                <a href="{% url 'farmers:support_activities_public' %}" class="card text-decoration-none border-0 shadow-sm h-100 card-dynamic-hover">
                     <div class="card-body text-center p-4">
                         <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-seedling fa-2x"></i>
@@ -114,7 +114,7 @@
                 </a>
             </div>
             <div class="col-lg-4 col-md-6">
-                <a href="{% url 'core:contact' %}" class="card text-decoration-none border-0 shadow-sm h-100 hover-shadow-lg transition-all">
+                <a href="{% url 'core:contact' %}" class="card text-decoration-none border-0 shadow-sm h-100 card-dynamic-hover">
                     <div class="card-body text-center p-4">
                         <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 80px; height: 80px;">
                             <i class="fas fa-handshake fa-2x"></i>
